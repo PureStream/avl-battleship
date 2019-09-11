@@ -15,9 +15,10 @@ _global_script_class_icons={
 
 [application]
 
-config/name="avl-battleship"
-config/icon="res://icon.png"
+config/name="avl_battleship"
+run/main_scene="res://Scenes/MainMenu.tscn"
 
-[rendering]
+[display]
 
-environment/default_environment="res://default_env.tres"
+window/size/width=1920
+window/size/height=1080

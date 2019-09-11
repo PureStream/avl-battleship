@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/MainButtonsController.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/MenuButton.tscn" type="PackedScene" id=2]
+
+[node name="MainMenu" type="Node"]
+
+[node name="MainContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -2.25
+margin_right = -2.25
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="MainButtonsController" type="Node" parent="."]
+script = ExtResource( 1 )
+btn_default = ExtResource( 2 )
+
+[node name="MainButtonTween" type="Tween" parent="MainButtonsController"]
+[connection signal="tween_completed" from="MainButtonsController/MainButtonTween" to="MainButtonsController" method="_on_MainButtonTween_tween_completed"]
