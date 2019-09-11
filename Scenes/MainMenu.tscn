@@ -1,13 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scenes/MainButtonsController.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/MenuButton.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Images/UI/cog.png" type="Texture" id=3]
-[ext_resource path="res://Fonts/testFont.tres" type="DynamicFontData" id=4]
-
-[sub_resource type="DynamicFont" id=1]
-size = 200
-font_data = ExtResource( 4 )
 
 [node name="MainMenu" type="Node"]
 
@@ -20,12 +15,4 @@ btn_default = ExtResource( 2 )
 [node name="Cog" type="Sprite" parent="MainButtonsController"]
 position = Vector2( -70, 540 )
 texture = ExtResource( 3 )
-
-[node name="Label" type="Label" parent="MainButtonsController"]
-margin_left = 379.436
-margin_top = 404.429
-margin_right = 1870.44
-margin_bottom = 608.429
-custom_fonts/font = SubResource( 1 )
-text = "Baipo is here!!!!!"
 [connection signal="tween_all_completed" from="MainButtonsController/MainButtonTween" to="MainButtonsController" method="_on_MainButtonTween_tween_all_completed"]
