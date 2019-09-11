@@ -8,3 +8,6 @@ func set_position(vector:Vector2):
 	
 func set_name(name:String):
 	$MenuButton/BtnLabel.text = name
+
+func set_rotation(deg:float):
+	self.rotation_degrees = deg
