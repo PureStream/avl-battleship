@@ -15,4 +15,4 @@ btn_default = ExtResource( 2 )
 [node name="Cog" type="Sprite" parent="MainButtonsController"]
 position = Vector2( -70, 540 )
 texture = ExtResource( 3 )
-[connection signal="tween_completed" from="MainButtonsController/MainButtonTween" to="MainButtonsController" method="_on_MainButtonTween_tween_completed"]
+[connection signal="tween_all_completed" from="MainButtonsController/MainButtonTween" to="MainButtonsController" method="_on_MainButtonTween_tween_all_completed"]
