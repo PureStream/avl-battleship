@@ -20,8 +20,8 @@ run/main_scene="res://Scenes/MainMenu.tscn"
 
 [display]
 
-window/size/width=1920
-window/size/height=1080
+window/size/width=1280
+window/size/height=720
 
 [input]
 
