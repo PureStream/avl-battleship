@@ -5,7 +5,6 @@
 [ext_resource path="res://Images/UI/cog.png" type="Texture" id=3]
 
 [node name="MainMenu" type="Node"]
-editor/display_folded = true
 
 [node name="MainButtonsController" type="Node" parent="."]
 script = ExtResource( 1 )
@@ -16,4 +15,6 @@ btn_default = ExtResource( 2 )
 [node name="Cog" type="Sprite" parent="MainButtonsController"]
 position = Vector2( -70, 540 )
 texture = ExtResource( 3 )
+
+[node name="Node" type="Node" parent="."]
 [connection signal="tween_all_completed" from="MainButtonsController/MainButtonTween" to="MainButtonsController" method="_on_MainButtonTween_tween_all_completed"]
