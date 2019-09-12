@@ -1,19 +1,21 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://Fonts/RobotoTitle.tres" type="DynamicFont" id=1]
-[ext_resource path="res://Fonts/pala.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://Fonts/InputFont.tres" type="DynamicFont" id=3]
-[ext_resource path="res://Fonts/test_font.tres" type="DynamicFont" id=4]
+[ext_resource path="res://Scenes/Screens/LoginPage.gd" type="Script" id=1]
+[ext_resource path="res://Fonts/RobotoTitle.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Fonts/pala.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Fonts/InputFont.tres" type="DynamicFont" id=4]
+[ext_resource path="res://Fonts/test_font.tres" type="DynamicFont" id=5]
 
 [sub_resource type="DynamicFont" id=1]
 size = 48
-font_data = ExtResource( 2 )
+font_data = ExtResource( 3 )
 
 [sub_resource type="DynamicFont" id=2]
 size = 48
-font_data = ExtResource( 2 )
+font_data = ExtResource( 3 )
 
 [node name="LoginPage" type="Node"]
+script = ExtResource( 1 )
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
@@ -44,7 +46,7 @@ custom_constants/separation = 20
 [node name="GameName" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 margin_right = 762.0
 margin_bottom = 405.0
-custom_fonts/font = ExtResource( 1 )
+custom_fonts/font = ExtResource( 2 )
 text = "
 Mimio Airship Fight
 "
@@ -68,7 +70,7 @@ margin_left = 236.0
 margin_right = 762.0
 margin_bottom = 80.0
 size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 max_length = 17
 secret_character = "#"
 
@@ -91,7 +93,7 @@ margin_right = 762.0
 margin_bottom = 80.0
 size_flags_horizontal = 3
 size_flags_vertical = 9
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 max_length = 17
 secret = true
 secret_character = "•"
@@ -100,12 +102,14 @@ secret_character = "•"
 margin_top = 625.0
 margin_right = 762.0
 margin_bottom = 681.0
-custom_fonts/font = ExtResource( 4 )
+custom_fonts/font = ExtResource( 5 )
 text = "Sign In"
 
 [node name="Sign Up" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 margin_top = 701.0
 margin_right = 762.0
 margin_bottom = 757.0
-custom_fonts/font = ExtResource( 4 )
+custom_fonts/font = ExtResource( 5 )
 text = "Sign Up"
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Sign In" to="." method="_on_Sign_In_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Sign Up" to="." method="_on_Sign_Up_pressed"]
