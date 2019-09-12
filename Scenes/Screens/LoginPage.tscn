@@ -1,19 +1,17 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Fonts/pala.ttf" type="DynamicFontData" id=1]
-[ext_resource path="res://Fonts/test_font.tres" type="DynamicFont" id=2]
-
-[sub_resource type="DynamicFont" id=3]
-size = 72
-font_data = ExtResource( 1 )
+[ext_resource path="res://Fonts/RobotoTitle.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Fonts/pala.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Fonts/InputFont.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Fonts/test_font.tres" type="DynamicFont" id=4]
 
 [sub_resource type="DynamicFont" id=1]
 size = 48
-font_data = ExtResource( 1 )
+font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=2]
 size = 48
-font_data = ExtResource( 1 )
+font_data = ExtResource( 2 )
 
 [node name="LoginPage" type="Node"]
 
@@ -35,73 +33,79 @@ size_flags_vertical = 5
 custom_constants/separation = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
-margin_left = 571.0
-margin_top = 240.0
-margin_right = 1228.0
-margin_bottom = 760.0
+margin_left = 519.0
+margin_top = 121.0
+margin_right = 1281.0
+margin_bottom = 878.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
 custom_constants/separation = 20
 
 [node name="GameName" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
-margin_right = 657.0
-margin_bottom = 228.0
-custom_fonts/font = SubResource( 3 )
+margin_right = 762.0
+margin_bottom = 405.0
+custom_fonts/font = ExtResource( 1 )
 text = "
 Mimio Airship Fight
 "
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
-margin_top = 248.0
-margin_right = 657.0
-margin_bottom = 298.0
+margin_top = 425.0
+margin_right = 762.0
+margin_bottom = 505.0
 custom_constants/separation = 20
 
 [node name="Username" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_top = 15.0
 margin_right = 216.0
-margin_bottom = 50.0
+margin_bottom = 65.0
 size_flags_horizontal = 0
 custom_fonts/font = SubResource( 1 )
 text = "Username"
 
-[node name="UsernameTypeBox" type="TextEdit" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="UsernameTypeBox" type="LineEdit" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 236.0
-margin_right = 657.0
-margin_bottom = 50.0
+margin_right = 762.0
+margin_bottom = 80.0
 size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 3 )
+max_length = 17
+secret_character = "#"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
-margin_top = 318.0
-margin_right = 657.0
-margin_bottom = 368.0
+margin_top = 525.0
+margin_right = 762.0
+margin_bottom = 605.0
 custom_constants/separation = 30
 
 [node name="Password" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_top = 15.0
 margin_right = 207.0
-margin_bottom = 50.0
+margin_bottom = 65.0
 custom_fonts/font = SubResource( 2 )
 text = "Password"
 
-[node name="PasswordTypeBox" type="TextEdit" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
+[node name="PasswordTypeBox" type="LineEdit" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
 margin_left = 237.0
-margin_right = 657.0
-margin_bottom = 50.0
+margin_right = 762.0
+margin_bottom = 80.0
 size_flags_horizontal = 3
 size_flags_vertical = 9
-custom_fonts/font = ExtResource( 2 )
-wrap_enabled = true
+custom_fonts/font = ExtResource( 3 )
+max_length = 17
+secret = true
+secret_character = "•"
 
 [node name="Sign In" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
-margin_top = 388.0
-margin_right = 657.0
-margin_bottom = 444.0
-custom_fonts/font = ExtResource( 2 )
+margin_top = 625.0
+margin_right = 762.0
+margin_bottom = 681.0
+custom_fonts/font = ExtResource( 4 )
 text = "Sign In"
 
 [node name="Sign Up" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
-margin_top = 464.0
-margin_right = 657.0
-margin_bottom = 520.0
-custom_fonts/font = ExtResource( 2 )
+margin_top = 701.0
+margin_right = 762.0
+margin_bottom = 757.0
+custom_fonts/font = ExtResource( 4 )
 text = "Sign Up"
