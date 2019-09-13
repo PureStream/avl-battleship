@@ -90,6 +90,7 @@ margin_top = 244.0
 margin_right = 404.0
 margin_bottom = 448.0
 
+
 [node name="Team6" parent="MarginContainer/HBoxContainer/VBoxContainer2" instance=ExtResource( 4 )]
 margin_left = 0.0
 margin_top = 488.0
