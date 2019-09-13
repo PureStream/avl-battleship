@@ -1,6 +1,7 @@
 extends Node
 
-var buttons = ["How To Play", "Basic", "Classic", "Blitz", "Team Setup", "Options", "Credits"]
+var button_enums = load("res://Scripts/MenuButtonEnums.gd").MenuButtonEnum
+var buttons = button_enums.get_button_names()
 
 export (PackedScene) var btn_default
 
@@ -13,27 +14,29 @@ var centerpoint:Vector2 = Vector2(-70, screen_height*0.5)
 var button_instances = []
 
 onready var cog = $Cog
+#onready var click_audio = $ClickAudio
 
 func _ready():
-	print(screen_height)
+#	print(screen_height)
 	var target_position = centerpoint
 	var target_radius = radius.rotated(STARTING_RAD)
 	cog.position = centerpoint
-	for btn in buttons:
-		var new_button:MenuButton = btn_default.instance()
-		new_button.set_name(btn)
+	for i in button_enums.Menu:
+		var new_button = btn_default.instance()
+		new_button.set_name(buttons[button_enums.Menu[i]])
 		new_button.set_position(target_position+target_radius)
+		new_button.set_type(i)
+		new_button.connect("change_screen", self, "change_screen")
 		#new_button.set_rotation(rad2deg(target_radius.angle()))
 		target_radius = target_radius.rotated(rad_increment)
 		add_child(new_button)
 		button_instances.append(new_button)
-	$Cog
 
 var rotating = false
 
 var scroll_rotate_count:int = 0
 var time_since_last_scroll:float = 0
-const SCROLL_LIMIT = 0.08
+const SCROLL_LIMIT = 0.09
 
 func _input(event):
     # Wheel Up Event
@@ -53,7 +56,10 @@ func _input(event):
 				scroll_rotate_count-=sign(scroll_rotate_count)
 		time_since_last_scroll = 0
 
-
+func change_screen(ID):
+	print("check")
+	if button_enums.Menu[ID] == button_enums.Menu.CLASSIC:
+		get_tree().change_scene("res://Scenes/Screens/Lobby.tscn")
 
 func _process(delta):
 	if(time_since_last_scroll<1):

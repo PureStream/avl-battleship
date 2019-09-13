@@ -4,7 +4,8 @@
 [ext_resource path="res://Fonts/test_font.tres" type="DynamicFont" id=2]
 
 [sub_resource type="DynamicFont" id=1]
-size = 126
+size = 90
+use_filter = true
 font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=2]
@@ -16,12 +17,13 @@ font_data = ExtResource( 1 )
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 12.3635
-margin_right = 12.3635
 custom_constants/margin_right = 60
 custom_constants/margin_top = 40
 custom_constants/margin_left = 60
 custom_constants/margin_bottom = 40
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 margin_left = 60.0
@@ -30,17 +32,18 @@ margin_right = 1860.0
 margin_bottom = 1040.0
 
 [node name="ModePanel" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
-margin_right = 426.0
+margin_right = 500.0
 margin_bottom = 1000.0
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/ModePanel"]
-margin_right = 426.0
+margin_right = 500.0
 margin_bottom = 165.0
 custom_constants/margin_bottom = 30
 
 [node name="ModeButton" type="Button" parent="MarginContainer/HBoxContainer/ModePanel/MarginContainer"]
 margin_right = 400.0
 margin_bottom = 135.0
+rect_min_size = Vector2( 400, 135 )
 size_flags_horizontal = 0
 custom_fonts/font = SubResource( 1 )
 custom_constants/hseparation = 0
@@ -48,42 +51,50 @@ text = "Classic"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ModePanel"]
 margin_top = 169.0
-margin_right = 426.0
+margin_right = 500.0
 margin_bottom = 916.0
 size_flags_vertical = 3
 custom_constants/separation = 20
 
 [node name="RankedButton" type="Button" parent="MarginContainer/HBoxContainer/ModePanel/VBoxContainer"]
-margin_right = 426.0
+margin_right = 500.0
 margin_bottom = 80.0
+rect_min_size = Vector2( 500, 0 )
 custom_fonts/font = ExtResource( 2 )
 text = "Ranked"
+align = 0
 
 [node name="QuickplayButton" type="Button" parent="MarginContainer/HBoxContainer/ModePanel/VBoxContainer"]
 margin_top = 100.0
-margin_right = 426.0
+margin_right = 500.0
 margin_bottom = 180.0
 custom_fonts/font = ExtResource( 2 )
 text = "Quickplay"
+align = 0
 
 [node name="CreateRoomButton" type="Button" parent="MarginContainer/HBoxContainer/ModePanel/VBoxContainer"]
 margin_top = 200.0
-margin_right = 426.0
+margin_right = 500.0
 margin_bottom = 280.0
 custom_fonts/font = ExtResource( 2 )
 text = "Create Room"
+align = 0
 
 [node name="JoinGameButton" type="Button" parent="MarginContainer/HBoxContainer/ModePanel/VBoxContainer"]
 margin_top = 300.0
-margin_right = 426.0
+margin_right = 500.0
 margin_bottom = 380.0
+rect_min_size = Vector2( 500, 0 )
 custom_fonts/font = ExtResource( 2 )
 text = "Join Game"
+align = 0
 
 [node name="BackButton" type="Button" parent="MarginContainer/HBoxContainer/ModePanel"]
 margin_top = 920.0
-margin_right = 426.0
+margin_right = 200.0
 margin_bottom = 1000.0
+rect_min_size = Vector2( 200, 0 )
+size_flags_horizontal = 0
 custom_fonts/font = ExtResource( 2 )
 text = "Back"
 
