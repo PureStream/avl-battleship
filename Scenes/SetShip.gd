@@ -30,7 +30,6 @@ func _process(delta):
 		grab_toggle = !grab_toggle
 	if item_held != null:
 		item_held.rect_global_position = cursor_pos + item_offset
-		$ColorRect.rect_global_position = item_held.rect_global_position
 
 func _input(event):
 	if event.is_action_pressed("inv_rotate"):

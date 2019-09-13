@@ -21,6 +21,7 @@ func insert_item(item):
 	item.rect_rotation = 0
 	item.rect_global_position = slot.rect_global_position
 	item.rect_global_position = realign_position(item)
+	item.rect_scale = rect_scale
 	item.rect_rotation = -270
 	return true
  
@@ -32,15 +33,19 @@ func swap_xy(vector:Vector2):
 
 func realign_position(item):
 	var item_pos = item.rect_global_position
-	item_pos -= item.rect_pivot_offset - swap_xy(item.rect_pivot_offset)
+	var offset = item.rect_pivot_offset - swap_xy(item.rect_pivot_offset)
+	item_pos -= offset
 	return item_pos
 
 func grab_item(pos):
 	var slot = get_slot_under_pos(pos)
+	if slot == null:
+		return null
 	var item = items[slot.name]
 	if item == null:
 		return null
 	items[slot.name] = null
+	item.rect_scale = Vector2(1,1)
 	return item
 
 func get_slot_from_id(item):

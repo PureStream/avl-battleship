@@ -1,7 +1,6 @@
 extends Node
 
-var button_enums = load("res://Scripts/MenuButtonEnums.gd").MenuButtonEnum
-var buttons = button_enums.get_button_names()
+var buttons = MenuButtonEnums.get_button_names()
 
 export (PackedScene) var btn_default
 
@@ -21,9 +20,9 @@ func _ready():
 	var target_position = centerpoint
 	var target_radius = radius.rotated(STARTING_RAD)
 	cog.position = centerpoint
-	for i in button_enums.Menu:
+	for i in MenuButtonEnums.get_button_names().keys():
 		var new_button = btn_default.instance()
-		new_button.set_name(buttons[button_enums.Menu[i]])
+		new_button.set_name(buttons[i])
 		new_button.set_position(target_position+target_radius)
 		new_button.set_type(i)
 		new_button.connect("change_screen", self, "change_screen")
@@ -57,9 +56,12 @@ func _input(event):
 		time_since_last_scroll = 0
 
 func change_screen(ID):
-	print("check")
-	if button_enums.Menu[ID] == button_enums.Menu.CLASSIC:
-		get_tree().change_scene("res://Scenes/Screens/Lobby.tscn")
+#	print("check")
+	if ID in MenuButtonEnums.get_button_names().keys():
+		if ID in Global.SCREEN_PATH.keys():
+			get_tree().change_scene(Global.SCREEN_PATH[ID]["path"])
+	else:
+		return
 
 func _process(delta):
 	if(time_since_last_scroll<1):
