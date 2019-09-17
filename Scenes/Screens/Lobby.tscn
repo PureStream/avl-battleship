@@ -1,18 +1,21 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Fonts/pala.ttf" type="DynamicFontData" id=1]
-[ext_resource path="res://Fonts/test_font.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Scenes/Screens/Lobby.gd" type="Script" id=1]
+[ext_resource path="res://Fonts/pala.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Fonts/test_font.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Scenes/BackButton.tscn" type="PackedScene" id=4]
 
 [sub_resource type="DynamicFont" id=1]
 size = 90
 use_filter = true
-font_data = ExtResource( 1 )
+font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=2]
 size = 36
-font_data = ExtResource( 1 )
+font_data = ExtResource( 2 )
 
 [node name="Lobby" type="Node"]
+script = ExtResource( 1 )
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
@@ -60,7 +63,7 @@ custom_constants/separation = 20
 margin_right = 500.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 500, 0 )
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 3 )
 text = "Ranked"
 align = 0
 
@@ -68,7 +71,7 @@ align = 0
 margin_top = 100.0
 margin_right = 500.0
 margin_bottom = 180.0
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 3 )
 text = "Quickplay"
 align = 0
 
@@ -76,7 +79,7 @@ align = 0
 margin_top = 200.0
 margin_right = 500.0
 margin_bottom = 280.0
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 3 )
 text = "Create Room"
 align = 0
 
@@ -85,18 +88,11 @@ margin_top = 300.0
 margin_right = 500.0
 margin_bottom = 380.0
 rect_min_size = Vector2( 500, 0 )
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 3 )
 text = "Join Game"
 align = 0
 
-[node name="BackButton" type="Button" parent="MarginContainer/HBoxContainer/ModePanel"]
-margin_top = 920.0
-margin_right = 200.0
-margin_bottom = 1000.0
-rect_min_size = Vector2( 200, 0 )
-size_flags_horizontal = 0
-custom_fonts/font = ExtResource( 2 )
-text = "Back"
+[node name="BackButton" parent="MarginContainer/HBoxContainer/ModePanel" instance=ExtResource( 4 )]
 
 [node name="TeamPanel" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 margin_left = 1290.0
@@ -116,7 +112,7 @@ margin_bottom = 116.0
 [node name="TeamName" type="Label" parent="MarginContainer/HBoxContainer/TeamPanel/HBoxContainer/VBoxContainer"]
 margin_right = 390.0
 margin_bottom = 74.0
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 3 )
 text = "Team Name"
 
 [node name="CommanderName" type="Label" parent="MarginContainer/HBoxContainer/TeamPanel/HBoxContainer/VBoxContainer"]
