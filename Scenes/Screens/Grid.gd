@@ -1,8 +1,9 @@
 extends TextureRect
  
-var items = []
+var ships = []
  
 var grid = {}
+var ship_type = []
 var cell_size = 96
 var grid_width = 0
 var grid_height = 0
@@ -16,17 +17,18 @@ func _ready():
 		grid[x] = {}
 		for y in range(grid_height):
 			grid[x][y] = false
- 
-func insert_item(item):
-	var item_pos = get_proper_position(item)
-#	print(item.rect_position)
-	var g_pos = pos_to_grid_coord(item_pos)
-	var item_size = get_grid_size(item)
-	if is_grid_space_available(g_pos.x, g_pos.y, item_size.x, item_size.y):
-		set_grid_space(g_pos.x, g_pos.y, item_size.x, item_size.y, true)
-		item.rect_position = rect_position + Vector2(g_pos.x, g_pos.y) * cell_size
-		fix_position(item)
-		items.append(item)
+	
+func insert_ship(ship):
+	var ship_pos = get_proper_position(ship)
+#	print(ship.rect_position)
+	var g_pos = pos_to_grid_coord(ship_pos)
+	var ship_size = get_grid_size(ship)
+	if is_grid_space_available(g_pos.x, g_pos.y, ship_size.x, ship_size.y):
+		set_grid_space(g_pos.x, g_pos.y, ship_size.x, ship_size.y, true)
+		ship.rect_position = rect_position + Vector2(g_pos.x, g_pos.y) * cell_size
+		fix_position(ship)
+		ships.append(ship)
+		ship.set_meta("grid_pos",g_pos)
 		return true
 	else:
 		return false
@@ -37,37 +39,37 @@ func swap_xy(vector:Vector2):
 	vector.y = tmp
 	return vector
 
-func get_proper_position(item):
-	var item_pos = item.rect_position + Vector2(cell_size / 2, cell_size / 2)
-	match int(abs(item.rect_rotation)) % 180:
+func get_proper_position(ship):
+	var ship_pos = ship.rect_position + Vector2(cell_size / 2, cell_size / 2)
+	match int(abs(ship.rect_rotation)) % 180:
 		90:
-			item_pos += item.rect_pivot_offset - swap_xy(item.rect_pivot_offset)
-	return item_pos
+			ship_pos += ship.rect_pivot_offset - swap_xy(ship.rect_pivot_offset)
+	return ship_pos
 
-func fix_position(item):
-	match int(abs(item.rect_rotation)) % 180:
+func fix_position(ship):
+	match int(abs(ship.rect_rotation)) % 180:
 		90:
-			item.rect_position -= item.rect_pivot_offset - swap_xy(item.rect_pivot_offset)
+			ship.rect_position -= ship.rect_pivot_offset - swap_xy(ship.rect_pivot_offset)
 
-func get_proper_position2(item):
-	var item_pos = item.rect_position
-	match int(abs(item.rect_rotation)) % 180:
+func get_proper_position2(ship):
+	var ship_pos = ship.rect_position
+	match int(abs(ship.rect_rotation)) % 180:
 		90:
-			item_pos += item.rect_pivot_offset - swap_xy(item.rect_pivot_offset)
-	return item_pos
+			ship_pos += ship.rect_pivot_offset - swap_xy(ship.rect_pivot_offset)
+	return ship_pos
 
-func grab_item(pos):
-	var item = get_item_under_pos(pos)
-	if item == null:
+func grab_ship(pos):
+	var ship = get_ship_under_pos(pos)
+	if ship == null:
 		return null
    
-	var item_pos = get_proper_position(item)
-	var g_pos = pos_to_grid_coord(item_pos)
-	var item_size = get_grid_size(item)
-	set_grid_space(g_pos.x, g_pos.y, item_size.x, item_size.y, false)
+	var ship_pos = get_proper_position(ship)
+	var g_pos = pos_to_grid_coord(ship_pos)
+	var ship_size = get_grid_size(ship)
+	set_grid_space(g_pos.x, g_pos.y, ship_size.x, ship_size.y, false)
    
-	items.remove(items.find(item))
-	return item
+	ships.remove(ships.find(ship))
+	return ship
  
 func pos_to_grid_coord(pos):
 	var local_pos = pos - rect_position
@@ -76,16 +78,25 @@ func pos_to_grid_coord(pos):
 	results.y = int(local_pos.y / cell_size)
 	return results
  
-func get_grid_size(item):
+func get_grid_size(ship):
 	var results = {}
-	var s = item.rect_size
+	var s = ship.rect_size
 	results.x = clamp(int(s.x / cell_size), 1, 500)
 	results.y = clamp(int(s.y / cell_size), 1, 500)
-	if int(abs(item.rect_rotation)) % 180 == 90:
+	if int(abs(ship.rect_rotation)) % 180 == 90:
 		var tmp = results.x
 		results.x = results.y
 		results.y = tmp
 	return results
+
+func insert_ship_at_first_available_spot(ship):
+	for y in range(grid_height):
+		for x in range(grid_width):
+			if !grid[x][y]:
+				ship.rect_position = rect_position + Vector2(x, y) * cell_size
+				if insert_ship(ship):
+					return true
+	return false
  
 func is_grid_space_available(x, y, w ,h):
 	if x < 0 or y < 0:
@@ -103,18 +114,18 @@ func set_grid_space(x, y, w, h, state):
 		for j in range(y, y + h):
 			grid[i][j] = state
  
-func get_item_under_pos(pos):
-	for item in items:
-#		print(item.get_global_rect())
-		if get_actual_rect(item).has_point(pos):
-			return item
+func get_ship_under_pos(pos):
+	for ship in ships:
+#		print(ship.get_global_rect())
+		if get_actual_rect(ship).has_point(pos):
+			return ship
 	return null
 
-func get_actual_rect(item):
-#	var apparent_pos = get_proper_position2(item)
-	var rect:Rect2 = item.get_global_rect()
+func get_actual_rect(ship):
+#	var apparent_pos = get_proper_position2(ship)
+	var rect:Rect2 = ship.get_global_rect()
 #	rect.position = apparent_pos
-	match int(abs(item.rect_rotation)) % 360:
+	match int(abs(ship.rect_rotation)) % 360:
 		90:
 			rect.size = swap_xy(rect.size)
 			rect.position.y -= rect.size.y
@@ -125,11 +136,18 @@ func get_actual_rect(item):
 			rect.position.x -= rect.size.x
 	return rect
  
-func insert_item_at_first_available_spot(item):
-	for y in range(grid_height):
-		for x in range(grid_width):
-			if !grid[x][y]:
-				item.rect_position = rect_position + Vector2(x, y) * cell_size
-				if insert_item(item):
-					return true
-	return false
+       
+
+func _on_Button_pressed():
+	var ships = get_node("/root/ShipLayout")
+	for ship in self.ships:
+		var dict = ship_to_dict(ship)
+		ships.ships_list.append(dict)
+	ships.ships = grid
+	get_tree().change_scene("res://Scenes/Screens/Play.tscn")
+
+func ship_to_dict(ship):
+	var grid_pos = ship.get_meta("grid_pos")
+	var id = ship.get_meta("id")
+	var angle = ship.rect_rotation
+	return {"id":id, "g_pos":grid_pos, "angle":angle}

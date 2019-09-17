@@ -1,7 +1,19 @@
 extends Node
 
+var ships = {}
+var ships_list = []
+
 func _ready():
-	pass # Replace with function body.
+	pass
 
-var ships = []
 
+func _process(delta):
+	pass
+	
+func add_ship(ship,rot,pos):
+	pass
+
+func clear_ship():
+	ships = {}
+	ships_list = []
+	

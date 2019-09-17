@@ -51,7 +51,7 @@ func _input(event):
 		if scroll_rotate_count != 0:
 			if rotating == false:
 				time_since_last_scroll = SCROLL_LIMIT if time_since_last_scroll < SCROLL_LIMIT else time_since_last_scroll
-				rotate_speed(sign(scroll_rotate_count),1.3+0.2/time_since_last_scroll)
+				rotate_speed(sign(scroll_rotate_count),1.3+0.25/time_since_last_scroll)
 				scroll_rotate_count-=sign(scroll_rotate_count)
 		time_since_last_scroll = 0
 
