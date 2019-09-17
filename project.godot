@@ -40,7 +40,9 @@ run/main_scene="res://Scenes/MainMenu.tscn"
 Firebase="*res://addons/GDFirebase/Firebase.gd"
 ShipDB="*res://Scripts/ShipDB.gd"
 ShipLayout="*res://Scripts/ShipLayout.gd"
-Global="*res://Global.gd"
+MenuButtonEnums="*res://Scripts/MenuButtonEnums.gd"
+Global="*res://Scripts/Global.gd"
+
 
 [display]
 
