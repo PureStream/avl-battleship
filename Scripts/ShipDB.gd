@@ -20,7 +20,7 @@ const SHIPS = {
 	}
 }
 
-func get_item(ship_id):
+func get_ship(ship_id):
 	if ship_id in SHIPS:
 		return SHIPS[ship_id]
 	else:
