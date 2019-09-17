@@ -7,5 +7,5 @@ const SCREEN_PATH = {
 	MenuButtonEnums.CLASSIC:{
 		"path":"res://Scenes/Screens/Lobby.tscn",
 		"iden":"CLASSIC"
-		},
+		}
 	}

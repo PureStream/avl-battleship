@@ -43,7 +43,6 @@ ShipLayout="*res://Scripts/ShipLayout.gd"
 MenuButtonEnums="*res://Scripts/MenuButtonEnums.gd"
 Global="*res://Scripts/Global.gd"
 
-
 [display]
 
 window/size/width=1920
