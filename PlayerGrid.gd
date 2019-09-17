@@ -1,6 +1,8 @@
 extends Control
  
 var ships = []
+
+const ship_base = preload("res://Scenes/ShipBase.tscn")
  
 var cell_size = 96
 var grid_width = 0
@@ -11,11 +13,17 @@ func _ready():
 	grid_width = s.x
 	grid_height = s.y
  
-func insert_item(item):
-	var grid_pos = get_meta("grid_pos")
-	item.rect_position = rect_position + Vector2(grid_pos.x, grid_pos.y) * cell_size
-	fix_position(item)
-	ships.append(item)
+func insert_item(ship):
+	var ship_obj = ship_base.instance()
+	var ship_id = ship["id"]
+	ship_obj.rect_rotation = ship["angle"]
+	ship_obj.texture = load(ShipDB.get_ship(ship_id)["icon"])
+	ship_obj.rect_pivot_offset = ship_obj.texture.get_size()/2
+	var grid_pos = ship["g_pos"]
+	ship_obj.rect_position = Vector2(grid_pos.x, grid_pos.y) * cell_size
+	fix_position(ship_obj)
+	add_child(ship_obj)
+	ships.append(ship_obj)
 
 func swap_xy(vector:Vector2):
 	var tmp = vector.x

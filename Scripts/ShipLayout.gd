@@ -14,5 +14,6 @@ func add_ship(ship,rot,pos):
 	pass
 
 func clear_ship():
-	var ships = {}
+	ships = {}
+	ships_list = []
 	
