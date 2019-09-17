@@ -3,6 +3,5 @@
 [ext_resource path="res://Fonts/RobotoCondensed-Regular.ttf" type="DynamicFontData" id=1]
 
 [resource]
-size = 36
-outline_color = Color( 1, 0, 0, 1 )
+size = 18
 font_data = ExtResource( 1 )

@@ -9,6 +9,7 @@ enum {
 	CLASSIC,
 	BLITZ,
 	TEAM_SETUP,
+	DATABASE,
 	OPTIONS,
 	CREDITS
 }
@@ -19,6 +20,7 @@ const BUTTON_NAMES = {
 	CLASSIC:"Classic",
 	BLITZ:"Blitz",
 	TEAM_SETUP:"Team Setup",
+	DATABASE:"Database",
 	OPTIONS:"Options",
 	CREDITS:"Credits"}
 

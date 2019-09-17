@@ -12,11 +12,5 @@ func _ready():
 #func _process(delta):
 #	pass
 
-
-func _on_SlideLeft_pressed():
-	pass # Replace with function body.
-
-
-func _on_SlideRight_pressed():
-	pass # Replace with function body.
-
+func _on_BackButton_pressed():
+	get_tree().change_scene("res://Scenes/MainMenu.tscn")

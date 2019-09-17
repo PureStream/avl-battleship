@@ -7,5 +7,13 @@ const SCREEN_PATH = {
 	MenuButtonEnums.CLASSIC:{
 		"path":"res://Scenes/Screens/Lobby.tscn",
 		"iden":"CLASSIC"
-		}
+		},
+	MenuButtonEnums.TEAM_SETUP:{
+		"path":"res://Scenes/Screens/TeamSetUp.tscn",
+		"iden":"TEAM_SETUP"
+		},
+	MenuButtonEnums.CREDITS:{
+		"path":"res://Scenes/Screens/Credits.tscn",
+		"iden":"CREDITS"
+		},
 	}

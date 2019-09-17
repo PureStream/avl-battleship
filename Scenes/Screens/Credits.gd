@@ -11,12 +11,3 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
-
-
-func _on_SlideLeft_pressed():
-	pass # Replace with function body.
-
-
-func _on_SlideRight_pressed():
-	pass # Replace with function body.
-
