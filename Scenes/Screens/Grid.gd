@@ -140,16 +140,14 @@ func get_actual_rect(ship):
 
 func _on_Button_pressed():
 	var ships = get_node("/root/ShipLayout")
-	ships.ships_list = self.ships
-#	for x in range(grid_width):
-#		ships.ships[x] = {}
-#		for y in range(grid_height):
-#			if grid[x][y] == true:
-#				ships.ships[x][y] = true
+	for ship in self.ships:
+		var dict = ship_to_dict(ship)
+		ships.ships_list.append(dict)
 	ships.ships = grid
-	get_tree().change_scene("res://Scenes/Screens/Play.tscn")			
-				
-				
-				
-			
-	
+	get_tree().change_scene("res://Scenes/Screens/Play.tscn")
+
+func ship_to_dict(ship):
+	var grid_pos = ship.get_meta("grid_pos")
+	var id = ship.get_meta("id")
+	var angle = ship.rect_rotation
+	return {"id":id, "g_pos":grid_pos, "angle":angle}
