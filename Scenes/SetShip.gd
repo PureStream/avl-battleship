@@ -28,8 +28,8 @@ func _process(delta):
 		else:
 			release(cursor_pos)
 		grab_toggle = !grab_toggle
-	if item_held != null:
-		item_held.rect_global_position = cursor_pos + item_offset
+	if ship_held != null:
+		ship_held.rect_global_position = cursor_pos + ship_offset
 
 func _input(event):
 	if event.is_action_pressed("inv_rotate"):

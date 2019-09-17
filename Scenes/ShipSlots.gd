@@ -39,7 +39,7 @@ func grab_ship(pos):
 	var slot = get_slot_under_pos(pos)
 	if slot == null:
 		return null
-  var ship = ships[slot.name]
+	var ship = ships[slot.name]
 	if ship == null:
 		return null
 	ships[slot.name] = null

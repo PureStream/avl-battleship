@@ -147,7 +147,7 @@ func _on_Button_pressed():
 #			if grid[x][y] == true:
 #				ships.ships[x][y] = true
 	ships.ships = grid
-	Global.goto_scene("res://Scenes/Screens/Play.tscn")				
+	get_tree().change_scene("res://Scenes/Screens/Play.tscn")			
 				
 				
 				
