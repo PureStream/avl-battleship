@@ -1,6 +1,13 @@
 extends Node
 
+const MARK_PATH = "res://Images/UI/"
 const ICON_PATH = "res://Images/Ships/"
+const MARKS = {
+	"Hit": MARK_PATH + "hit.png",
+	"Miss": MARK_PATH + "miss.png",
+	"Reticle": MARK_PATH + "reticle.png"
+}
+
 const SHIPS = {
 	"Ship2": {
 		"icon": ICON_PATH + "Ship2.png",
@@ -24,4 +31,10 @@ func get_ship(ship_id):
 	if ship_id in SHIPS:
 		return SHIPS[ship_id]
 	else:
-		return SHIPS["Ship3.png"]
+		return SHIPS["Ship3"]
+
+func get_mark(mark_id):
+	if mark_id in MARKS:
+		return MARKS[mark_id]
+	else:
+		return MARKS["Miss"]

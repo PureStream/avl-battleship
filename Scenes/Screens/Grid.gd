@@ -12,6 +12,7 @@ func _ready():
 	var s = get_grid_size(self)
 	grid_width = s.x
 	grid_height = s.y
+	print (grid_height)
    
 	for x in range(grid_width):
 		grid[x] = {}
