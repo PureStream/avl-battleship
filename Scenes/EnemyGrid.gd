@@ -1,12 +1,14 @@
 extends Control
 
 onready var ships_obj = get_node("/root/ShipLayout")
+onready var confirm = get_node("../Confirm")
 var ships = []
 
 const ship_base = preload("res://Scenes/ShipBase.tscn")
 const hit_or_miss = preload("res://Scenes/HitOrMiss.tscn")
 
-var true_false = []
+
+var hit_map = []
 var cell_size = 96
 var grid_width = 0
 var grid_height = 0
@@ -17,6 +19,12 @@ func _ready():
 	var s = get_grid_size(self)
 	grid_width = s.x
 	grid_height = s.y
+	for x in range(grid_width):
+		hit_map.append([])
+		for y in range(grid_height):
+			hit_map[x].append(true)
+	confirm.disabled = true
+
 
 func _input(event):
 	if event.is_action_pressed("inv_grab"):
@@ -30,10 +38,12 @@ func select_target(pos):
 		reticle = hit_or_miss.instance()
 		reticle.texture = load(ShipDB.get_mark("Reticle"))
 		add_child(reticle)
-	if reticle.visible == false:
-		reticle.visible = true
-	reticle.rect_position = Vector2(grid_pos.x, grid_pos.y) * cell_size
-	reticle_pos = grid_pos
+	if hit_map[grid_pos.x][grid_pos.y]:
+		confirm.disabled = false
+		if reticle.visible == false:
+			reticle.visible = true
+		reticle.rect_position = Vector2(grid_pos.x, grid_pos.y) * cell_size
+		reticle_pos = grid_pos
 	
 	
 
@@ -120,6 +130,7 @@ func _on_Confirm_pressed():
 	else:
 		insert_mark({"id":"Miss","g_pos":{"x":x,"y":y}})
 	reticle.visible = false
+	hit_map[x][y] = false
 		
 			
 

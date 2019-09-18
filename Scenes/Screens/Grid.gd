@@ -7,6 +7,7 @@ var ship_type = []
 var cell_size = 96
 var grid_width = 0
 var grid_height = 0
+onready var ships_node = get_node("/root/ShipLayout")
  
 func _ready():
 	var s = get_grid_size(self)
@@ -137,16 +138,14 @@ func get_actual_rect(ship):
 			rect.position.x -= rect.size.x
 	return rect
  
-       
-
 func _on_Button_pressed():
-	var ships = get_node("/root/ShipLayout")
-	for ship in self.ships:
-		var dict = ship_to_dict(ship)
-		ships.ships_list.append(dict)
-	ships.ships = grid
-	get_tree().change_scene("res://Scenes/Screens/Play.tscn")
-
+	if ships.size() == 5:
+		for ship in ships:
+			var dict = ship_to_dict(ship)
+			ships_node.ships_list.append(dict)
+		ships_node.ships = grid	
+		get_tree().change_scene("res://Scenes/Screens/Play.tscn")
+		
 func ship_to_dict(ship):
 	var grid_pos = ship.get_meta("grid_pos")
 	var id = ship.get_meta("id")
