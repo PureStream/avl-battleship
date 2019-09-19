@@ -34,8 +34,6 @@ func insert_mark(mark):
 	mark_obj.rect_position = Vector2(grid_pos.x, grid_pos.y) * cell_size
 	add_child(mark_obj)
 	
-	
-	
 func swap_xy(vector:Vector2):
 	var tmp = vector.x
 	vector.x = vector.y

@@ -137,14 +137,6 @@ func get_actual_rect(ship):
 			rect.size = swap_xy(rect.size)
 			rect.position.x -= rect.size.x
 	return rect
- 
-func _on_Button_pressed():
-	if ships.size() == 5:
-		for ship in ships:
-			var dict = ship_to_dict(ship)
-			ships_node.ships_list.append(dict)
-		ships_node.ships = grid	
-		get_tree().change_scene("res://Scenes/Screens/Play.tscn")
 		
 func ship_to_dict(ship):
 	var grid_pos = ship.get_meta("grid_pos")

@@ -52,4 +52,4 @@ margin_bottom = 177.868
 custom_fonts/font = ExtResource( 2 )
 text = "Confirm"
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
-[connection signal="pressed" from="Confirm" to="EnemyGrid" method="_on_Confirm_pressed"]
+[connection signal="pressed" from="Confirm" to="." method="_on_Confirm_pressed"]

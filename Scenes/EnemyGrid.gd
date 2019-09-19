@@ -23,14 +23,13 @@ func _ready():
 		hit_map.append([])
 		for y in range(grid_height):
 			hit_map[x].append(true)
-	confirm.disabled = true
-
 
 func _input(event):
 	if event.is_action_pressed("inv_grab"):
-		if get_global_rect().has_point(event.position):
-			select_target(event.position)
-		
+		if Lobby.your_turn:
+			if get_global_rect().has_point(event.position):
+				select_target(event.position)
+
 func select_target(pos):
 #	var cursor_pos = get_global_mouse_position()
 	var grid_pos = pos_to_grid_coord(pos)
@@ -44,8 +43,6 @@ func select_target(pos):
 			reticle.visible = true
 		reticle.rect_position = Vector2(grid_pos.x, grid_pos.y) * cell_size
 		reticle_pos = grid_pos
-	
-	
 
 func pos_to_grid_coord(pos):
 	var local_pos = pos - rect_global_position
@@ -119,20 +116,3 @@ func get_actual_rect(item):
 			rect.size = swap_xy(rect.size)
 			rect.position.x -= rect.size.x
 	return rect
-
-
-
-func _on_Confirm_pressed():
-	var x = reticle_pos.x 
-	var y = reticle_pos.y 
-	if ships_obj.ships[x][y] == true:
-		insert_mark({"id":"Hit","g_pos":{"x":x,"y":y}})
-	else:
-		insert_mark({"id":"Miss","g_pos":{"x":x,"y":y}})
-	reticle.visible = false
-	hit_map[x][y] = false
-		
-			
-
-				
-				

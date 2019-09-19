@@ -17,3 +17,8 @@ const SCREEN_PATH = {
 		"iden":"CREDITS"
 		},
 	}
+
+var menu_buttons = []
+
+const IP_ADDRESS = "127.0.0.1"
+const PORT = 1337
