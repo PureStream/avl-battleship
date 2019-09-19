@@ -42,6 +42,7 @@ ShipDB="*res://Scripts/ShipDB.gd"
 ShipLayout="*res://Scripts/ShipLayout.gd"
 MenuButtonEnums="*res://Scripts/MenuButtonEnums.gd"
 Global="*res://Scripts/Global.gd"
+Lobby="*res://Scripts/ServerLobby.gd"
 
 [display]
 

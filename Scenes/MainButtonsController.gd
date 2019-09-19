@@ -20,7 +20,9 @@ func _ready():
 	var target_position = centerpoint
 	var target_radius = radius.rotated(STARTING_RAD)
 	cog.position = centerpoint
-	for i in MenuButtonEnums.get_button_names().keys():
+	if Global.menu_buttons.empty():
+		Global.menu_buttons = MenuButtonEnums.get_button_names().keys()
+	for i in Global.menu_buttons:
 		var new_button = btn_default.instance()
 		new_button.set_name(buttons[i])
 		new_button.set_position(target_position+target_radius)
@@ -91,6 +93,8 @@ func rotate_speed(dir:int, speed_scale:float):
 		var tmp = button_instances.pop_back()
 		button_instances.push_front(tmp)
 		
+		Global.menu_buttons.push_front(Global.menu_buttons.pop_back())
+		
 		tween.interpolate_method(self, "rotate_to", 0, 
 		rad_increment, ANIM_LENGTH/speed_scale, Tween.TRANS_BACK, Tween.EASE_OUT,0)
 		
@@ -124,3 +128,4 @@ func _on_MainButtonTween_tween_all_completed():
 	if direction == -1:
 		var tmp = button_instances.pop_front()
 		button_instances.push_back(tmp)
+		Global.menu_buttons.push_back(Global.menu_buttons.pop_front())

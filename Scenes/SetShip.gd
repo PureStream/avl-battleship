@@ -4,6 +4,7 @@ const ship_base = preload("res://Scenes/ShipBase.tscn")
 
 onready var grid = $Grid
 onready var ship_slots = $ShipSlots
+onready var confirm = $Button
 
 var ship_held:TextureRect = null
 var ship_offset = Vector2()
@@ -12,11 +13,11 @@ var last_pos = Vector2()
 var last_rot = 0
 
 func _ready():
-	pickup_ship("Ship5")
+	Lobby.set_ship = self
 	pickup_ship("Ship4")
-	pickup_ship("Ship3")
-	pickup_ship("Ship3")
-	pickup_ship("Ship2")
+	pickup_ship("Ship4")
+	pickup_ship("Ship4")
+	pickup_ship("Ship4")
 
 var grab_toggle = false
 
@@ -118,3 +119,15 @@ func pickup_ship(ship_id):
 #		ship.queue_free()
 #		return false
 	return true
+	
+func _on_Button_pressed():
+	if grid.ships.size() == 4:
+		for ship in grid.ships:
+			var dict = grid.ship_to_dict(ship)
+			ShipLayout.ships_list.append(dict)
+		ShipLayout.ships = grid.grid
+		confirm.disabled = true
+		Lobby.send_ship_layout(ShipLayout.ships_list)
+
+func next():
+	get_tree().change_scene("res://Scenes/Screens/Play.tscn")

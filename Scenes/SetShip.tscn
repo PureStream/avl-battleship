@@ -86,4 +86,4 @@ margin_right = 73.6945
 margin_bottom = 487.76
 custom_fonts/font = ExtResource( 5 )
 text = "Confirm"
-[connection signal="pressed" from="Button" to="Grid" method="_on_Button_pressed"]
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
