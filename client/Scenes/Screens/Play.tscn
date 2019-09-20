@@ -24,18 +24,17 @@ margin_right = 40.0
 margin_bottom = 40.0
 
 [node name="YourScore" type="Label" parent="ScorePanel/VBoxContainer"]
-margin_right = 210.0
+margin_right = 198.0
 margin_bottom = 75.0
 custom_fonts/font = ExtResource( 2 )
-text = "You : 0"
-align = 1
+text = "You: 0"
 
 [node name="EnemyScore" type="Label" parent="ScorePanel/VBoxContainer"]
 margin_top = 79.0
-margin_right = 210.0
+margin_right = 198.0
 margin_bottom = 154.0
 custom_fonts/font = ExtResource( 2 )
-text = "Enemy : 0"
+text = "Enemy: 0"
 
 [node name="Time" type="Label" parent="."]
 margin_left = 826.992

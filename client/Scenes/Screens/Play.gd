@@ -33,6 +33,7 @@ func _on_Timer_timeout():
 func _on_Confirm_pressed():
 	var x = enemy_grid.reticle_pos.x 
 	var y = enemy_grid.reticle_pos.y 
+	confirm.disabled = true
 	timer.stop()
 	Lobby.send_target_position({"x":x,"y":y})
 	Lobby.end_turn()
@@ -63,5 +64,5 @@ func new_turn():
 func set_score(score):
 	var p_score = score["player"]
 	var e_score = score["enemy"]
-	enemy_score.text = "Enemy : " + str(e_score)
-	your_score.text = "You : " + str(p_score)
+	enemy_score.text = "Enemy: " + str(e_score)
+	your_score.text = "You: " + str(p_score)

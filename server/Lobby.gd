@@ -24,7 +24,7 @@ remote func match_make(info):
 		return
 	
 	var candidate = filtered_player[randi()%filtered_player.size()]
-	print("chosen candidate is: " + candidate.id)
+	print("chosen candidate is: " + str(candidate.id))
 	
 	if candidate.id == id:
 		return
@@ -109,11 +109,11 @@ remote func next_turn(session_id):
 	var curr_session = session_dict[session_id]
 	
 	for player in curr_session.connected_players:
-		if player.id == str(id):
+		if player.id == id:
 			if curr_session.player_turn != player:
 				print("invalid turn advancement")
 				return
-	
+		
 	curr_session.player_turn = curr_session.player_turn.connected_player
 	
 	rpc_id(curr_session.player_turn.id, "receive_turn_start")
