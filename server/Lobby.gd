@@ -10,6 +10,7 @@ var in_game = null
 var sessions = null
 var session = preload("res://Session.tscn")
 
+var ships_state = []
 var session_id = 0
 var session_dict = {}
 
