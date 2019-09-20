@@ -17,6 +17,7 @@ func _on_BackButton_pressed():
 	
 func _on_connection_failed(error):
 	print("Error connecting to server" + error)
+	_on_disconnect()
 	
 func _on_Connection_pressed():
 	var network = NetworkedMultiplayerENet.new()

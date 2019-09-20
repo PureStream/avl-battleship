@@ -45,7 +45,13 @@ remote func receive_turn_start():
 	
 remote func receive_hit(pos, value):
 	play.receive_hit(pos, value)
-	
+
+remote func receive_score(score):
+	play.set_score(score)
+	#update score here
+	#score should be dictionary of {"player":val,"enemy":val}
+	pass
+
 func end_turn():
 	your_turn = false
 	rpc_id(1,"next_turn", session_id)

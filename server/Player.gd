@@ -2,14 +2,17 @@ extends Node
 
 var ships = {}
 var ship_loc = {}
+var id = -1
 var connected_player = null
+var score = 0
 var ready = false
 
 func _ready():
 	pass # Replace with function body.
 
 func set_id(id):
-	name = str(id)
+	self.id = id
+	self.name = str(id)
 	
 func init_grid(size):
 	for x in range(size):
@@ -29,3 +32,7 @@ func set_grid(pos, length, is_right, value):
 	else:
 		for i in range(length):
 			ship_loc[pos.x][pos.y+i] = value
+			
+func reset():
+	pass
+	#set everything back to zero or empty array/dict
