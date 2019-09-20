@@ -99,6 +99,7 @@ remote func receive_target_position(session_id, pos):
 		rpc_id(id, "receive_target_information", value)
 		rpc_id(int(curr_session.player_turn.connected_player.name), "receive_hit", pos, value)
 		
+		
 remote func next_turn(session_id):
 	var id = get_tree().get_rpc_sender_id()
 	var curr_session = session_dict[session_id]

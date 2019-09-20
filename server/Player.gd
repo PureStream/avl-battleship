@@ -15,10 +15,8 @@ func set_id(id):
 func init_grid(size):
 	for x in range(size):
 		ship_loc[x] = {}
-		ship_damage[x] = {}
 		for y in range(size):
 			ship_loc[x][y] = false
-			ship_damage[x]["damage"] = false
 	for ship in ships:
 		var is_right = false
 		if int(abs(ship["angle"])) % 180 == 90:
