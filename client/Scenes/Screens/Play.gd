@@ -9,6 +9,8 @@ onready var player_grid = $PlayerGrid
 onready var enemy_grid = $EnemyGrid
 onready var confirm = $Confirm
 onready var time = $Time
+onready var your_score := $ScorePanel/VBoxContainer/YourScore
+onready var enemy_score := $ScorePanel/VBoxContainer/EnemyScore
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Lobby.connect("target_info_received", self, "render_hit")
@@ -31,6 +33,7 @@ func _on_Timer_timeout():
 func _on_Confirm_pressed():
 	var x = enemy_grid.reticle_pos.x 
 	var y = enemy_grid.reticle_pos.y 
+	confirm.disabled = true
 	timer.stop()
 	Lobby.send_target_position({"x":x,"y":y})
 	Lobby.end_turn()
@@ -57,3 +60,9 @@ func new_turn():
 	DisplayValue = 10
 	time.text = str(DisplayValue)
 	timer.start()
+	
+func set_score(score):
+	var p_score = score["player"]
+	var e_score = score["enemy"]
+	enemy_score.text = "Enemy: " + str(e_score)
+	your_score.text = "You: " + str(p_score)
