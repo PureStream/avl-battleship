@@ -12,7 +12,6 @@ func _ready():
 	pass # Replace with function body.
 
 func set_id(id):
-	name = str(id)
 	self.id = id
 	self.name = str(id)
 	
@@ -27,13 +26,21 @@ func init_grid(size):
 			is_right = true
 		set_grid(ship["g_pos"], ShipDB.SHIPS[ship["id"]]["size"], is_right, true)
 
-func set_damage(target_pos):
+func get_damage(target_pos):
 	for ship in ships:
+		set_damage(ship)
 		if !contain_pos(ship, target_pos):
-			return -1
+			return
 		else:
-			return ship["g_pos"]
-		
+			ship_damage[ship["id"]]["damage"].pop_front()
+			ship_damage[ship["id"]]["damage"].append(true)
+
+func set_damage(ship):
+		for x in range(ships.size()):
+			ship_damage[ship["id"]] = {}
+			ship_damage[ship["id"]]["damage"] = []
+			for y in range(ship["id"]["size"]):
+				ship_damage[ship["id"]]["damage"].append(false)
 		
 func contain_pos(ship, target_pos):
 	var ship_length = ShipDB.SHIPS[ship["id"]]["size"]
@@ -55,7 +62,7 @@ func set_grid(pos, length, is_right, value):
 			ship_loc[pos.x+i][pos.y] = value
 	else:
 		for i in range(length):
-			ship_loc[pos.x][pos.y+i] = value			ship_loc[pos.x][pos.y+i] = value			ship_loc[pos.x][pos.y+i] = value			ship_loc[pos.x][pos.y+i] = value			ship_loc[pos.x][pos.y+i] = value
+			ship_loc[pos.x][pos.y+i] = value					
 			
 func reset():
 	pass

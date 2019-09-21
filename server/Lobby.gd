@@ -101,6 +101,7 @@ remote func receive_target_position(session_id, pos):
 		rpc_id(id, "receive_target_information", value)
 		if value:
 			curr_player.score += 1
+			curr_enemy.get_damage(pos)
 			rpc_id(id, "receive_score", {"player":curr_player.score, "enemy":curr_enemy.score})
 			rpc_id(curr_enemy.id, "receive_score", {"player":curr_enemy.score, "enemy":curr_player.score})
 		rpc_id(curr_enemy.id, "receive_hit", pos, value)
