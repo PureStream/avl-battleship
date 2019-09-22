@@ -38,9 +38,9 @@ custom_constants/separation = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 margin_left = 519.0
-margin_top = 221.0
+margin_top = 207.0
 margin_right = 1281.0
-margin_bottom = 778.0
+margin_bottom = 793.0
 size_flags_horizontal = 6
 size_flags_vertical = 4
 custom_constants/separation = 20
@@ -57,21 +57,20 @@ align = 1
 margin_top = 153.0
 margin_right = 762.0
 margin_bottom = 233.0
-custom_constants/separation = 20
+custom_constants/separation = 78
 
 [node name="Username" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 margin_top = 16.0
-margin_right = 140.0
+margin_right = 89.0
 margin_bottom = 64.0
-size_flags_horizontal = 0
 custom_fonts/font = ExtResource( 3 )
-text = "Username"
+text = "E-mail"
 
 [node name="UsernameTypeBox" type="LineEdit" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_left = 160.0
+margin_left = 167.0
 margin_right = 762.0
 margin_bottom = 80.0
-size_flags_horizontal = 3
+size_flags_horizontal = 11
 custom_fonts/font = ExtResource( 4 )
 max_length = 17
 secret_character = "#"
@@ -138,36 +137,63 @@ margin_right = 762.0
 margin_bottom = 33.0
 size_flags_horizontal = 8
 
-[node name="Sign In" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 margin_top = 459.0
 margin_right = 762.0
-margin_bottom = 513.0
+margin_bottom = 459.0
+
+[node name="Sign In" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+margin_top = 479.0
+margin_right = 762.0
+margin_bottom = 533.0
 custom_fonts/font = ExtResource( 3 )
 text = "Sign In"
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
-margin_left = 230.0
-margin_top = 533.0
-margin_right = 531.0
-margin_bottom = 557.0
+margin_left = 150.0
+margin_top = 553.0
+margin_right = 611.0
+margin_bottom = 586.0
 size_flags_horizontal = 6
 
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer5"]
+margin_top = 4.0
 margin_right = 202.0
-margin_bottom = 24.0
+margin_bottom = 28.0
 custom_fonts/font = ExtResource( 6 )
 text = "Don't have a Mimio account?"
 align = 1
 
-[node name="Register" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer5"]
+[node name="LoginAsGuest" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer5"]
 margin_left = 206.0
-margin_right = 301.0
-margin_bottom = 24.0
+margin_right = 313.0
+margin_bottom = 33.0
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 2 )
 custom_styles/disabled = SubResource( 3 )
 custom_styles/normal = SubResource( 4 )
 custom_fonts/font = ExtResource( 6 )
+custom_colors/font_color = Color( 0, 0.764706, 1, 1 )
+text = "Login As Guest"
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer5"]
+margin_left = 317.0
+margin_top = 4.0
+margin_right = 333.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 6 )
+text = "Or"
+align = 1
+
+[node name="Register" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer5"]
+margin_left = 337.0
+margin_right = 461.0
+margin_bottom = 33.0
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/disabled = SubResource( 3 )
+custom_styles/normal = SubResource( 4 )
+custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0.764706, 1, 1 )
 text = "Register Now"
 
@@ -237,14 +263,16 @@ custom_constants/separation = 10
 alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer2/RegisterPopUpMenu/MarginContainer/VBoxContainer/VBoxContainer"]
+editor/display_folded = true
 margin_right = 800.0
 margin_bottom = 48.0
+custom_constants/separation = 20
 
 [node name="Username" type="Label" parent="MarginContainer2/RegisterPopUpMenu/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
-margin_right = 140.0
+margin_right = 89.0
 margin_bottom = 48.0
 custom_fonts/font = ExtResource( 3 )
-text = "Username"
+text = "E-mail"
 
 [node name="UsernameTypeBox" type="LineEdit" parent="MarginContainer2/RegisterPopUpMenu/MarginContainer/VBoxContainer/VBoxContainer"]
 margin_top = 58.0
@@ -262,8 +290,14 @@ margin_right = 800.0
 margin_bottom = 498.0
 custom_constants/separation = 10
 
-[node name="Password" type="Label" parent="MarginContainer2/RegisterPopUpMenu/MarginContainer/VBoxContainer/VBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer2/RegisterPopUpMenu/MarginContainer/VBoxContainer/VBoxContainer2"]
+editor/display_folded = true
 margin_right = 800.0
+margin_bottom = 48.0
+custom_constants/separation = 20
+
+[node name="Password" type="Label" parent="MarginContainer2/RegisterPopUpMenu/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer"]
+margin_right = 137.0
 margin_bottom = 48.0
 size_flags_horizontal = 5
 custom_fonts/font = ExtResource( 3 )
@@ -283,9 +317,9 @@ secret_character = "•"
 
 [node name="Register" type="Button" parent="MarginContainer2/RegisterPopUpMenu/MarginContainer/VBoxContainer"]
 margin_left = 300.0
-margin_top = 694.0
+margin_top = 512.0
 margin_right = 500.0
-margin_bottom = 764.0
+margin_bottom = 582.0
 rect_min_size = Vector2( 200, 70 )
 size_flags_horizontal = 4
 size_flags_vertical = 6
@@ -294,14 +328,64 @@ custom_fonts/font = ExtResource( 3 )
 text = "Register"
 
 [node name="Error" type="Label" parent="MarginContainer2/RegisterPopUpMenu/MarginContainer/VBoxContainer"]
-margin_left = 800.0
-margin_top = 228.0
-margin_right = 800.0
-margin_bottom = 276.0
-size_flags_horizontal = 10
+margin_left = 400.0
+margin_top = 596.0
+margin_right = 400.0
+margin_bottom = 644.0
+size_flags_horizontal = 4
 custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color = Color( 1, 0, 0, 1 )
+align = 1
+valign = 1
+
+[node name="MarginContainer3" type="MarginContainer" parent="."]
+editor/display_folded = true
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 600
+custom_constants/margin_top = 400
+custom_constants/margin_left = 600
+custom_constants/margin_bottom = 400
+
+[node name="ErrorPopUpDialog" type="PopupMenu" parent="MarginContainer3"]
+margin_left = 600.0
+margin_top = 400.0
+margin_right = 1320.0
+margin_bottom = 680.0
+size_flags_horizontal = 5
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer3/ErrorPopUpDialog"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 60
+custom_constants/margin_top = 40
+custom_constants/margin_left = 60
+custom_constants/margin_bottom = 40
+
+[node name="CloseIcon2" type="Button" parent="MarginContainer3/ErrorPopUpDialog/MarginContainer"]
+margin_left = 620.0
+margin_top = 40.0
+margin_right = 660.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 40, 40 )
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="Error" type="Label" parent="MarginContainer3/ErrorPopUpDialog/MarginContainer"]
+margin_left = 360.0
+margin_top = 116.0
+margin_right = 360.0
+margin_bottom = 164.0
+size_flags_horizontal = 4
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+align = 1
+valign = 1
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Sign In" to="." method="_on_Sign_In_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer5/LoginAsGuest" to="." method="_on_Guest_Login_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer5/Register" to="." method="_on_Register_Popup_pressed"]
 [connection signal="pressed" from="MarginContainer2/RegisterPopUpMenu/MarginContainer/VBoxContainer/CloseIcon" to="." method="_on_CloseIcon_pressed"]
 [connection signal="pressed" from="MarginContainer2/RegisterPopUpMenu/MarginContainer/VBoxContainer/Register" to="." method="_on_Register_pressed"]
+[connection signal="pressed" from="MarginContainer3/ErrorPopUpDialog/MarginContainer/CloseIcon2" to="." method="_on_CloseIcon2_pressed"]
