@@ -172,7 +172,6 @@ custom_colors/font_color = Color( 0, 0.764706, 1, 1 )
 text = "Register Now"
 
 [node name="MarginContainer2" type="MarginContainer" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -6.18176
@@ -185,6 +184,7 @@ custom_constants/margin_left = 500
 custom_constants/margin_bottom = 100
 
 [node name="RegisterPopUpMenu" type="PopupMenu" parent="MarginContainer2"]
+visible = true
 margin_left = 500.0
 margin_top = 100.0
 margin_right = 1420.0
@@ -283,9 +283,9 @@ secret_character = "•"
 
 [node name="Register" type="Button" parent="MarginContainer2/RegisterPopUpMenu/MarginContainer/VBoxContainer"]
 margin_left = 300.0
-margin_top = 694.0
+margin_top = 512.0
 margin_right = 500.0
-margin_bottom = 764.0
+margin_bottom = 582.0
 rect_min_size = Vector2( 200, 70 )
 size_flags_horizontal = 4
 size_flags_vertical = 6
@@ -295,9 +295,9 @@ text = "Register"
 
 [node name="Error" type="Label" parent="MarginContainer2/RegisterPopUpMenu/MarginContainer/VBoxContainer"]
 margin_left = 800.0
-margin_top = 228.0
+margin_top = 596.0
 margin_right = 800.0
-margin_bottom = 276.0
+margin_bottom = 644.0
 size_flags_horizontal = 10
 custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color = Color( 1, 0, 0, 1 )

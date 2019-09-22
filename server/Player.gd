@@ -2,10 +2,11 @@ extends Node
 
 var ships = {}
 var ship_loc = {}
-var ship_damage = {}
 var id = -1
 var connected_player = null
+var round_num = 1
 var score = 0
+var round_score = 0
 var ready = false
 
 func _ready():
@@ -22,40 +23,44 @@ func init_grid(size):
 			ship_loc[x][y] = false
 	for ship in ships:
 		var is_right = false
+		ship["damage"] = []
+		ship["destroyed"] = false
+		for y in range(ShipDB.SHIPS[ship["id"]]["size"]):
+			ship["damage"].append(false)
 		if int(abs(ship["angle"])) % 180 == 90:
 			is_right = true
 		set_grid(ship["g_pos"], ShipDB.SHIPS[ship["id"]]["size"], is_right, true)
 
-func get_damage(target_pos):
+func set_damage(target_pos):
 	for ship in ships:
-		set_damage(ship)
-		if !contain_pos(ship, target_pos):
-			return
+		var damage_pos = contain_pos(ship, target_pos)
+		if damage_pos < 0:
+			continue
 		else:
-			ship_damage[ship["id"]]["damage"].pop_front()
-			ship_damage[ship["id"]]["damage"].append(true)
-
-func set_damage(ship):
-		for x in range(ships.size()):
-			ship_damage[ship["id"]] = {}
-			ship_damage[ship["id"]]["damage"] = []
-			for y in range(ship["id"]["size"]):
-				ship_damage[ship["id"]]["damage"].append(false)
+			ship["damage"][damage_pos] = true
+			var destroy = true
+			for x in ship["damage"]:
+				if !x:
+					destroy = false 
+			ship["destroyed"] = destroy
+			
+	print(ships)
 		
 func contain_pos(ship, target_pos):
 	var ship_length = ShipDB.SHIPS[ship["id"]]["size"]
 	if int(abs(ship["angle"])) % 180 == 90:
 		if (target_pos.y == ship["g_pos"].y):
-			if abs(target_pos.x - ship["g_pos"].x) < ship_length:
-				return true
-			else:
-				return false
+			if target_pos.x - ship["g_pos"].x < ship_length:
+				return target_pos.x - ship["g_pos"].x  
+			else: 
+				return -1
 	elif (target_pos.x == ship["g_pos"].x):
-			if abs(target_pos.y - ship["g_pos"].y) < ship_length:
-				return true
+			if target_pos.y - ship["g_pos"].y   < ship_length:
+				return target_pos.y - ship["g_pos"].y 
 			else:
-				return false
-		
+				return -1
+	return -1 
+	
 func set_grid(pos, length, is_right, value):
 	if is_right:
 		for i in range(length):
