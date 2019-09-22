@@ -1,5 +1,6 @@
 extends Node
 
+var session_id = -1
 const PORT = 1337
 const MAX_PLAYERS = 200
 const IP_ADDRESS = "127.0.0.1"
@@ -33,3 +34,9 @@ func _peer_disconnected(id):
 	for player in players.get_children():
 		if player.name == str(id):
 			player.queue_free()
+
+func _on_Timer_timeout():
+	pass # Replace with function body.	
+
+func _on_Reset_pressed(): 
+	pass
