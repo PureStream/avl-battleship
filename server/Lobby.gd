@@ -46,8 +46,6 @@ remote func match_make(info):
 			rpc_id(player.id, "player_found", session_id)
 	candidate.connected_player = opponent
 	session_array.append(session_id)
-	for session_id in session_array:
-		session_array[session_id] + 1
 	session_id += 1
 	
 func move_to_game(node):
@@ -114,7 +112,7 @@ remote func set_ready(session_id):
 
 func set_reset():
 	for session_id in session_array:
-		var curr_session = session_dict[session_array[session_id]]
+		var curr_session = session_dict[session_id]
 		var curr_player = curr_session.player_turn
 		var curr_enemy = curr_session.player_turn.connected_player
 		curr_player.score = 0
