@@ -37,5 +37,3 @@ func _peer_disconnected(id):
 
 func _on_Reset_pressed(): 
 	Lobby.set_reset()
-	
-	
