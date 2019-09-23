@@ -105,25 +105,20 @@ remote func set_ready(session_id):
 	rpc_id(curr_player.id ,"receive_round_score", curr_player.round_score)
 	rpc_id(curr_enemy.id , "receive_round_score", curr_enemy.round_score)
 
-#remote func set_reset(session_id):
-#	var id = get_tree().get_rpc_sender_id()
-#	var curr_session = session_dict[session_id]
-#	var turn = randi()%2 == 1
-#	if id != curr_session.player_turn.id:
-#		print("invalid turn from player: "+ str(id))
-#		return
-#	var curr_player = curr_session.player_turn
-#	var curr_enemy = curr_session.player_turn.connected_player
-#	curr_player.score = 0
-#	curr_player.round_score = 0 
-#	curr_enemy.score = 0
-#	curr_enemy.score = 0
-#	rpc_id(curr_player.id ,"receive_round_num", curr_player.round_num)
-#	rpc_id(curr_enemy.id , "receive_round_num", curr_enemy.round_num)
-#	rpc_id(id, "receive_score", {"player":curr_player.score, "enemy":curr_enemy.score})
-#	rpc_id(curr_enemy.id, "receive_score", {"player":curr_enemy.score, "enemy":curr_player.score})
-#	rpc_id(curr_player.id ,"receive_round_score", curr_player.round_score)
-#	rpc_id(curr_enemy.id , "receive_round_score", curr_enemy.round_score)
+func set_reset():
+	var curr_session = session_dict[self.session_id]
+	var curr_player = curr_session.player_turn
+	var curr_enemy = curr_session.player_turn.connected_player
+	curr_player.score = 0
+	curr_player.round_score = 0 
+	curr_enemy.score = 0
+	curr_enemy.score = 0
+	rpc_id(curr_player.id ,"receive_round_num", curr_player.round_num)
+	rpc_id(curr_enemy.id , "receive_round_num", curr_enemy.round_num)
+	rpc_id(curr_player.id, "receive_score", {"player":curr_player.score, "enemy":curr_enemy.score})
+	rpc_id(curr_enemy.id, "receive_score", {"player":curr_enemy.score, "enemy":curr_player.score})
+	rpc_id(curr_player.id ,"receive_round_score", curr_player.round_score)
+	rpc_id(curr_enemy.id , "receive_round_score", curr_enemy.round_score)
 	
 remote func set_skip(session_id):
 	var id = get_tree().get_rpc_sender_id()

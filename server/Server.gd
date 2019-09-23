@@ -35,8 +35,7 @@ func _peer_disconnected(id):
 		if player.name == str(id):
 			player.queue_free()
 
-func _on_Timer_timeout():
-	pass # Replace with function body.	
-
 func _on_Reset_pressed(): 
-	pass
+	Lobby.set_reset()
+	
+	
