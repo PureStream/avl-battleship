@@ -8,6 +8,7 @@ var round_num = 1
 var score = 0
 var round_score = 0
 var ready = false
+var player_name = ""
 
 func _ready():
 	pass # Replace with function body.

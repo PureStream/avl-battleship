@@ -1,10 +1,12 @@
 extends Control
 
 const ship_base = preload("res://Scenes/ShipBase.tscn")
+const play = preload("res://Scenes/Screens/Play.tscn")
 
 onready var grid = $Grid
 onready var ship_slots = $ShipSlots
 onready var confirm = $Button
+onready var nickname = $Nickname
 
 var ship_held:TextureRect = null
 var ship_offset = Vector2()
@@ -126,8 +128,8 @@ func _on_Button_pressed():
 			var dict = grid.ship_to_dict(ship)
 			ShipLayout.ships_list.append(dict)
 		ShipLayout.ships = grid.grid
-		confirm.disabled = true
-		Lobby.send_ship_layout(ShipLayout.ships_list)
+		confirm.disabled = true	
+		Lobby.send_ship_layout(ShipLayout.ships_list, nickname.text)
 
 func next():
 	get_tree().change_scene("res://Scenes/Screens/Play.tscn")

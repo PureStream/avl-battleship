@@ -16,6 +16,8 @@ onready var round_num := $RoundNum
 onready var round_score := $ScorePanel/VBoxContainer/RoundScore
 onready var win_lose := $MarginContainer/WinLose
 onready var win_lose_text := $MarginContainer/WinLose/VBoxContainer/WinLoseText
+onready var player_name := $PlayerNickname
+onready var enemy_name := $EnemyNickname
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Lobby.connect("target_info_received", self, "render_hit")
@@ -100,6 +102,11 @@ func clear():
 func _on_Button_pressed():
 	to_lobby()
 
+func set_name(name):
+	var p_name = name["player"]
+	var e_name = name["enemy"]
+	player_name.text = str(p_name)
+	enemy_name.text = str(e_name)
 
 func _on_Skip_pressed():
 	Lobby.send_on_skip()
