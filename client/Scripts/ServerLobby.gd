@@ -17,9 +17,9 @@ remote func player_found(session_id):
 	if lobby != null:
 		lobby.stop_looking()
 		
-func send_ship_layout(layout):
+func send_ship_layout(layout, name):
 	if session_id > -1:
-		rpc_id(1, "receive_ship_layout", session_id, layout)
+		rpc_id(1, "receive_ship_layout", session_id, layout, name)
 	else:
 		print("session error")
 
@@ -81,6 +81,9 @@ remote func show_popup():
 
 remote func set_winlost_text(winlost_text:String):
 	play.set_winlose_text(winlost_text)
+
+remote func set_name(name):
+	play.set_name(name)
 
 func end_turn():
 	your_turn = false

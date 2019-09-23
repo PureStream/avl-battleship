@@ -71,19 +71,34 @@ size_flags_horizontal = 6
 size_flags_vertical = 6
 
 [node name="Grid" type="TextureRect" parent="."]
-margin_left = 105.134
-margin_top = -446.076
-margin_right = 873.134
-margin_bottom = 321.924
+margin_left = 112.926
+margin_top = -451.92
+margin_right = 880.926
+margin_bottom = 316.08
 texture = ExtResource( 3 )
 stretch_mode = 3
 script = ExtResource( 4 )
 
 [node name="Button" type="Button" parent="."]
-margin_left = -333.305
+margin_left = -335.253
 margin_top = 360.76
-margin_right = 73.6945
+margin_right = 71.7465
 margin_bottom = 487.76
 custom_fonts/font = ExtResource( 5 )
 text = "Confirm"
+
+[node name="Nickname" type="LineEdit" parent="."]
+margin_left = -550.0
+margin_top = -467.0
+margin_right = 19.0
+margin_bottom = -371.0
+custom_fonts/font = ExtResource( 5 )
+
+[node name="NicknameHead" type="Label" parent="."]
+margin_left = -909.136
+margin_top = -458.44
+margin_right = -580.136
+margin_bottom = -377.44
+custom_fonts/font = ExtResource( 5 )
+text = "Nickname"
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

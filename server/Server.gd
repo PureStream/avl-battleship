@@ -39,4 +39,4 @@ func _on_Timer_timeout():
 	pass # Replace with function body.	
 
 func _on_Reset_pressed(): 
-	pass
+	Lobby.set_reset()
