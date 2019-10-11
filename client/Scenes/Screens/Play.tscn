@@ -2,11 +2,11 @@
 
 [ext_resource path="res://Scenes/Screens/Play.gd" type="Script" id=1]
 [ext_resource path="res://Fonts/Roboto_Medium.tres" type="DynamicFont" id=2]
-[ext_resource path="res://Fonts/test_font.tres" type="DynamicFont" id=3]
-[ext_resource path="res://Time.gd" type="Script" id=4]
-[ext_resource path="res://Images/UI/grid8.png" type="Texture" id=5]
-[ext_resource path="res://Scenes/EnemyGrid.gd" type="Script" id=6]
-[ext_resource path="res://Scenes/PlayerGrid.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Time.gd" type="Script" id=3]
+[ext_resource path="res://Images/UI/grid8.png" type="Texture" id=4]
+[ext_resource path="res://Scenes/EnemyGrid.gd" type="Script" id=5]
+[ext_resource path="res://Scenes/PlayerGrid.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Fonts/test_font.tres" type="DynamicFont" id=7]
 
 [node name="Play" type="Control"]
 anchor_right = 1.0
@@ -15,85 +15,142 @@ margin_top = -2.65002
 margin_bottom = -2.65002
 script = ExtResource( 1 )
 
-[node name="RoundNum" type="Label" parent="."]
-margin_left = 1190.0
-margin_top = 70.0
-margin_right = 1369.0
-margin_bottom = 145.0
+[node name="MainMarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 60
+custom_constants/margin_top = 40
+custom_constants/margin_left = 60
+custom_constants/margin_bottom = 40
+
+[node name="ScorePanel" type="Panel" parent="MainMarginContainer"]
+margin_left = 60.0
+margin_top = 40.0
+margin_right = 1032.0
+margin_bottom = 352.0
+rect_min_size = Vector2( 972, 312 )
+size_flags_horizontal = 2
+size_flags_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainMarginContainer/ScorePanel"]
+margin_right = 1800.0
+margin_bottom = 1000.0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MainMarginContainer/ScorePanel/HBoxContainer"]
+margin_right = 700.0
+margin_bottom = 312.0
+rect_min_size = Vector2( 700, 0 )
+size_flags_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2"]
+margin_right = 700.0
+margin_bottom = 75.0
+
+[node name="PlayerNickname" type="Label" parent="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer"]
+margin_right = 84.0
+margin_bottom = 75.0
+rect_pivot_offset = Vector2( 979.273, -180.563 )
 custom_fonts/font = ExtResource( 2 )
-text = "Round 1"
+text = "You"
 
-[node name="ScorePanel" type="Panel" parent="."]
-editor/display_folded = true
-margin_left = 162.0
-margin_top = 49.0
-margin_right = 754.0
-margin_bottom = 376.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="ScorePanel"]
-margin_left = -3.05176e-005
-margin_right = 591.0
-margin_bottom = 327.0
-
-[node name="YourScore" type="Label" parent="ScorePanel/VBoxContainer"]
-margin_right = 591.0
+[node name="YourScore" type="Label" parent="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer"]
+margin_left = 88.0
+margin_right = 140.0
 margin_bottom = 75.0
 custom_fonts/font = ExtResource( 2 )
-text = "You: 0"
+text = ": 0"
 
-[node name="EnemyScore" type="Label" parent="ScorePanel/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2"]
 margin_top = 79.0
-margin_right = 591.0
+margin_right = 700.0
 margin_bottom = 154.0
-custom_fonts/font = ExtResource( 2 )
-text = "Enemy: 0"
 
-[node name="ShipStatus" type="Label" parent="ScorePanel/VBoxContainer"]
+[node name="EnemyNickname" type="Label" parent="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+margin_right = 146.0
+margin_bottom = 75.0
+custom_fonts/font = ExtResource( 2 )
+text = "Enemy"
+
+[node name="EnemyScore" type="Label" parent="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+margin_left = 150.0
+margin_right = 202.0
+margin_bottom = 75.0
+custom_fonts/font = ExtResource( 2 )
+text = ": 0"
+
+[node name="ShipStatus" type="Label" parent="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2"]
 margin_top = 158.0
-margin_right = 591.0
+margin_right = 700.0
 margin_bottom = 233.0
 custom_fonts/font = ExtResource( 2 )
 text = "Ship left: 4"
 
-[node name="RoundScore" type="Label" parent="ScorePanel/VBoxContainer"]
+[node name="RoundScore" type="Label" parent="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2"]
 margin_top = 237.0
-margin_right = 591.0
+margin_right = 700.0
 margin_bottom = 312.0
 custom_fonts/font = ExtResource( 2 )
 text = "Round Score: 0"
 
-[node name="Time" type="Label" parent="."]
-margin_left = 810.0
-margin_top = 160.0
-margin_right = 891.0
-margin_bottom = 246.0
-custom_fonts/font = ExtResource( 3 )
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMarginContainer/ScorePanel/HBoxContainer"]
+margin_left = 704.0
+margin_right = 976.0
+margin_bottom = 239.0
+rect_min_size = Vector2( 272, 0 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="RoundNum" type="Label" parent="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer"]
+margin_left = 46.0
+margin_right = 225.0
+margin_bottom = 75.0
+size_flags_horizontal = 4
+custom_fonts/font = ExtResource( 2 )
+text = "Round 1"
+
+[node name="Time" type="Label" parent="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer"]
+margin_left = 109.0
+margin_top = 79.0
+margin_right = 163.0
+margin_bottom = 154.0
+size_flags_horizontal = 4
+custom_fonts/font = ExtResource( 2 )
 text = "10"
-script = ExtResource( 4 )
+align = 1
+script = ExtResource( 3 )
+
+[node name="Skip" type="Button" parent="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer"]
+margin_left = 82.0
+margin_top = 158.0
+margin_right = 189.0
+margin_bottom = 239.0
+size_flags_horizontal = 4
+custom_fonts/font = ExtResource( 2 )
+text = "Skip"
 
 [node name="Timer" type="Timer" parent="."]
 
 [node name="EnemyGrid" type="TextureRect" parent="."]
-margin_left = 1090.43
-margin_top = 261.521
-margin_right = 1858.43
-margin_bottom = 1029.52
-texture = ExtResource( 5 )
-script = ExtResource( 6 )
+margin_left = 1092.0
+margin_top = 272.0
+margin_right = 1860.0
+margin_bottom = 1040.0
+texture = ExtResource( 4 )
+script = ExtResource( 5 )
 
-[node name="PlayerGrid" parent="." instance=ExtResource( 7 )]
-margin_left = 266.732
-margin_top = 456.634
-margin_right = 1034.73
-margin_bottom = 1224.63
+[node name="PlayerGrid" parent="." instance=ExtResource( 6 )]
+margin_left = 60.0
+margin_top = 464.0
+margin_right = 828.0
+margin_bottom = 1232.0
 rect_scale = Vector2( 0.75, 0.75 )
 
 [node name="Confirm" type="Button" parent="."]
-margin_left = 1500.0
-margin_top = 40.0
-margin_right = 1869.0
-margin_bottom = 168.0
-custom_fonts/font = ExtResource( 3 )
+margin_left = 1346.39
+margin_top = 99.9582
+margin_right = 1627.39
+margin_bottom = 208.958
+custom_fonts/font = ExtResource( 7 )
 text = "Confirm"
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -126,7 +183,7 @@ margin_left = 52.0
 margin_right = 289.0
 margin_bottom = 74.0
 size_flags_horizontal = 4
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 7 )
 text = "Default"
 align = 1
 valign = 1
@@ -138,32 +195,9 @@ margin_right = 240.0
 margin_bottom = 158.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 7 )
 text = "quit"
-
-[node name="Skip" type="Button" parent="."]
-margin_left = 770.0
-margin_top = 50.0
-margin_right = 1000.0
-margin_bottom = 130.0
-custom_fonts/font = ExtResource( 3 )
-text = "Skip"
-
-[node name="PlayerNickname" type="Label" parent="."]
-margin_left = 270.0
-margin_top = 380.0
-margin_right = 850.0
-margin_bottom = 450.0
-rect_pivot_offset = Vector2( 979.273, -180.563 )
-custom_fonts/font = ExtResource( 3 )
-
-[node name="EnemyNickname" type="Label" parent="."]
-margin_left = 1090.43
-margin_top = 180.0
-margin_right = 1840.43
-margin_bottom = 260.0
-custom_fonts/font = ExtResource( 3 )
+[connection signal="pressed" from="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer/Skip" to="." method="_on_Skip_pressed"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="pressed" from="Confirm" to="." method="_on_Confirm_pressed"]
 [connection signal="pressed" from="MarginContainer/WinLose/VBoxContainer/Button" to="." method="_on_Button_pressed"]
-[connection signal="pressed" from="Skip" to="." method="_on_Skip_pressed"]
