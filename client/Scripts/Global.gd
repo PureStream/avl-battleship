@@ -20,6 +20,7 @@ const SCREEN_PATH = {
 
 var menu_buttons = []
 
-const IP_ADDRESS = "127.0.0.1"
+const IP_ADDRESS = "25.30.166.184"
+#const IP_ADDRESS = "127.0.0.1"
 
 const PORT = 1337

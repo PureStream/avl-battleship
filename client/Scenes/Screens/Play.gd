@@ -8,16 +8,16 @@ onready var timer = get_node("Timer")
 onready var player_grid = $PlayerGrid
 onready var enemy_grid = $EnemyGrid
 onready var confirm = $Confirm
-onready var time = $Time
-onready var your_score := $ScorePanel/VBoxContainer/YourScore
-onready var enemy_score := $ScorePanel/VBoxContainer/EnemyScore
-onready var ship_status := $ScorePanel/VBoxContainer/ShipStatus
-onready var round_num := $RoundNum
-onready var round_score := $ScorePanel/VBoxContainer/RoundScore
+onready var time = $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer/Time
+onready var your_score := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer/YourScore
+onready var enemy_score := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer2/EnemyScore
+onready var ship_status := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/ShipStatus
+onready var round_num := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer/RoundNum
+onready var round_score := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/RoundScore
 onready var win_lose := $MarginContainer/WinLose
 onready var win_lose_text := $MarginContainer/WinLose/VBoxContainer/WinLoseText
-onready var player_name := $PlayerNickname
-onready var enemy_name := $EnemyNickname
+onready var player_name := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer/PlayerNickname
+onready var enemy_name := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer2/EnemyNickname
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Lobby.connect("target_info_received", self, "render_hit")
@@ -72,9 +72,15 @@ func new_turn():
 func set_score(score):
 	var p_score = score["player"]
 	var e_score = score["enemy"]
-	enemy_score.text = "Enemy: " + str(e_score)
-	your_score.text = "You: " + str(p_score)
+	enemy_score.text = ": " + str(e_score)
+	your_score.text = ": " + str(p_score)
 
+func set_name(name):
+	var p_name = name["player"]
+	var e_name = name["enemy"]
+	player_name.text = str(p_name)
+	enemy_name.text = str(e_name)
+	
 func receive_ships_left(ship_left):
 	ship_status.text = "Ship left: " + str(ship_left)
 
@@ -101,12 +107,6 @@ func clear():
 
 func _on_Button_pressed():
 	to_lobby()
-
-func set_name(name):
-	var p_name = name["player"]
-	var e_name = name["enemy"]
-	player_name.text = str(p_name)
-	enemy_name.text = str(e_name)
 
 func _on_Skip_pressed():
 	Lobby.send_on_skip()
