@@ -72,8 +72,8 @@ func new_turn():
 func set_score(score):
 	var p_score = score["player"]
 	var e_score = score["enemy"]
-	enemy_score.text = "Enemy: " + str(e_score)
-	your_score.text = "You: " + str(p_score)
+	enemy_score.text = ": " + str(e_score)
+	your_score.text = ": " + str(p_score)
 
 func set_name(name):
 	var p_name = name["player"]
