@@ -125,6 +125,10 @@ func set_reset():
 		rpc_id(curr_enemy.id, "receive_score", {"player":curr_enemy.score, "enemy":curr_player.score})
 		rpc_id(curr_player.id ,"receive_round_score", curr_player.round_score)
 		rpc_id(curr_enemy.id , "receive_round_score", curr_enemy.round_score)
+		rpc_id(curr_player.id,"reset_game")
+		rpc_id(curr_enemy.id,"reset_game")
+		rpc_id(curr_player.id,"clear_ships")
+		rpc_id(curr_enemy.id,"clear_ships")	
 	
 remote func set_skip(session_id):
 	var id = get_tree().get_rpc_sender_id()
@@ -141,6 +145,8 @@ remote func set_skip(session_id):
 		rpc_id(curr_enemy.id, "set_winlost_text", "Lost")
 		rpc_id(curr_player.id, "show_popup")
 		rpc_id(curr_enemy.id, "show_popup")
+		rpc_id(curr_player.id,"clear_ships")
+		rpc_id(curr_enemy.id,"clear_ships")	
 		return
 	rpc_id(curr_player.id,"reset_game")
 	rpc_id(curr_enemy.id,"reset_game")
@@ -189,6 +195,8 @@ remote func receive_target_position(session_id, pos):
 				rpc_id(curr_enemy.id, "set_winlost_text", "Lost")
 				rpc_id(curr_player.id, "show_popup")
 				rpc_id(curr_enemy.id, "show_popup")
+				rpc_id(curr_player.id,"clear_ships")
+				rpc_id(curr_enemy.id,"clear_ships")
 				return
 			rpc_id(curr_player.id,"reset_game")
 			rpc_id(curr_enemy.id,"reset_game")
