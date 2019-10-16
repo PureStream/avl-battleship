@@ -38,9 +38,9 @@ custom_constants/separation = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 margin_left = 519.0
-margin_top = 233.0
+margin_top = 211.0
 margin_right = 1281.0
-margin_bottom = 766.0
+margin_bottom = 788.0
 size_flags_horizontal = 6
 size_flags_vertical = 4
 custom_constants/separation = 20
@@ -110,7 +110,7 @@ margin_right = 734.0
 margin_bottom = 33.0
 size_flags_horizontal = 10
 custom_fonts/font = ExtResource( 5 )
-text = "Remember my password"
+text = "Remember My Password"
 
 [node name="RememberPassword" type="CheckBox" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer4"]
 margin_left = 738.0
@@ -131,45 +131,27 @@ custom_fonts/font = ExtResource( 3 )
 text = "Sign In"
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
-margin_left = 150.0
+margin_left = 183.0
 margin_top = 500.0
-margin_right = 611.0
+margin_right = 579.0
 margin_bottom = 533.0
 size_flags_horizontal = 6
+custom_constants/separation = 5
 
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer5"]
-margin_top = 4.0
-margin_right = 202.0
-margin_bottom = 28.0
-custom_fonts/font = ExtResource( 6 )
+margin_right = 267.0
+margin_bottom = 33.0
+size_flags_horizontal = 4
+custom_fonts/font = ExtResource( 5 )
 text = "Don't have a Mimio account?"
 align = 1
 
-[node name="LoginAsGuest" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer5"]
-margin_left = 206.0
-margin_right = 313.0
-margin_bottom = 33.0
-custom_styles/hover = SubResource( 1 )
-custom_styles/pressed = SubResource( 2 )
-custom_styles/disabled = SubResource( 3 )
-custom_styles/normal = SubResource( 4 )
-custom_fonts/font = ExtResource( 6 )
-custom_colors/font_color = Color( 0, 0.764706, 1, 1 )
-text = "Login As Guest"
-
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer5"]
-margin_left = 317.0
-margin_top = 4.0
-margin_right = 333.0
-margin_bottom = 28.0
-custom_fonts/font = ExtResource( 6 )
-text = "Or"
-align = 1
-
 [node name="Register" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer5"]
-margin_left = 337.0
-margin_right = 461.0
+margin_left = 272.0
+margin_right = 396.0
 margin_bottom = 33.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 2 )
 custom_styles/disabled = SubResource( 3 )
@@ -177,6 +159,37 @@ custom_styles/normal = SubResource( 4 )
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0.764706, 1, 1 )
 text = "Register Now"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+margin_left = 317.0
+margin_top = 553.0
+margin_right = 445.0
+margin_bottom = 577.0
+size_flags_horizontal = 4
+custom_constants/separation = 5
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_right = 16.0
+margin_bottom = 24.0
+size_flags_horizontal = 4
+custom_fonts/font = ExtResource( 6 )
+text = "Or"
+align = 1
+
+[node name="LoginAsGuest" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 21.0
+margin_right = 128.0
+margin_bottom = 24.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/disabled = SubResource( 3 )
+custom_styles/normal = SubResource( 4 )
+custom_fonts/font = ExtResource( 6 )
+custom_colors/font_color = Color( 0, 0.764706, 1, 1 )
+custom_constants/hseparation = 0
+text = "Login As Guest"
 
 [node name="MarginContainer2" type="MarginContainer" parent="."]
 visible = false
@@ -393,8 +406,8 @@ custom_colors/font_color = Color( 1, 0, 0, 1 )
 align = 1
 valign = 1
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Sign In" to="." method="_on_Sign_In_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer5/LoginAsGuest" to="." method="_on_Guest_Login_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer5/Register" to="." method="_on_Register_Popup_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/LoginAsGuest" to="." method="_on_Guest_Login_pressed"]
 [connection signal="pressed" from="MarginContainer2/RegisterPopUpMenu/MarginContainer/VBoxContainer/CloseIcon" to="." method="_on_CloseIcon_pressed"]
 [connection signal="pressed" from="MarginContainer2/RegisterPopUpMenu/MarginContainer/VBoxContainer/Register" to="." method="_on_Register_pressed"]
 [connection signal="pressed" from="MarginContainer3/ErrorPopUpDialog/MarginContainer/CloseIcon2" to="." method="_on_CloseIcon2_pressed"]

@@ -30,7 +30,6 @@ margin_right = 1860.0
 margin_bottom = 1040.0
 
 [node name="NameContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
-editor/display_folded = true
 margin_right = 1800.0
 margin_bottom = 75.0
 size_flags_horizontal = 3
