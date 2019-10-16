@@ -30,6 +30,16 @@ const SCREEN_PATH = {
 		},
 	}
 
+class Characters:
+	enum {
+		A,
+		B,
+		C,
+		D,
+		E,
+		Total
+	}
+
 var menu_buttons = []
 
 const IP_ADDRESS = "25.30.166.184"
