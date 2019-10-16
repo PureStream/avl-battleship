@@ -8,13 +8,25 @@ const SCREEN_PATH = {
 		"path":"res://Scenes/Screens/Lobby.tscn",
 		"iden":"CLASSIC"
 		},
-	MenuButtonEnums.TEAM_SETUP:{
-		"path":"res://Scenes/Screens/TeamSetUp.tscn",
-		"iden":"TEAM_SETUP"
-		},
 	MenuButtonEnums.CREDITS:{
 		"path":"res://Scenes/Screens/Credits.tscn",
 		"iden":"CREDITS"
+		},
+	MenuButtonEnums.DATABASE:{
+		"path":"res://Scenes/Screens/Database.tscn",
+		"iden":"DATABASE"
+		},
+	MenuButtonEnums.HOW_TO_PLAY:{
+		"path":"res://Scenes/Screens/HowToPlay.tscn",
+		"iden":"HOW_TO_PLAY"
+		},
+	MenuButtonEnums.OPTIONS:{
+		"path":"res://Scenes/Screens/Options.tscn",
+		"iden":"OPTIONS"
+		},
+	MenuButtonEnums.TEAM_SETUP:{
+		"path":"res://Scenes/Screens/TeamSetUp.tscn",
+		"iden":"TEAM_SETUP"
 		},
 	}
 

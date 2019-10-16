@@ -1,13 +1,21 @@
 extends Node
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+onready var credit := $MarginContainer/credits/text
 
-# Called when the node enters the scene tree for the first time.
+var credits = [
+	"PRODUCED & CREATED BY\nAVALON PRODUCTION",
+	"PROGRAMMING\nNUKE\nOAT\nEARTH\nBAIPO",
+	"GRAPHIC DESIGNER\nNUKE",
+	"UX & UI DESIGNER\nBAIPO",
+	"SOUND ENGINEERING\nEARTH",
+	"SPEACIAL THANKS\nOAT"
+]
+var counter = 0
+
 func _ready():
 	pass # Replace with function body.
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func next_credit():
+	if (counter > -1):
+		credit.text = credits[counter%6]
+		counter += 1
