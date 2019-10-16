@@ -1,0 +1,15 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+path="res://.import/char_mask.png-4445907b84c45387f95c3c5933b97223.res"
+
+[deps]
+
+source_file="res://Images/UI/char_mask.png"
+dest_files=[ "res://.import/char_mask.png-4445907b84c45387f95c3c5933b97223.res" ]
+
+[params]
+
+create_from=1
+threshold=0.5
