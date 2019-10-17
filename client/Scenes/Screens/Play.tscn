@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scenes/Screens/Play.gd" type="Script" id=1]
 [ext_resource path="res://Fonts/Roboto_Medium.tres" type="DynamicFont" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Scenes/EnemyGrid.gd" type="Script" id=5]
 [ext_resource path="res://Scenes/PlayerGrid.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Fonts/test_font.tres" type="DynamicFont" id=7]
+[ext_resource path="res://Sounds/ClickSound.tscn" type="PackedScene" id=8]
 
 [node name="Play" type="Control"]
 anchor_right = 1.0
@@ -16,6 +17,7 @@ margin_bottom = -2.65002
 script = ExtResource( 1 )
 
 [node name="MainMarginContainer" type="MarginContainer" parent="."]
+editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -1.58667
@@ -201,6 +203,8 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 7 )
 text = "quit"
+
+[node name="ClickSound" parent="." instance=ExtResource( 8 )]
 [connection signal="pressed" from="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer/Skip" to="." method="_on_Skip_pressed"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="pressed" from="Confirm" to="." method="_on_Confirm_pressed"]
