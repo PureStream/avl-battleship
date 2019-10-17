@@ -103,6 +103,7 @@ enabled_focus_mode = 0
 text = ">"
 
 [node name="MainButtonsController" type="Node" parent="."]
+editor/display_folded = true
 script = ExtResource( 5 )
 btn_default = ExtResource( 6 )
 

@@ -18,18 +18,20 @@ onready var win_lose := $MarginContainer/WinLose
 onready var win_lose_text := $MarginContainer/WinLose/VBoxContainer/WinLoseText
 onready var player_name := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer/PlayerNickname
 onready var enemy_name := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer2/EnemyNickname
-# Called when the node enters the scene tree for the first time.
+ 
 func _ready():
 	Lobby.connect("target_info_received", self, "render_hit")
 	confirm.disabled = true
 	Lobby.play = self
 	timer.set_wait_time(1)
+	round_num.text = "Round "+ str(Lobby.round_num) 
+	round_score.text = "Round Score: " + str(Lobby.round_score)
+	set_player_names()
 	var ships = ShipLayout.ships_list
 	for ship in ships:
 		player_grid.insert_item(ship)
 	if Lobby.your_turn:
 		new_turn()
-	Lobby.send_on_set()	
 
 func _on_Timer_timeout():
 	if DisplayValue > 0:
@@ -37,6 +39,7 @@ func _on_Timer_timeout():
 		time.text = str(DisplayValue)
 	else:
 		Lobby.end_turn()
+		timer.stop()
 
 func _on_Confirm_pressed():
 	var x = enemy_grid.reticle_pos.x 
@@ -75,32 +78,27 @@ func set_score(score):
 	enemy_score.text = ": " + str(e_score)
 	your_score.text = ": " + str(p_score)
 
-func set_name(name):
-	var p_name = name["player"]
-	var e_name = name["enemy"]
-	player_name.text = str(p_name)
-	enemy_name.text = str(e_name)
+func set_player_names():
+	player_name.text = Global.username
+	enemy_name.text = Lobby.enemy_name 
 	
 func receive_ships_left(ship_left):
 	ship_status.text = "Ship left: " + str(ship_left)
 
-func receive_round_num(round_number):
-	round_num.text = "Round "+ str(round_number) 
-	
 func previous():
 	get_tree().change_scene("res://Scenes/SetShip.tscn")
 
 func to_lobby():
-	get_tree().change_scene("res://Scenes/MainMenu.tscn")
-
-func set_round_score(round_sc):
-	round_score.text = "Round Score: " + str(round_sc)
+	get_tree().change_scene("res://Scenes/Screens/Lobby.tscn")
 
 func set_winlose_text(winlost_text:String):
 	win_lose_text.text = "You " + winlost_text + "!"
 
 func show_popup():
 	win_lose.show()
+
+func to_result():
+	get_tree().change_scene("res://Scenes/Screens/Result.tscn")
 
 func clear():
 	ShipLayout.clear_ship()
@@ -109,4 +107,4 @@ func _on_Button_pressed():
 	to_lobby()
 
 func _on_Skip_pressed():
-	Lobby.send_on_skip()
+	Lobby.concede()

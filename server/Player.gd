@@ -1,11 +1,12 @@
 extends Node
 
+var session_id = -1
 var ships = {}
 var ship_loc = {}
 var id = -1
 var connected_player = null
-var round_num = 1
 var score = 0
+var all_scores = []
 var round_score = 0
 var ready = false
 var player_name = ""

@@ -1,5 +1,9 @@
 extends Node
 
+var username = ""
+var viewing_result = false
+var is_welcome = false
+
 func _ready():
 	pass # Replace with function body.
 
@@ -42,7 +46,8 @@ class Characters:
 
 var menu_buttons = []
 
-const IP_ADDRESS = "25.30.166.184"
-#const IP_ADDRESS = "127.0.0.1"
+#const IP_ADDRESS = "25.30.166.184"
+const IP_ADDRESS = "127.0.0.1"
 
 const PORT = 1337
+
