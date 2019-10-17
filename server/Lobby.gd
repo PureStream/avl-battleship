@@ -45,7 +45,7 @@ remote func match_make(info):
 			new_session.connected_players.append(player)
 			rpc_id(player.id, "player_found", session_id)
 	candidate.connected_player = opponent
-	session_array.append(session_id)
+	server.add_session_button(session_id)
 	session_id += 1
 	
 func move_to_game(node):
@@ -111,24 +111,18 @@ remote func set_ready(session_id):
 	rpc_id(curr_enemy.id , "receive_round_score", curr_enemy.round_score)
 
 func set_reset():
-	for session_id in session_array:
-		var curr_session = session_dict[session_id]
-		var curr_player = curr_session.player_turn
-		var curr_enemy = curr_session.player_turn.connected_player
-		curr_player.score = 0
-		curr_player.round_score = 0 
-		curr_enemy.score = 0
-		curr_enemy.score = 0
-		rpc_id(curr_player.id ,"receive_round_num", curr_player.round_num)
-		rpc_id(curr_enemy.id , "receive_round_num", curr_enemy.round_num)
-		rpc_id(curr_player.id, "receive_score", {"player":curr_player.score, "enemy":curr_enemy.score})
-		rpc_id(curr_enemy.id, "receive_score", {"player":curr_enemy.score, "enemy":curr_player.score})
-		rpc_id(curr_player.id ,"receive_round_score", curr_player.round_score)
-		rpc_id(curr_enemy.id , "receive_round_score", curr_enemy.round_score)
-		rpc_id(curr_player.id,"reset_game")
-		rpc_id(curr_enemy.id,"reset_game")
-		rpc_id(curr_player.id,"clear_ships")
-		rpc_id(curr_enemy.id,"clear_ships")	
+	for session_id in session_dict.keys():
+		reset_session(session_id)
+		
+func reset_session(session_id):
+	var curr_session = session_dict[session_id]
+	for player in curr_session.connected_players:
+		player.score = 0
+		player.round_score = 0 
+		rpc_id(player.id ,"receive_round_num", player.round_num)
+		rpc_id(player.id ,"receive_round_score", 0)
+		rpc_id(player.id,"reset_game")
+		rpc_id(player.id,"clear_ships")
 	
 remote func set_skip(session_id):
 	var id = get_tree().get_rpc_sender_id()
@@ -142,7 +136,7 @@ remote func set_skip(session_id):
 	curr_player.round_score += 1
 	if(curr_player.round_score >= 2):
 		rpc_id(curr_player.id, "set_winlost_text", "Win")
-		rpc_id(curr_enemy.id, "set_winlost_text", "Lost")
+		rpc_id(curr_enemy.id, "set_winlost_text", "Lose")
 		rpc_id(curr_player.id, "show_popup")
 		rpc_id(curr_enemy.id, "show_popup")
 		rpc_id(curr_player.id,"clear_ships")
@@ -192,7 +186,7 @@ remote func receive_target_position(session_id, pos):
 			curr_player.round_score += 1	
 			if(curr_player.round_score >= 2):
 				rpc_id(curr_player.id, "set_winlost_text", "Win")
-				rpc_id(curr_enemy.id, "set_winlost_text", "Lost")
+				rpc_id(curr_enemy.id, "set_winlost_text", "Lose")
 				rpc_id(curr_player.id, "show_popup")
 				rpc_id(curr_enemy.id, "show_popup")
 				rpc_id(curr_player.id,"clear_ships")

@@ -5,10 +5,13 @@ const PORT = 1337
 const MAX_PLAYERS = 200
 const IP_ADDRESS = "127.0.0.1"
 
-onready var status_label = $StatusLabel
-onready var user_count_label = $UserCountLabel
+onready var status_label = $HBoxContainer/Labels/StatusLabel
+onready var user_count_label = $HBoxContainer/Labels/UserCountLabel
 onready var players = $Players
+onready var session_container = $HBoxContainer/VBoxContainer/SessionContainer/SessionButtonContainer
+onready var session_label = $HBoxContainer/VBoxContainer/SelectedSessionLabel
 var player = preload("res://Player.tscn")
+var session_btn = preload("res://SessionSelectButton.tscn")
 
 func _ready():
 	var network = NetworkedMultiplayerENet.new()
@@ -36,4 +39,18 @@ func _peer_disconnected(id):
 			player.queue_free()
 
 func _on_Reset_pressed(): 
-	Lobby.set_reset()
+	if selected_session >= 0:
+		Lobby.reset_session(selected_session)
+
+var selected_session = -1
+
+func add_session_button(session_id):
+	var new_btn = session_btn.instance()
+	new_btn.text = str("%05d" % session_id)
+	new_btn.set_meta("id", session_id)
+	new_btn.connect("session_select", self, "select_session")
+	session_container.add_child(new_btn)
+	
+func select_session(session_id):
+	selected_session = session_id
+	session_label.text = "Selected session " + "%05d" % selected_session
