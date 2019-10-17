@@ -138,10 +138,11 @@ func reset_session(session_id):
 	
 remote func concede(session_id):
 	var id = get_tree().get_rpc_sender_id()
+	print(str(id)+" conceded")
 	var curr_session = session_dict[session_id]
 	for player in curr_session.connected_players:
-		if player.id != id:
-			round_over(player, player.connected_player, curr_session)
+		if player.id == id:
+			round_over(player.connected_player, player, curr_session)
 
 remote func receive_target_position(session_id, pos):
 	var id = get_tree().get_rpc_sender_id()
@@ -197,7 +198,7 @@ func round_over(curr_player, curr_enemy, curr_session):
 		"enemy_round_score": enemy.round_score}
 		
 		var round_won = player == curr_player
-		rpc_id(player.id, "receive_round_result", round_won, game_over)
+		rpc_id(player.id, "receive_round_result", round_won, game_over, round_info)
 	
 #	if(curr_player.round_score >= 2):
 #		rpc_id(curr_player.id, "set_winlost_text", "Win")

@@ -39,6 +39,7 @@ func _on_Timer_timeout():
 		time.text = str(DisplayValue)
 	else:
 		Lobby.end_turn()
+		timer.stop()
 
 func _on_Confirm_pressed():
 	var x = enemy_grid.reticle_pos.x 
