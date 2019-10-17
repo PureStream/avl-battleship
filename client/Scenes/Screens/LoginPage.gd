@@ -44,3 +44,4 @@ func _on_CloseIcon2_pressed():
 
 func _on_Guest_Login_pressed():
 	get_tree().change_scene("res://Scenes/MainMenu.tscn")
+	
