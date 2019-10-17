@@ -30,6 +30,7 @@ func _peer_connected(id):
 	var new_player = player.instance()
 	new_player.set_id(id)
 	players.add_child(new_player)
+	Lobby.send_username(id, str(id))
 	
 func _peer_disconnected(id):
 	status_label.text += "\n" + str(id) + " disconnected."

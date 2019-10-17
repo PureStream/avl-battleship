@@ -129,7 +129,7 @@ func _on_Button_pressed():
 			ShipLayout.ships_list.append(dict)
 		ShipLayout.ships = grid.grid
 		confirm.disabled = true	
-		Lobby.send_ship_layout(ShipLayout.ships_list, nickname.text)
+		Lobby.send_ship_layout(ShipLayout.ships_list)
 
 func next():
 	get_tree().change_scene("res://Scenes/Screens/Play.tscn")

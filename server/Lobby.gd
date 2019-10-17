@@ -15,6 +15,9 @@ var session_id = 0
 var session_dict = {}
 var session_array = []
 
+func send_username(id, name):
+	rpc_id(id, "receive_username", name)
+
 # warning-ignore:unused_argument
 remote func match_make(info):
 	randomize()
@@ -43,11 +46,14 @@ remote func match_make(info):
 				opponent = player
 			call_deferred("move_to_game", player)
 			new_session.connected_players.append(player)
-			rpc_id(player.id, "player_found", session_id)
 	candidate.connected_player = opponent
+	
+	rpc_id(candidate.id, "player_found", session_id, opponent.player_name if opponent.player_name != "" else "Guest")
+	rpc_id(opponent.id, "player_found", session_id, candidate.player_name if candidate.player_name != "" else "Guest")
+	
 	server.add_session_button(session_id)
 	session_id += 1
-	
+
 func move_to_game(node):
 	node.get_parent().remove_child(node)
 	in_game.add_child(node)
@@ -56,7 +62,7 @@ func remove_from_game(node):
 	node.get_parent().remove_child(node)
 	players.add_child(node)
 	
-remote func receive_ship_layout(session_id, layout, name):
+remote func receive_ship_layout(session_id, layout):
 	var id = get_tree().get_rpc_sender_id()
 	var curr_session = session_dict[session_id]
 	
@@ -66,7 +72,6 @@ remote func receive_ship_layout(session_id, layout, name):
 		if player.id == id:
 			player.ships = layout
 			player.init_grid(curr_session.board_size)
-			player.player_name = name 
 			player.ready = true
 
 	var ready_to_start = true
@@ -83,74 +88,65 @@ func begin_game(session_id):
 	var curr_session = session_dict[session_id]
 	print("beginning game on: "+str(session_id))
 	
-	var turn = randi()%2 == 1
-	rpc_id(curr_session.connected_players[0].id,"receive_game_begin", turn)
-	rpc_id(curr_session.connected_players[1].id,"receive_game_begin", !turn)
-	
-	if turn:
-		curr_session.player_turn = curr_session.connected_players[0]
-	else: 
-		curr_session.player_turn = curr_session.connected_players[1]
-	
-remote func set_ready(session_id):
-	var id = get_tree().get_rpc_sender_id()
-	var curr_session = session_dict[session_id]
-	var turn = randi()%2 == 1
-	if id != curr_session.player_turn.id:
-		print("invalid turn from player: "+ str(id))
-		return
-	var curr_player = curr_session.player_turn
-	var curr_enemy = curr_session.player_turn.connected_player
-	rpc_id(curr_player.id, "set_name", {"player":curr_player.player_name, "enemy":curr_enemy.player_name})
-	rpc_id(curr_enemy.id, "set_name", {"player":curr_enemy.player_name, "enemy":curr_player.player_name})
-	rpc_id(curr_player.id ,"receive_round_num", curr_player.round_num)
-	rpc_id(curr_enemy.id , "receive_round_num", curr_enemy.round_num)
-	rpc_id(id, "receive_score", {"player":curr_player.score, "enemy":curr_enemy.score})
-	rpc_id(curr_enemy.id, "receive_score", {"player":curr_enemy.score, "enemy":curr_player.score})
-	rpc_id(curr_player.id ,"receive_round_score", curr_player.round_score)
-	rpc_id(curr_enemy.id , "receive_round_score", curr_enemy.round_score)
+	if curr_session.prev_winner == null:
+		var turn = randi()%2 == 1
+		for player in curr_session.connected_players:
+			rpc_id(player.id,"receive_game_begin", turn)
+			if turn:
+				curr_session.player_turn = player
+			turn = !turn
+	else:
+		for player in curr_session.connected_players:
+			var turn = player == curr_session.prev_winner
+			rpc_id(player.id,"receive_game_begin", turn)
+			if turn:
+				curr_session.player_turn = player
 
-func set_reset():
+#remote func set_ready(session_id):
+#	var id = get_tree().get_rpc_sender_id()
+#	var curr_session = session_dict[session_id]
+#	if id != curr_session.player_turn.id:
+#		print("invalid turn from player: "+ str(id))
+#		return
+#	var curr_player = curr_session.player_turn
+#	var curr_enemy = curr_session.player_turn.connected_player
+#	update_score(curr_player, curr_enemy, curr_session)
+
+#func update_score(curr_player, curr_enemy, curr_session):
+#	rpc_id(curr_player.id ,"receive_round_num", curr_session.round_num)
+#	rpc_id(curr_enemy.id , "receive_round_num", curr_session.round_num)
+#	rpc_id(curr_player.id, "receive_score", {"player":curr_player.score, "enemy":curr_enemy.score})
+#	rpc_id(curr_enemy.id, "receive_score", {"player":curr_enemy.score, "enemy":curr_player.score})
+#	rpc_id(curr_player.id ,"receive_round_score", curr_player.round_score)
+#	rpc_id(curr_enemy.id , "receive_round_score", curr_enemy.round_score)
+
+func reset():
 	for session_id in session_dict.keys():
 		reset_session(session_id)
-		
+
 func reset_session(session_id):
 	var curr_session = session_dict[session_id]
 	for player in curr_session.connected_players:
 		player.score = 0
+		player.all_scores = []
 		player.round_score = 0 
-		rpc_id(player.id ,"receive_round_num", player.round_num)
-		rpc_id(player.id ,"receive_round_score", 0)
+		player.ready = false
+		rpc_id(player.id,"receive_round_num", 1)
+		rpc_id(player.id,"receive_round_score", 0)
 		rpc_id(player.id,"reset_game")
 		rpc_id(player.id,"clear_ships")
 	
-remote func set_skip(session_id):
+remote func concede(session_id):
 	var id = get_tree().get_rpc_sender_id()
 	var curr_session = session_dict[session_id]
-	var turn = randi()%2 == 1
-	if id != curr_session.player_turn.id:
-		print("invalid turn from player: "+ str(id))
-		return
-	var curr_player = curr_session.player_turn
-	var curr_enemy = curr_session.player_turn.connected_player
-	curr_player.round_score += 1
-	if(curr_player.round_score >= 2):
-		rpc_id(curr_player.id, "set_winlost_text", "Win")
-		rpc_id(curr_enemy.id, "set_winlost_text", "Lose")
-		rpc_id(curr_player.id, "show_popup")
-		rpc_id(curr_enemy.id, "show_popup")
-		rpc_id(curr_player.id,"clear_ships")
-		rpc_id(curr_enemy.id,"clear_ships")	
-		return
-	rpc_id(curr_player.id,"reset_game")
-	rpc_id(curr_enemy.id,"reset_game")
-	rpc_id(curr_player.id,"clear_ships")
-	rpc_id(curr_enemy.id,"clear_ships")	
+	for player in curr_session.connected_players:
+		if player.id != id:
+			round_over(player, player.connected_player, curr_session)
 
 remote func receive_target_position(session_id, pos):
 	var id = get_tree().get_rpc_sender_id()
 	var curr_session = session_dict[session_id]
-	var turn = randi()%2 == 1
+	
 	print(str(id)+" targeting " + str(pos))
 	if id != curr_session.player_turn.id:
 		print("invalid turn from player: "+ str(id))
@@ -160,43 +156,62 @@ remote func receive_target_position(session_id, pos):
 	var curr_player = curr_session.player_turn
 	var curr_enemy = curr_session.player_turn.connected_player
 	var all_destroyed = false
-	rpc_id(id, "receive_score", {"player":curr_player.score, "enemy":curr_enemy.score})
-	rpc_id(curr_enemy.id, "receive_score", {"player":curr_enemy.score, "enemy":curr_player.score})
+
 	if value != null:
 		rpc_id(id, "receive_target_information", value)
+		#check for round completion
 		if value:
 			curr_player.score += 1
 			curr_enemy.set_damage(pos)
 			all_destroyed = true
-			ships_left = 4
+			ships_left =  4 #make it dynamic for different modes
 			for ship in curr_enemy.ships:
 				if ship["destroyed"] == true:
 					ships_left = ships_left - 1
 				if !ship["destroyed"]:
 					all_destroyed = false
 			print(ships_left)
-			rpc_id(curr_enemy.id, "receive_ships_left", ships_left)  
-			rpc_id(id, "receive_score", {"player":curr_player.score, "enemy":curr_enemy.score})
-			rpc_id(curr_enemy.id, "receive_score", {"player":curr_enemy.score, "enemy":curr_player.score})
-			
+			rpc_id(curr_player.id, "receive_ships_left", ships_left)  
 		rpc_id(curr_enemy.id, "receive_hit", pos, value)
 		if(all_destroyed):
-			curr_player.round_num += 1
-			curr_enemy.round_num += 1
-			curr_player.round_score += 1	
-			if(curr_player.round_score >= 2):
-				rpc_id(curr_player.id, "set_winlost_text", "Win")
-				rpc_id(curr_enemy.id, "set_winlost_text", "Lose")
-				rpc_id(curr_player.id, "show_popup")
-				rpc_id(curr_enemy.id, "show_popup")
-				rpc_id(curr_player.id,"clear_ships")
-				rpc_id(curr_enemy.id,"clear_ships")
-				return
-			rpc_id(curr_player.id,"reset_game")
-			rpc_id(curr_enemy.id,"reset_game")
-			rpc_id(curr_player.id,"clear_ships")
-			rpc_id(curr_enemy.id,"clear_ships")
+			round_over(curr_player, curr_enemy, curr_session)
+	rpc_id(id, "receive_score", {"player":curr_player.score, "enemy":curr_enemy.score})
+	rpc_id(curr_enemy.id, "receive_score", {"player":curr_enemy.score, "enemy":curr_player.score})
+
+func round_over(curr_player, curr_enemy, curr_session):
+	curr_session.prev_winner = curr_player
+	curr_session.round_num += 1
+	curr_player.round_score += 1
+	var game_over = curr_player.round_score >= 2 #make it a variable instead?
+	
+	for player in curr_session.connected_players:
+		var enemy = player.connected_player
 		
+		player.ready = false
+		player.all_scores.append(player.score)
+		player.score = 0
+		
+		var round_info = {
+		"round":curr_session.round_num,
+		"round_score": player.round_score, 
+		"enemy_round_score": enemy.round_score}
+		
+		var round_won = player == curr_player
+		rpc_id(player.id, "receive_round_result", round_won, game_over)
+	
+#	if(curr_player.round_score >= 2):
+#		rpc_id(curr_player.id, "set_winlost_text", "Win")
+#		rpc_id(curr_enemy.id, "set_winlost_text", "Lose")
+#		rpc_id(curr_player.id, "show_popup")
+#		rpc_id(curr_enemy.id, "show_popup")
+#		rpc_id(curr_player.id,"clear_ships")
+#		rpc_id(curr_enemy.id,"clear_ships")
+#		return
+#	rpc_id(curr_player.id,"reset_game")
+#	rpc_id(curr_enemy.id,"reset_game")
+#	rpc_id(curr_player.id,"clear_ships")
+#	rpc_id(curr_enemy.id,"clear_ships")
+
 remote func next_turn(session_id):
 	var id = get_tree().get_rpc_sender_id()
 	var curr_session = session_dict[session_id]
