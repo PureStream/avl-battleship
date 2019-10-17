@@ -80,7 +80,7 @@ func set_score(score):
 
 func set_player_names():
 	player_name.text = Global.username
-	enemy_name.text = Lobby.enemy_name
+	enemy_name.text = Lobby.enemy_name 
 	
 func receive_ships_left(ship_left):
 	ship_status.text = "Ship left: " + str(ship_left)
@@ -89,13 +89,16 @@ func previous():
 	get_tree().change_scene("res://Scenes/SetShip.tscn")
 
 func to_lobby():
-	get_tree().change_scene("res://Scenes/MainMenu.tscn")
+	get_tree().change_scene("res://Scenes/Screens/Lobby.tscn")
 
 func set_winlose_text(winlost_text:String):
 	win_lose_text.text = "You " + winlost_text + "!"
 
 func show_popup():
 	win_lose.show()
+
+func to_result():
+	get_tree().change_scene("res://Scenes/Result.tscn")
 
 func clear():
 	ShipLayout.clear_ship()

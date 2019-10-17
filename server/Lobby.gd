@@ -83,6 +83,34 @@ remote func receive_ship_layout(session_id, layout):
 		begin_game(session_id)
 		for player in curr_session.connected_players:
 			player.ready = false
+
+remote func rematch(session_id):
+	var id = get_tree().get_rpc_sender_id()
+	var curr_session = session_dict[session_id]
+		
+	for player in curr_session.connected_players:
+		if player.id == id:
+			player.ready = true
+
+	var ready_to_start = true
+	for player in curr_session.connected_players:
+		if !player.ready:
+			ready_to_start = false
+		
+	if(ready_to_start):
+		begin_game(session_id)
+		for player in curr_session.connected_players:
+			player.ready = false
+
+remote func cancel_rematch(session_id):
+	var id = get_tree().get_rpc_sender_id()
+	var curr_session = session_dict[session_id]
+	for player in curr_session.connected_players:
+		if player.id == id:
+			player.ready = false
+
+remote func quit_session(session_id):
+	pass
 		
 func begin_game(session_id):
 	var curr_session = session_dict[session_id]
@@ -131,10 +159,8 @@ func reset_session(session_id):
 		player.all_scores = []
 		player.round_score = 0 
 		player.ready = false
-		rpc_id(player.id,"receive_round_num", 1)
-		rpc_id(player.id,"receive_round_score", 0)
+		curr_session.round_num = 1
 		rpc_id(player.id,"reset_game")
-		rpc_id(player.id,"clear_ships")
 	
 remote func concede(session_id):
 	var id = get_tree().get_rpc_sender_id()

@@ -41,7 +41,11 @@ remote func receive_game_begin(player_turn:bool):
 	your_turn = player_turn
 
 remote func reset_game():
-	#reset everything
+	round_num = 1
+	round_score = 0
+	enemy_round_score = 0
+	receive_score({"player":0,"enemy":0})
+	play.clear()
 	play.previous() #make compatible with resetting from ship layout screen
 
 func send_target_position(pos):
@@ -65,9 +69,6 @@ remote func receive_turn_start():
 	
 remote func receive_ships_left(ship_left):
 	play.receive_ships_left(ship_left)
-
-func receive_round_num(round_number):
-	play.set_round_num(round_number)
 	
 remote func receive_hit(pos, value):
 	play.receive_hit(pos, value)
@@ -85,13 +86,31 @@ remote func receive_round_result(result:bool, game_over:bool, round_info):
 		else:
 			play.set_winlose_text("Lose")
 		play.clear()
-		play.show_popup()
+		play.to_result()
 		return
 		#move to result screen
 	#show round result
 	play.clear()
 	play.previous()
 
+func rematch():
+	if session_id >-1:
+		rpc_id(1, "rematch", session_id)
+	else:
+		print("session error")
+
+func cancel_rematch():
+	if session_id >-1:
+		rpc_id(1, "cancel_rematch", session_id)
+	else:
+		print("session error")
+
+func quit():
+	if session_id >-1:
+		rpc_id(1, "quit_session", session_id)
+	else:
+		print("session error")
+				
 func end_turn():
 	your_turn = false
 	rpc_id(1,"next_turn", session_id)

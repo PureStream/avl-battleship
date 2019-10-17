@@ -15,8 +15,8 @@ func _process(delta):
 func _on_BackButton_pressed():
 	get_tree().change_scene("res://Scenes/MainMenu.tscn")
 	
-func _on_connection_failed(error):
-	print("Error connecting to server" + error)
+func _on_connection_failed():
+	print("Error connecting to server")
 	_on_disconnect()
 	
 func _on_Connection_pressed():
