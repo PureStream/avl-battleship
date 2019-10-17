@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scenes/Screens/TeamSetUp.gd" type="Script" id=1]
 [ext_resource path="res://Fonts/RobotoTitle.tres" type="DynamicFont" id=2]
 [ext_resource path="res://Fonts/Roboto_Medium.tres" type="DynamicFont" id=3]
 [ext_resource path="res://Scenes/TeamBox.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/BackButton.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Sounds/ClickSound.tscn" type="PackedScene" id=6]
 
 [node name="TeamSetUp" type="Control"]
 anchor_right = 1.0
@@ -158,5 +159,7 @@ margin_left = 60.0
 margin_top = 40.0
 margin_right = 260.0
 margin_bottom = 120.0
+
+[node name="ClickSound" parent="." instance=ExtResource( 6 )]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/SlideLeft" to="." method="_on_SlideLeft_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/SlideRight" to="." method="_on_SlideRight_pressed"]

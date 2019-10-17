@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scenes/Screens/Lobby.gd" type="Script" id=1]
 [ext_resource path="res://Fonts/pala.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://Fonts/test_font.tres" type="DynamicFont" id=3]
 [ext_resource path="res://Scenes/BackButton.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Sounds/ClickSound.tscn" type="PackedScene" id=5]
 
 [sub_resource type="DynamicFont" id=1]
 size = 90
@@ -18,6 +19,7 @@ font_data = ExtResource( 2 )
 script = ExtResource( 1 )
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
+editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_constants/margin_right = 60
@@ -197,5 +199,7 @@ color = Color( 0.658824, 0.898039, 0.882353, 1 )
 
 [node name="PlayerSearchTimeout" type="Timer" parent="."]
 wait_time = 3.0
+
+[node name="ClickSound" parent="." instance=ExtResource( 5 )]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/ModePanel/VBoxContainer/QuickplayButton" to="." method="_on_Connection_pressed"]
 [connection signal="timeout" from="PlayerSearchTimeout" to="." method="_on_PlayerSearchTimeout_timeout"]
