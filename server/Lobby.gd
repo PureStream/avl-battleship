@@ -7,23 +7,31 @@ var server = null
 
 var players = null
 var in_game = null
+var matching = null
 var sessions = null
 var session = preload("res://Session.tscn")
 
 var ships_left = 4
 var session_id = 0
 var session_dict = {}
-var session_array = []
 
 func send_username(id, name):
 	rpc_id(id, "receive_username", name)
+
+remote func ready_to_match():
+	var id = get_tree().get_rpc_sender_id()
+	for player in players.get_children():
+		if player.id == id:
+#			print("starting matching for " + str(id))
+			call_deferred("move_to_matching", player)
+			rpc_id(id, "start_matching")
 
 # warning-ignore:unused_argument
 remote func match_make(info):
 	randomize()
 	var id = get_tree().get_rpc_sender_id()
 	print(str(id) + " is looking for match")
-	var filtered_player = players.get_children()
+	var filtered_player = matching.get_children()
 	
 	if(filtered_player.size() == 0):
 		return
@@ -35,29 +43,35 @@ remote func match_make(info):
 		return
 	
 	var new_session = session.instance()
+	new_session.id = session_id
 	sessions.add_child(new_session)
+	new_session.button = server.add_session_button(session_id)
 	session_dict[session_id] = new_session
 	
 	var opponent = null
-	for player in players.get_children():
+	for player in matching.get_children():
 		if player.id == id || player.id == candidate.id:
 			if player.id == id:
 				player.connected_player = candidate
 				opponent = player
 			call_deferred("move_to_game", player)
 			new_session.connected_players.append(player)
+			player.session_id = session_id
 	candidate.connected_player = opponent
 	
 	rpc_id(candidate.id, "player_found", session_id, opponent.player_name if opponent.player_name != "" else "Guest")
 	rpc_id(opponent.id, "player_found", session_id, candidate.player_name if candidate.player_name != "" else "Guest")
 	
-	server.add_session_button(session_id)
 	session_id += 1
 
 func move_to_game(node):
 	node.get_parent().remove_child(node)
 	in_game.add_child(node)
-	
+
+func move_to_matching(node):
+	node.get_parent().remove_child(node)
+	matching.add_child(node)
+
 func remove_from_game(node):
 	node.get_parent().remove_child(node)
 	players.add_child(node)
@@ -98,7 +112,7 @@ remote func rematch(session_id):
 			ready_to_start = false
 		
 	if(ready_to_start):
-		begin_game(session_id)
+		reset_session(session_id)
 		for player in curr_session.connected_players:
 			player.ready = false
 
@@ -110,8 +124,21 @@ remote func cancel_rematch(session_id):
 			player.ready = false
 
 remote func quit_session(session_id):
-	pass
+	var id = get_tree().get_rpc_sender_id()
+	if session_dict.has(session_id) :
+		var curr_session = session_dict[session_id]
 		
+		for player in curr_session.connected_players:
+			if player.id != id:
+				rpc_id(player.id, "end_session")
+			remove_from_game(player)
+		
+		if server.selected_session == session_id:
+			server.deselect()
+		curr_session.button.queue_free()
+		curr_session.queue_free()
+		session_dict.erase(session_id)
+
 func begin_game(session_id):
 	var curr_session = session_dict[session_id]
 	print("beginning game on: "+str(session_id))
@@ -154,12 +181,14 @@ func reset():
 
 func reset_session(session_id):
 	var curr_session = session_dict[session_id]
+	curr_session.prev_winner = null
+	curr_session.player_turn = null
+	curr_session.round_num = 1
 	for player in curr_session.connected_players:
 		player.score = 0
 		player.all_scores = []
 		player.round_score = 0 
 		player.ready = false
-		curr_session.round_num = 1
 		rpc_id(player.id,"reset_game")
 	
 remote func concede(session_id):
@@ -252,5 +281,4 @@ remote func next_turn(session_id):
 	curr_session.player_turn = curr_session.player_turn.connected_player
 	
 	rpc_id(curr_session.player_turn.id, "receive_turn_start")
-	
 	

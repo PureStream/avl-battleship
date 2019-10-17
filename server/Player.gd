@@ -1,5 +1,6 @@
 extends Node
 
+var session_id = -1
 var ships = {}
 var ship_loc = {}
 var id = -1

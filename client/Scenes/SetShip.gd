@@ -38,6 +38,13 @@ func _input(event):
 	if event.is_action_pressed("inv_rotate"):
 		if grab_toggle:
 			rotate_held_ship()
+	if event.is_action_pressed("debug_insert_all_ships"):
+		for pos in range(ship_slots.ships.size()):
+			var ship = ship_slots.ships["Ship"+str(pos+1)]
+			print("inserting ship " + str(ship))
+			if ship != null:
+				grid.insert_ship_at_first_available_spot(ship)
+			ship_slots.ships["Ship"+str(pos+1)] = null
 
 func grab(cursor_pos):
 	var c = get_container_under_cursor(cursor_pos)

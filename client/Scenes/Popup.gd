@@ -1,13 +1,14 @@
 extends Popup
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+var cancel_enabled = true
 
-# Called when the node enters the scene tree for the first time.
+onready var cancel = $Panel/VBoxContainer/Cancel
+onready var label = $Panel/VBoxContainer/Label
+
 func _ready():
-	add_ # Replace with function body.
+	pass
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func cancel_rematch():
+	cancel.text = "Ok"
+	cancel_enabled = false
+	label.text = "Opponent has disconnected."

@@ -98,7 +98,7 @@ func show_popup():
 	win_lose.show()
 
 func to_result():
-	get_tree().change_scene("res://Scenes/Result.tscn")
+	get_tree().change_scene("res://Scenes/Screens/Result.tscn")
 
 func clear():
 	ShipLayout.clear_ship()

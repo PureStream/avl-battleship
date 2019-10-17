@@ -7,6 +7,7 @@ onready var timer = $PlayerSearchTimeout
 
 func _ready():
 	Lobby.lobby = self
+	Global.viewing_result = false
 	pass
 
 func _process(delta):
@@ -36,11 +37,14 @@ func _on_disconnect():
 	popup_obj.queue_free()
 
 func _proceed():
+	popup_obj.connect("cancel", self, "_on_disconnect")
+	Lobby.ready_to_match()
+
+func start_matching():
 	popup_obj.matching()
 	timer.start()
 	Lobby.look_for_player(null)
-	popup_obj.connect("cancel", self, "_on_disconnect")
-	
+
 func next():
 	get_tree().change_scene("res://Scenes/SetShip.tscn")
 

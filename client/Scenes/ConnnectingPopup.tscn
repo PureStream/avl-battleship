@@ -12,10 +12,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="ConfirmationDialog" type="ConfirmationDialog" parent="CenterContainer"]
-margin_left = 860.0
-margin_top = 505.0
-margin_right = 1060.0
-margin_bottom = 575.0
+margin_left = 760.0
+margin_top = 470.0
+margin_right = 1160.0
+margin_bottom = 610.0
 window_title = "Quickplay"
 dialog_text = "Looking for player..."
 [connection signal="confirmed" from="CenterContainer/ConfirmationDialog" to="." method="_on_ConfirmationDialog_confirmed"]
+[connection signal="popup_hide" from="CenterContainer/ConfirmationDialog" to="." method="_on_ConfirmationDialog_confirmed"]

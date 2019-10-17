@@ -6,6 +6,7 @@ func _ready():
 var lobby = null
 var set_ship = null
 var play = null
+var result = null
 var session_id = -1
 var enemy_name = ""
 
@@ -16,6 +17,12 @@ var enemy_round_score = 0
 remote func receive_username(username):
 	print(username)
 	Global.username = username
+
+func ready_to_match():
+	rpc_id(1,"ready_to_match")
+
+remote func start_matching():
+	lobby.start_matching()
 
 func look_for_player(info):
 	rpc_id(1,"match_make", info)
@@ -44,9 +51,17 @@ remote func reset_game():
 	round_num = 1
 	round_score = 0
 	enemy_round_score = 0
-	receive_score({"player":0,"enemy":0})
-	play.clear()
-	play.previous() #make compatible with resetting from ship layout screen
+#	if play != null:
+#		receive_score({"player":0,"enemy":0})
+	ShipLayout.clear_ship()
+	get_tree().change_scene("res://Scenes/SetShip.tscn") #make compatible with resetting from ship layout screen
+
+func clear_variables():
+	session_id = -1
+	enemy_name = ""
+	round_num = 1
+	round_score = 0
+	enemy_round_score = 0
 
 func send_target_position(pos):
 	if session_id > -1:
@@ -114,3 +129,11 @@ func quit():
 func end_turn():
 	your_turn = false
 	rpc_id(1,"next_turn", session_id)
+
+remote func end_session():
+	var curr_scene = get_tree().root
+	if Global.viewing_result:
+		result.disable_rematch()
+	else:
+		get_tree().change_scene("res://Scenes/Screens/Lobby.tscn")
+		#notify session having ended unexpectedly

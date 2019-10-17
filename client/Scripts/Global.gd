@@ -1,6 +1,7 @@
 extends Node
 
 var username = ""
+var viewing_result = false
 
 func _ready():
 	pass # Replace with function body.
