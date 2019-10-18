@@ -1,6 +1,6 @@
 extends Node
 
-var username = ""
+var username = "My Lord"
 var viewing_result = false
 var is_welcome = false
 
