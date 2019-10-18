@@ -1,6 +1,7 @@
 extends Node
 
 var session_id = -1
+var matching_info = {}
 var ships = {}
 var ship_loc = {}
 var id = -1

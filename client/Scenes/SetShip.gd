@@ -3,10 +3,13 @@ extends Control
 const ship_base = preload("res://Scenes/ShipBase.tscn")
 const play = preload("res://Scenes/Screens/Play.tscn")
 
-onready var grid = $Grid
-onready var ship_slots = $ShipSlots
-onready var confirm = $Button
-onready var nickname = $Nickname
+onready var grid = $HBoxContainer/Grid
+onready var container = $HBoxContainer/MarginContainer/VBoxContainer
+onready var ship_slots = container.get_node("ShipSlots")
+onready var confirm = container.get_node("Button")
+
+export (Texture) var grid8
+export (Texture) var grid10
 
 var ship_held:TextureRect = null
 var ship_offset = Vector2()
@@ -16,12 +19,20 @@ var last_rot = 0
 
 func _ready():
 	Lobby.set_ship = self
+	set_board_size()
+	grid._ready()
 	pickup_ship("Ship4")
 	pickup_ship("Ship4")
 	pickup_ship("Ship4")
 	pickup_ship("Ship4")
 
 var grab_toggle = false
+
+func set_board_size():
+	if Lobby.boardsize == 8:
+		grid.texture = grid8
+	else:
+		grid.texture = grid10
 
 func _process(delta):
 	var cursor_pos = get_global_mouse_position()

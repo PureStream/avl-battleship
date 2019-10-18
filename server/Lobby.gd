@@ -11,6 +11,19 @@ var matching = null
 var sessions = null
 var session = preload("res://Session.tscn")
 
+class GameMode:
+	enum{
+		BASIC,
+		CLASSIC,
+		STANDARD
+	}
+	
+	const board_size = {
+		BASIC: 8,
+		CLASSIC: 10,
+		STANDARD: 10
+	}
+
 var ships_left = 4
 var session_id = 0
 var session_dict = {}
@@ -18,21 +31,36 @@ var session_dict = {}
 func send_username(id, name):
 	rpc_id(id, "receive_username", name)
 
-remote func ready_to_match():
+remote func ready_to_match(info):
 	var id = get_tree().get_rpc_sender_id()
-	for player in players.get_children():
+	for player in players.get_children(): #make it O(1) with dictionary
 		if player.id == id:
 #			print("starting matching for " + str(id))
+			player.matching_info = info
 			call_deferred("move_to_matching", player)
 			rpc_id(id, "start_matching")
 
 # warning-ignore:unused_argument
-remote func match_make(info):
+remote func match_make():
 	randomize()
 	var id = get_tree().get_rpc_sender_id()
 	print(str(id) + " is looking for match")
-	var filtered_player = matching.get_children()
+	var info = null
+	var unfiltered_player = matching.get_children()
 	
+	for player in matching.get_children(): #make it O(1) with dictionary
+		if player.id == id:
+			info = player.matching_info
+	
+	if info == null:
+		return
+	
+
+	var filtered_player = []
+	for i in range(unfiltered_player.size()):
+		if unfiltered_player[i].matching_info["mode"] == info["mode"]:
+			filtered_player.append(unfiltered_player[i])
+
 	if(filtered_player.size() == 0):
 		return
 	
@@ -42,11 +70,7 @@ remote func match_make(info):
 	if candidate.id == id:
 		return
 	
-	var new_session = session.instance()
-	new_session.id = session_id
-	sessions.add_child(new_session)
-	new_session.button = server.add_session_button(session_id)
-	session_dict[session_id] = new_session
+	var new_session = create_session(info)
 	
 	var opponent = null
 	for player in matching.get_children():
@@ -61,8 +85,21 @@ remote func match_make(info):
 	
 	rpc_id(candidate.id, "player_found", session_id, opponent.player_name if opponent.player_name != "" else "Guest")
 	rpc_id(opponent.id, "player_found", session_id, candidate.player_name if candidate.player_name != "" else "Guest")
+	rpc_id(candidate.id,"set_board_size",new_session.board_size)
+	rpc_id(opponent.id,"set_board_size",new_session.board_size)
 	
 	session_id += 1
+
+func create_session(info):
+	var mode = info["mode"]
+	var new_session = session.instance()
+	new_session.id = session_id
+	new_session.board_size = GameMode.board_size[mode]
+	sessions.add_child(new_session)
+	new_session.button = server.add_session_button(session_id)
+	session_dict[session_id] = new_session
+	return new_session
+	
 
 func move_to_game(node):
 	node.get_parent().remove_child(node)
@@ -75,6 +112,10 @@ func move_to_matching(node):
 func remove_from_game(node):
 	node.get_parent().remove_child(node)
 	players.add_child(node)
+
+remote func create_set_ship(session_id):
+	var id = get_tree().get_rpc_sender_id()
+	var curr_session = session_dict[session_id]
 	
 remote func receive_ship_layout(session_id, layout):
 	var id = get_tree().get_rpc_sender_id()
@@ -146,6 +187,7 @@ func begin_game(session_id):
 	if curr_session.prev_winner == null:
 		var turn = randi()%2 == 1
 		for player in curr_session.connected_players:
+			rpc_id(player.id,"set_board_size",curr_session.board_size)
 			rpc_id(player.id,"receive_game_begin", turn)
 			if turn:
 				curr_session.player_turn = player
@@ -153,6 +195,7 @@ func begin_game(session_id):
 	else:
 		for player in curr_session.connected_players:
 			var turn = player == curr_session.prev_winner
+			rpc_id(player.id,"set_board_size",curr_session.board_size)
 			rpc_id(player.id,"receive_game_begin", turn)
 			if turn:
 				curr_session.player_turn = player
