@@ -1,23 +1,153 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://Scenes/Screens/Play.gd" type="Script" id=1]
-[ext_resource path="res://Fonts/Roboto_Medium.tres" type="DynamicFont" id=2]
-[ext_resource path="res://Time.gd" type="Script" id=3]
-[ext_resource path="res://Images/UI/grid8.png" type="Texture" id=4]
-[ext_resource path="res://Scenes/EnemyGrid.gd" type="Script" id=5]
-[ext_resource path="res://Scenes/PlayerGrid.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Fonts/test_font.tres" type="DynamicFont" id=7]
+[ext_resource path="res://Images/UI/grid8.png" type="Texture" id=1]
+[ext_resource path="res://Images/UI/grid10.png" type="Texture" id=2]
+[ext_resource path="res://Fonts/Roboto_Medium.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Time.gd" type="Script" id=4]
+[ext_resource path="res://Scenes/PlayerGrid.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Fonts/test_font.tres" type="DynamicFont" id=6]
+[ext_resource path="res://Scenes/EnemyGrid.gd" type="Script" id=7]
 [ext_resource path="res://Sounds/ClickSound.tscn" type="PackedScene" id=8]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Control
+
+var DisplayValue = 10
+const ship_base = preload(\"res://Scenes/ShipBase.tscn\")
+var count = 0
+
+onready var timer = get_node(\"Timer\")
+onready var player_grid = $PlayerGrid
+onready var enemy_grid = $EnemyGrid
+onready var confirm = $Confirm
+onready var time = $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer/Time
+onready var your_score := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer/YourScore
+onready var enemy_score := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer2/EnemyScore
+onready var ship_status := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/ShipStatus
+onready var round_num := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer/RoundNum
+onready var round_score := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/RoundScore
+onready var win_lose := $MarginContainer/WinLose
+onready var win_lose_text := $MarginContainer/WinLose/VBoxContainer/WinLoseText
+onready var player_name := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer/PlayerNickname
+onready var enemy_name := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer2/EnemyNickname
+export (Texture) var grid8
+export (Texture) var grid10
+
+ 
+func _ready():
+	Lobby.connect(\"target_info_received\", self, \"render_hit\")
+	confirm.disabled = true
+	Lobby.play = self
+	timer.set_wait_time(1)
+	round_num.text = \"Round \"+ str(Lobby.round_num) 
+	round_score.text = \"Round Score: \" + str(Lobby.round_score)
+	set_player_names()
+	set_board_size()
+	yield(get_tree().create_timer(0.1),\"timeout\")
+	player_grid._ready()
+	enemy_grid._ready()
+	var ships = ShipLayout.ships_list
+	for ship in ships:
+		player_grid.insert_item(ship)
+	if Lobby.your_turn:
+		new_turn()
+
+func set_board_size():
+	if Lobby.boardsize == 8:
+		player_grid.texture = grid8
+		enemy_grid.texture = grid8
+	else:
+		player_grid.texture = grid10
+		enemy_grid.texture = grid10
+	print(Lobby.boardsize)	
+
+func _on_Timer_timeout():
+	if DisplayValue > 0:
+		DisplayValue -= 1
+		time.text = str(DisplayValue)
+	else:
+		Lobby.end_turn()
+		timer.stop()
+
+func _on_Confirm_pressed():
+	var x = enemy_grid.reticle_pos.x 
+	var y = enemy_grid.reticle_pos.y 
+	confirm.disabled = true
+	timer.stop()
+	Lobby.send_target_position({\"x\":x,\"y\":y})
+	Lobby.end_turn()
+	
+func render_hit(hit):
+	var x = enemy_grid.reticle_pos.x 
+	var y = enemy_grid.reticle_pos.y 
+	if hit:
+		enemy_grid.insert_mark({\"id\":\"Hit\",\"g_pos\":{\"x\":x,\"y\":y}})
+	else:
+		enemy_grid.insert_mark({\"id\":\"Miss\",\"g_pos\":{\"x\":x,\"y\":y}})
+	enemy_grid.reticle.visible = false
+	enemy_grid.hit_map[x][y] = false
+
+func receive_hit(pos, value):
+	var x = pos[\"x\"] 
+	var y = pos[\"y\"] 
+	if value:
+		player_grid.insert_mark({\"id\":\"Hit\",\"g_pos\":{\"x\":x,\"y\":y}})
+	else:
+		player_grid.insert_mark({\"id\":\"Miss\",\"g_pos\":{\"x\":x,\"y\":y}})
+
+func new_turn():
+	DisplayValue = 10
+	time.text = str(DisplayValue)
+	timer.start()
+	
+func set_score(score):
+	var p_score = score[\"player\"]
+	var e_score = score[\"enemy\"]
+	enemy_score.text = \": \" + str(e_score)
+	your_score.text = \": \" + str(p_score)
+
+func set_player_names():
+	player_name.text = Global.username
+	enemy_name.text = Lobby.enemy_name 
+	
+func receive_ships_left(ship_left):
+	ship_status.text = \"Ship left: \" + str(ship_left)
+
+func previous():
+	get_tree().change_scene(\"res://Scenes/SetShip.tscn\")
+
+func to_lobby():
+	get_tree().change_scene(\"res://Scenes/Screens/Lobby.tscn\")
+
+func set_winlose_text(winlost_text:String):
+	win_lose_text.text = \"You \" + winlost_text + \"!\"
+
+func show_popup():
+	win_lose.show()
+
+func to_result():
+	get_tree().change_scene(\"res://Scenes/Screens/Result.tscn\")
+
+func clear():
+	ShipLayout.clear_ship()
+
+func _on_Button_pressed():
+	to_lobby()
+
+func _on_Skip_pressed():
+	Lobby.concede()
+"
 
 [node name="Play" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = -2.65002
 margin_bottom = -2.65002
-script = ExtResource( 1 )
+script = SubResource( 1 )
+grid8 = ExtResource( 1 )
+grid10 = ExtResource( 2 )
 
 [node name="MainMarginContainer" type="MarginContainer" parent="."]
-editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -1.58667
@@ -29,76 +159,88 @@ custom_constants/margin_top = 40
 custom_constants/margin_left = 60
 custom_constants/margin_bottom = 40
 
-[node name="ScorePanel" type="Panel" parent="MainMarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainMarginContainer"]
 margin_left = 60.0
 margin_top = 40.0
-margin_right = 1032.0
-margin_bottom = 352.0
+margin_right = 1860.0
+margin_bottom = 1128.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMarginContainer/HBoxContainer"]
+margin_right = 972.0
+margin_bottom = 1088.0
+
+[node name="ScorePanel" type="Panel" parent="MainMarginContainer/HBoxContainer/VBoxContainer"]
+editor/display_folded = true
+margin_right = 972.0
+margin_bottom = 312.0
 rect_min_size = Vector2( 972, 312 )
 size_flags_horizontal = 2
 size_flags_vertical = 2
+__meta__ = {
+"_edit_group_": true
+}
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainMarginContainer/ScorePanel"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel"]
 margin_right = 1800.0
 margin_bottom = 1000.0
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MainMarginContainer/ScorePanel/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer"]
 margin_right = 700.0
 margin_bottom = 312.0
 rect_min_size = Vector2( 700, 0 )
 size_flags_vertical = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer2"]
 margin_right = 700.0
 margin_bottom = 75.0
 
-[node name="PlayerNickname" type="Label" parent="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer"]
+[node name="PlayerNickname" type="Label" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer"]
 margin_right = 84.0
 margin_bottom = 75.0
 rect_pivot_offset = Vector2( 979.273, -180.563 )
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 3 )
 text = "You"
 
-[node name="YourScore" type="Label" parent="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer"]
+[node name="YourScore" type="Label" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer"]
 margin_left = 88.0
 margin_right = 140.0
 margin_bottom = 75.0
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 3 )
 text = ": 0"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer2"]
 margin_top = 79.0
 margin_right = 700.0
 margin_bottom = 154.0
 
-[node name="EnemyNickname" type="Label" parent="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+[node name="EnemyNickname" type="Label" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer2"]
 margin_right = 146.0
 margin_bottom = 75.0
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 3 )
 text = "Enemy"
 
-[node name="EnemyScore" type="Label" parent="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+[node name="EnemyScore" type="Label" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer2"]
 margin_left = 150.0
 margin_right = 202.0
 margin_bottom = 75.0
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 3 )
 text = ": 0"
 
-[node name="ShipStatus" type="Label" parent="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2"]
+[node name="ShipStatus" type="Label" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer2"]
 margin_top = 158.0
 margin_right = 700.0
 margin_bottom = 233.0
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 3 )
 text = "Ship left: 4"
 
-[node name="RoundScore" type="Label" parent="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2"]
+[node name="RoundScore" type="Label" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer2"]
 margin_top = 237.0
 margin_right = 700.0
 margin_bottom = 312.0
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 3 )
 text = "Round Score: 0"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainMarginContainer/ScorePanel/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer"]
 margin_left = 704.0
 margin_right = 976.0
 margin_bottom = 239.0
@@ -106,58 +248,60 @@ rect_min_size = Vector2( 272, 0 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
-[node name="RoundNum" type="Label" parent="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer"]
+[node name="RoundNum" type="Label" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer"]
 margin_left = 46.0
 margin_right = 225.0
 margin_bottom = 75.0
 size_flags_horizontal = 4
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 3 )
 text = "Round 1"
 
-[node name="Time" type="Label" parent="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer"]
+[node name="Time" type="Label" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer"]
 margin_left = 109.0
 margin_top = 79.0
 margin_right = 163.0
 margin_bottom = 154.0
 size_flags_horizontal = 4
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 3 )
 text = "10"
 align = 1
-script = ExtResource( 3 )
+script = ExtResource( 4 )
 
-[node name="Skip" type="Button" parent="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer"]
+[node name="Skip" type="Button" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer"]
 margin_left = 82.0
 margin_top = 158.0
 margin_right = 189.0
 margin_bottom = 239.0
 size_flags_horizontal = 4
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 3 )
 text = "Skip"
 
-[node name="Timer" type="Timer" parent="."]
+[node name="PlayerGrid" parent="MainMarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource( 5 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 320.0
+margin_right = 972.0
+margin_bottom = 1088.0
 
-[node name="EnemyGrid" type="TextureRect" parent="."]
-margin_left = 1092.0
-margin_top = 272.0
-margin_right = 1860.0
-margin_bottom = 1040.0
-texture = ExtResource( 4 )
-script = ExtResource( 5 )
+[node name="VBoxContainer2" type="VBoxContainer" parent="MainMarginContainer/HBoxContainer"]
+margin_left = 976.0
+margin_right = 1744.0
+margin_bottom = 1088.0
 
-[node name="PlayerGrid" parent="." instance=ExtResource( 6 )]
-margin_left = 219.6
-margin_top = 387.2
-margin_right = 987.6
-margin_bottom = 1155.2
-rect_scale = Vector2( 0.85, 0.85 )
-
-[node name="Confirm" type="Button" parent="."]
-margin_left = 1335.5
-margin_top = 100.0
-margin_right = 1616.5
-margin_bottom = 209.0
-custom_fonts/font = ExtResource( 7 )
+[node name="Confirm" type="Button" parent="MainMarginContainer/HBoxContainer/VBoxContainer2"]
+margin_right = 768.0
+margin_bottom = 80.0
+custom_fonts/font = ExtResource( 6 )
 text = "Confirm"
+
+[node name="EnemyGrid" type="TextureRect" parent="MainMarginContainer/HBoxContainer/VBoxContainer2"]
+margin_top = 84.0
+margin_right = 768.0
+margin_bottom = 852.0
+texture = ExtResource( 1 )
+script = ExtResource( 7 )
+
+[node name="Timer" type="Timer" parent="."]
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 editor/display_folded = true
@@ -189,7 +333,7 @@ margin_left = 52.0
 margin_right = 289.0
 margin_bottom = 74.0
 size_flags_horizontal = 4
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 6 )
 text = "Default"
 align = 1
 valign = 1
@@ -201,11 +345,11 @@ margin_right = 240.0
 margin_bottom = 158.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 6 )
 text = "quit"
 
 [node name="ClickSound" parent="." instance=ExtResource( 8 )]
-[connection signal="pressed" from="MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer/Skip" to="." method="_on_Skip_pressed"]
+[connection signal="pressed" from="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer/Skip" to="." method="_on_Skip_pressed"]
+[connection signal="pressed" from="MainMarginContainer/HBoxContainer/VBoxContainer2/Confirm" to="." method="_on_Confirm_pressed"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
-[connection signal="pressed" from="Confirm" to="." method="_on_Confirm_pressed"]
 [connection signal="pressed" from="MarginContainer/WinLose/VBoxContainer/Button" to="." method="_on_Button_pressed"]

@@ -18,6 +18,9 @@ onready var win_lose := $MarginContainer/WinLose
 onready var win_lose_text := $MarginContainer/WinLose/VBoxContainer/WinLoseText
 onready var player_name := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer/PlayerNickname
 onready var enemy_name := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer2/EnemyNickname
+export (Texture) var grid8
+export (Texture) var grid10
+
  
 func _ready():
 	Lobby.connect("target_info_received", self, "render_hit")
@@ -27,11 +30,24 @@ func _ready():
 	round_num.text = "Round "+ str(Lobby.round_num) 
 	round_score.text = "Round Score: " + str(Lobby.round_score)
 	set_player_names()
+	set_board_size()
+	yield(get_tree().create_timer(0.1),"timeout")
+	player_grid._ready()
+	enemy_grid._ready()
 	var ships = ShipLayout.ships_list
 	for ship in ships:
 		player_grid.insert_item(ship)
 	if Lobby.your_turn:
 		new_turn()
+
+func set_board_size():
+	if Lobby.boardsize == 8:
+		player_grid.texture = grid8
+		enemy_grid.texture = grid8
+	else:
+		player_grid.texture = grid10
+		enemy_grid.texture = grid10
+	print(Lobby.boardsize)	
 
 func _on_Timer_timeout():
 	if DisplayValue > 0:

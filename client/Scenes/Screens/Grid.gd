@@ -8,7 +8,9 @@ var cell_size = 96
 var grid_width = 0
 var grid_height = 0
 onready var ships_node = get_node("/root/ShipLayout")
- 
+export (Texture) var grid8
+export (Texture) var grid10
+	
 func _ready():
 	var s = get_grid_size(self)
 	grid_width = s.x
@@ -19,7 +21,7 @@ func _ready():
 		grid[x] = {}
 		for y in range(grid_height):
 			grid[x][y] = false
-	
+
 func insert_ship(ship):
 	var ship_pos = get_proper_position(ship)
 #	print(ship.rect_position)

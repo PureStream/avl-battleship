@@ -7,7 +7,6 @@ onready var grid = $HBoxContainer/Grid
 onready var container = $HBoxContainer/MarginContainer/VBoxContainer
 onready var ship_slots = container.get_node("ShipSlots")
 onready var confirm = container.get_node("Button")
-
 export (Texture) var grid8
 export (Texture) var grid10
 
@@ -20,7 +19,7 @@ var last_rot = 0
 func _ready():
 	Lobby.set_ship = self
 	set_board_size()
-	grid._ready()
+	grid.call_deferred("_ready")
 	pickup_ship("Ship4")
 	pickup_ship("Ship4")
 	pickup_ship("Ship4")
@@ -33,6 +32,7 @@ func set_board_size():
 		grid.texture = grid8
 	else:
 		grid.texture = grid10
+	print(Lobby.boardsize)	
 
 func _process(delta):
 	var cursor_pos = get_global_mouse_position()
@@ -152,3 +152,6 @@ func _on_Button_pressed():
 func next():
 	get_tree().change_scene("res://Scenes/Screens/Play.tscn")
 
+func _on_Test_pressed():
+	set_board_size()
+	grid.ready()# Replace with function body.
