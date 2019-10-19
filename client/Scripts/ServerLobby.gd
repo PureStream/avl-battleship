@@ -9,6 +9,7 @@ var play = null
 var result = null
 var session_id = -1
 var enemy_name = ""
+var boardsize = -1
 
 var round_num = 1
 var round_score = 0
@@ -18,14 +19,14 @@ remote func receive_username(username):
 	print(username)
 	Global.username = username
 
-func ready_to_match():
-	rpc_id(1,"ready_to_match")
+func ready_to_match(info):
+	rpc_id(1,"ready_to_match", info)
 
 remote func start_matching():
 	lobby.start_matching()
 
-func look_for_player(info):
-	rpc_id(1,"match_make", info)
+func look_for_player():
+	rpc_id(1,"match_make")
 	
 remote func player_found(session_id, enemy_name):
 	print("found player: " + enemy_name)
@@ -107,6 +108,9 @@ remote func receive_round_result(result:bool, game_over:bool, round_info):
 	#show round result
 	play.clear()
 	play.previous()
+
+remote func receive_board_size(board_size):
+	boardsize = board_size
 
 func rematch():
 	if session_id >-1:
