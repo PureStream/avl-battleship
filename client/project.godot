@@ -36,7 +36,7 @@ window/stretch/aspect="keep"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "GDFirebase" )
+enabled=PoolStringArray(  )
 
 [input]
 

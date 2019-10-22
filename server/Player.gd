@@ -1,6 +1,4 @@
-extends HTTPRequest
-
-signal firebase_request_completed(network_id, result, response_code, headers, body)
+extends Node
 
 var session_id = -1
 var ships = {}
@@ -18,11 +16,7 @@ var auth = null
 var userdata = null
 
 func _ready():
-	connect("request_completed", self, "_on_request_completed")
-	connect("firebase_request_completed", Firebase.Auth, "_on_FirebaseAuth_request_completed")
-
-func _on_request_completed(result, response_code, headers, body):
-	emit_signal("firebase_request_completed", self, result, response_code, headers, body)
+	pass
 
 func set_id(id):
 	self.id = id

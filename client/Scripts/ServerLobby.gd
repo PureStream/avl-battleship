@@ -1,6 +1,6 @@
 extends Node
 
-signal login_succeeded(auth_result)
+signal login_succeeded()
 signal login_failed(error_code, error_msg)
 
 func _ready():
@@ -62,9 +62,9 @@ func _on_connection_success():
 	rpc_id(1, "receive_login_data", connect_type, connect_email, connect_pwd, connect_username)
 
 remote func login_succeeded(auth):
-	print("login success: " + auth.email)
+	print("login success: " + auth.displayname)
 	set_username(auth.displayname)
-	emit_signal("login_succeeded", auth)
+	emit_signal("login_succeeded")
 
 remote func login_failed(error_code, message):
 	print("error code: " + str(error_code))

@@ -11,6 +11,7 @@ var session = preload("res://Session.tscn")
 var ships_left = 4
 var session_id = 0
 var session_dict = {}
+var player_request_dict = {}
 
 const CONNECT_TYPE = {
 	"LOGIN": "LOGIN",
@@ -27,20 +28,16 @@ func _ready():
 remote func receive_login_data(type, email, pwd, username):
 	print("receive login data")
 	var id = get_tree().get_rpc_sender_id()
-	var requestPlayer
-	for player in players.get_children():
-		if player.id == id:
-			requestPlayer = player
-			break
-	if (requestPlayer): 
+	var request_player = player_request_dict.id
+	if (request_player): 
 		match type:
 			CONNECT_TYPE.GUEST:
-				Firebase.Auth.login_as_guest()
+				rpc_id(id, "login_succeeded", { "displayname": "guest"+str(id) })
 			CONNECT_TYPE.LOGIN:
-				Firebase.Auth.login_with_email_and_password(requestPlayer, email, pwd)
+				Firebase.Auth.login_with_email_and_password(request_player, email, pwd)
 			CONNECT_TYPE.REGISTER:
-				requestPlayer.player_name = username
-				Firebase.Auth.signup_with_email_and_password(requestPlayer, email, pwd)
+				request_player.set_request_name(username)
+				Firebase.Auth.signup_with_email_and_password(request_player, email, pwd)
 			var unknown:
 				print("UNKNOWN_TYPE: ", unknown)
 	else:
@@ -59,8 +56,8 @@ func _on_FirebaseAuth_register_succeeded(nid, auth):
 func _on_FirebaseAuth_userdata_updated(nid, auth):
 	pass
 
-func send_username(id, name):
-	rpc_id(id, "receive_username", name)
+# func send_username(id, name):
+# 	rpc_id(id, "receive_username", name)
 
 remote func ready_to_match():
 	var id = get_tree().get_rpc_sender_id()

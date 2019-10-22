@@ -59,7 +59,7 @@ func signup_with_email_and_password(player, email, password):
 	player.request(register_request_url, ["Content-Type: application/json"], true, HTTPClient.METHOD_POST, JSON.print(login_request_body))
 
 func _on_registered_request_succeeded(player, auth):
-	var username = player.player_name
+	var username = player.get_request_name()
 	player.request(update_profile_request_url, ["Content-Type: application/json"], true, HTTPClient.METHOD_POST, JSON.print({
 		"idToken":auth.idtoken,
 		"displayName":username,
@@ -67,7 +67,7 @@ func _on_registered_request_succeeded(player, auth):
 	}))
 	yield(self, "userdata_updated")
 	auth.displayname = username
-	emit_signal("login_succeeded", player.id, auth)
+	emit_signal("login_succeeded", player.get_id(), auth)
 
 func login_as_guest():
 	request(login_guest_request_url, ["Content-Type: application/json"], true, HTTPClient.METHOD_POST, JSON.print({"returnSecureToken": true}))
@@ -81,7 +81,7 @@ func _on_FirebaseAuth_request_completed(player, result, response_code, headers, 
 	
 	var auth
 	var res = json_result.result
-	var nid = player.id
+	var nid = player.get_id()
 	if response_code == HTTPClient.RESPONSE_OK:
 		if not res.has("kind"):
 			auth = get_clean_keys(res)
