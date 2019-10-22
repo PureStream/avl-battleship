@@ -16,10 +16,8 @@ var enemy_name = ""
 var round_num = 1
 var round_score = 0
 var enemy_round_score = 0
-<<<<<<< HEAD
 var player_score = 0
 var enemy_score = 0
-=======
 
 var connect_type
 var connect_email
@@ -78,7 +76,6 @@ remote func login_failed(error_code, message):
 func set_username(name):
 	Global.username = name
 
->>>>>>> 622b5c38831c3c4c3c70c501cf1f9e19f27c3a7a
 remote func receive_username(username):
 	set_username(username)
 
