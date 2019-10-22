@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "HTTPRequest",
+"class": "FirebaseHTTPRequest",
+"language": "GDScript",
+"path": "res://addons/GDFirebase/FirebaseHTTPRequest.gd"
+}, {
 "base": "Resource",
 "class": "FirebaseResource",
 "language": "GDScript",
@@ -25,6 +30,7 @@ _global_script_classes=[ {
 "path": "res://addons/GDFirebase/FirebaseUserData.gd"
 } ]
 _global_script_class_icons={
+"FirebaseHTTPRequest": "",
 "FirebaseResource": "",
 "FirebaseStorage": "",
 "FirebaseUserData": ""
@@ -38,8 +44,13 @@ config/icon="res://icon.png"
 
 [autoload]
 
+Firebase="*res://addons/GDFirebase/Firebase.gd"
 Lobby="*res://Lobby.gd"
 ShipDB="*res://ShipDB.gd"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "GDFirebase" )
 
 [rendering]
 

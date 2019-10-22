@@ -8,26 +8,9 @@
 
 config_version=4
 
-_global_script_classes=[ {
-"base": "Resource",
-"class": "FirebaseResource",
-"language": "GDScript",
-"path": "res://addons/GDFirebase/FirebaseResource.gd"
-}, {
-"base": "HTTPRequest",
-"class": "FirebaseStorage",
-"language": "GDScript",
-"path": "res://addons/GDFirebase/FirebaseStorage.gd"
-}, {
-"base": "Reference",
-"class": "FirebaseUserData",
-"language": "GDScript",
-"path": "res://addons/GDFirebase/FirebaseUserData.gd"
-} ]
+_global_script_classes=[  ]
 _global_script_class_icons={
-"FirebaseResource": "",
-"FirebaseStorage": "",
-"FirebaseUserData": ""
+
 }
 
 [application]
@@ -53,7 +36,7 @@ window/stretch/aspect="keep"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "GDFirebase" )
+enabled=PoolStringArray(  )
 
 [input]
 
