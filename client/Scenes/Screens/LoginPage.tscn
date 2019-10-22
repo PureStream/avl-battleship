@@ -74,7 +74,6 @@ margin_right = 762.0
 margin_bottom = 80.0
 size_flags_horizontal = 11
 custom_fonts/font = ExtResource( 4 )
-max_length = 17
 secret_character = "#"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
@@ -97,7 +96,6 @@ margin_bottom = 80.0
 size_flags_horizontal = 3
 size_flags_vertical = 9
 custom_fonts/font = ExtResource( 4 )
-max_length = 17
 secret = true
 secret_character = "•"
 
@@ -420,6 +418,7 @@ script = ExtResource( 8 )
 [node name="ClickSound" type="AudioStreamPlayer2D" parent="ClickSound"]
 stream = ExtResource( 9 )
 volume_db = -1.0
+[connection signal="toggled" from="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer4/RememberPassword" to="." method="_on_RememberPassword_toggled"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Sign In" to="." method="_on_Sign_In_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer5/Register" to="." method="_on_Register_Popup_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/LoginAsGuest" to="." method="_on_Guest_Login_pressed"]

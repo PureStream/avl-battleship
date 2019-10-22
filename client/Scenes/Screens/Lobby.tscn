@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scenes/Screens/Lobby.gd" type="Script" id=1]
 [ext_resource path="res://Fonts/pala.ttf" type="DynamicFontData" id=2]
@@ -6,12 +6,14 @@
 [ext_resource path="res://Scenes/BackButton.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Sounds/ClickSound.tscn" type="PackedScene" id=5]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="DynamicFont" id=2]
 size = 90
 use_filter = true
 font_data = ExtResource( 2 )
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=3]
 size = 36
 font_data = ExtResource( 2 )
 
@@ -49,7 +51,8 @@ margin_right = 400.0
 margin_bottom = 135.0
 rect_min_size = Vector2( 400, 135 )
 size_flags_horizontal = 0
-custom_fonts/font = SubResource( 1 )
+custom_styles/focus = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 custom_constants/hseparation = 0
 text = "Classic"
 
@@ -64,6 +67,7 @@ custom_constants/separation = 20
 margin_right = 500.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 500, 0 )
+custom_styles/focus = SubResource( 1 )
 custom_fonts/font = ExtResource( 3 )
 text = "Ranked"
 align = 0
@@ -72,6 +76,7 @@ align = 0
 margin_top = 100.0
 margin_right = 500.0
 margin_bottom = 180.0
+custom_styles/focus = SubResource( 1 )
 custom_fonts/font = ExtResource( 3 )
 text = "Quickplay"
 align = 0
@@ -80,6 +85,7 @@ align = 0
 margin_top = 200.0
 margin_right = 500.0
 margin_bottom = 280.0
+custom_styles/focus = SubResource( 1 )
 custom_fonts/font = ExtResource( 3 )
 text = "Create Room"
 align = 0
@@ -89,11 +95,16 @@ margin_top = 300.0
 margin_right = 500.0
 margin_bottom = 380.0
 rect_min_size = Vector2( 500, 0 )
+custom_styles/focus = SubResource( 1 )
 custom_fonts/font = ExtResource( 3 )
 text = "Join Game"
 align = 0
 
 [node name="BackButton" parent="MarginContainer/HBoxContainer/ModePanel" instance=ExtResource( 4 )]
+margin_left = 0.0
+margin_top = 920.0
+margin_right = 164.0
+margin_bottom = 1000.0
 
 [node name="TeamPanel" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 margin_left = 1290.0
@@ -120,7 +131,7 @@ text = "Team Name"
 margin_top = 78.0
 margin_right = 390.0
 margin_bottom = 116.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
 text = "Commander Name"
 
 [node name="Commander" type="ColorRect" parent="MarginContainer/HBoxContainer/TeamPanel/HBoxContainer"]

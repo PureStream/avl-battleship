@@ -1,14 +1,30 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Fonts/test_font.tres" type="DynamicFont" id=1]
 [ext_resource path="res://Scenes/BackButton.gd" type="Script" id=2]
 
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="StyleBoxEmpty" id=6]
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="StyleBoxEmpty" id=7]
+
 [node name="BackButton" type="Button"]
-margin_top = 920.0
-margin_right = 200.0
-margin_bottom = 1000.0
-rect_min_size = Vector2( 200, 0 )
+margin_left = 91.0262
+margin_top = 958.172
+margin_right = 243.026
+margin_bottom = 1032.17
 size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 6 )
+custom_styles/focus = SubResource( 5 )
+custom_styles/disabled = SubResource( 3 )
+custom_styles/normal = SubResource( 7 )
 custom_fonts/font = ExtResource( 1 )
 text = "Back"
 script = ExtResource( 2 )
