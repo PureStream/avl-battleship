@@ -12,20 +12,14 @@ onready var register_username := $MarginContainer2/RegisterPopUpMenu/MarginConta
 onready var register_password := $MarginContainer2/RegisterPopUpMenu/MarginContainer/VBoxContainer/VBoxContainer3/PasswordTypeBox
 
 func _ready():
-<<<<<<< HEAD
-	Firebase.Auth.connect("login_succeeded", self, "_on_FirebaseAuth_login_succeeded")
-	Firebase.Auth.connect("login_failed", self, "_on_login_failed")
+	Lobby.connect("login_succeeded", self, "_on_login_succeeded")
+	Lobby.connect("login_failed", self, "_on_login_failed")
 	Settings.load_email()
 	if Settings.login_email != "":
 		login_email.text = Settings.login_email
-#	registerPopUpMenu 
-=======
-	Lobby.connect("login_succeeded", self, "_on_login_succeeded")
-	Lobby.connect("login_failed", self, "_on_login_failed")
 
 func _on_Guest_Login_pressed():
 	Lobby.guest_login()
->>>>>>> 622b5c38831c3c4c3c70c501cf1f9e19f27c3a7a
 
 func _on_Sign_In_pressed():
 	Lobby.email_pwd_login(login_email.text, login_password.text)
@@ -38,13 +32,8 @@ func _on_login_succeeded():
 	Settings.login_email = auth.email
 	Settings.save_email()
 
-<<<<<<< HEAD
-func _on_login_failed(error_code, message):
-	errorPopUpDialog.show()
-=======
 func _on_login_failed(error_code, message):		
 	error_popup_dialog.show()
->>>>>>> 622b5c38831c3c4c3c70c501cf1f9e19f27c3a7a
 	error_text.text = message
 	Lobby.disconnect_from_server()
 	
@@ -55,12 +44,4 @@ func _on_CloseIcon_pressed():
 	register_popup_menu.hide()
 
 func _on_CloseIcon2_pressed():
-<<<<<<< HEAD
-	errorPopUpDialog.hide()
-
-func _on_Guest_Login_pressed():
-	get_tree().change_scene("res://Scenes/MainMenu.tscn")
-=======
 	error_popup_dialog.hide()
-	
->>>>>>> 622b5c38831c3c4c3c70c501cf1f9e19f27c3a7a
