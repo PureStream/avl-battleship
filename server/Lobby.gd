@@ -1,8 +1,5 @@
 extends Node
 
-func _ready():
-	pass # Replace with function body.
-
 var server = null
 
 var players = null
@@ -14,9 +11,53 @@ var session = preload("res://Session.tscn")
 var ships_left = 4
 var session_id = 0
 var session_dict = {}
+var player_request_dict = {}
 
-func send_username(id, name):
-	rpc_id(id, "receive_username", name)
+const CONNECT_TYPE = {
+	"LOGIN": "LOGIN",
+	"REGISTER": "REGISTER",
+	"GUEST": "GUEST",
+}
+
+func _ready():
+	Firebase.Auth.connect("login_succeeded", self, "_on_FirebaseAuth_login_succeeded")
+	Firebase.Auth.connect("login_failed", self, "_on_FirebaseAuth_login_failed")
+	Firebase.Auth.connect("register_succeeded", self, "_on_FirebaseAuth_register_succeeded")
+	Firebase.Auth.connect("userdata_updated", self, "_on_FirebaseAuth_userdata_updated")
+
+remote func receive_login_data(type, email, pwd, username):
+	print("receive login data")
+	var id = get_tree().get_rpc_sender_id()
+	var request_player = player_request_dict.id
+	if (request_player): 
+		match type:
+			CONNECT_TYPE.GUEST:
+				rpc_id(id, "login_succeeded", { "displayname": "guest"+str(id) })
+			CONNECT_TYPE.LOGIN:
+				Firebase.Auth.login_with_email_and_password(request_player, email, pwd)
+			CONNECT_TYPE.REGISTER:
+				request_player.set_request_name(username)
+				Firebase.Auth.signup_with_email_and_password(request_player, email, pwd)
+			var unknown:
+				print("UNKNOWN_TYPE: ", unknown)
+	else:
+		print("Player not found?") 
+
+func _on_FirebaseAuth_login_succeeded(nid, auth):
+	print("LoginUser: ", auth.displayname)
+	rpc_id(nid, "login_succeeded", auth)
+
+func _on_FirebaseAuth_login_failed(nid, error_code, error_msg):
+	rpc_id(nid, "login_failed", error_code, error_msg)
+
+func _on_FirebaseAuth_register_succeeded(nid, auth):
+	pass
+
+func _on_FirebaseAuth_userdata_updated(nid, auth):
+	pass
+
+# func send_username(id, name):
+# 	rpc_id(id, "receive_username", name)
 
 remote func ready_to_match():
 	var id = get_tree().get_rpc_sender_id()

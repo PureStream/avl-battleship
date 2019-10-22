@@ -11,8 +11,12 @@ var round_score = 0
 var ready = false
 var player_name = ""
 
+var needs_refresh = false
+var auth = null
+var userdata = null
+
 func _ready():
-	pass # Replace with function body.
+	pass
 
 func set_id(id):
 	self.id = id
