@@ -1,8 +1,5 @@
 extends Node
 
-func _ready():
-	pass # Replace with function body.
-
 var server = null
 
 var players = null
@@ -14,6 +11,53 @@ var session = preload("res://Session.tscn")
 var ships_left = 4
 var session_id = 0
 var session_dict = {}
+
+const CONNECT_TYPE = {
+	"LOGIN": "LOGIN",
+	"REGISTER": "REGISTER",
+	"GUEST": "GUEST",
+}
+
+func _ready():
+	Firebase.Auth.connect("login_succeeded", self, "_on_FirebaseAuth_login_succeeded")
+	Firebase.Auth.connect("login_failed", self, "_on_FirebaseAuth_login_failed")
+	Firebase.Auth.connect("register_succeeded", self, "_on_FirebaseAuth_register_succeeded")
+	Firebase.Auth.connect("userdata_updated", self, "_on_FirebaseAuth_userdata_updated")
+
+remote func receive_login_data(type, email, pwd, username):
+	print("receive login data")
+	var id = get_tree().get_rpc_sender_id()
+	var requestPlayer
+	for player in players.get_children():
+		if player.id == id:
+			requestPlayer = player
+			break
+	if (requestPlayer): 
+		match type:
+			CONNECT_TYPE.GUEST:
+				Firebase.Auth.login_as_guest()
+			CONNECT_TYPE.LOGIN:
+				Firebase.Auth.login_with_email_and_password(requestPlayer, email, pwd)
+			CONNECT_TYPE.REGISTER:
+				requestPlayer.player_name = username
+				Firebase.Auth.signup_with_email_and_password(requestPlayer, email, pwd)
+			var unknown:
+				print("UNKNOWN_TYPE: ", unknown)
+	else:
+		print("Player not found?") 
+
+func _on_FirebaseAuth_login_succeeded(nid, auth):
+	print("LoginUser: ", auth.displayname)
+	rpc_id(nid, "login_succeeded", auth)
+
+func _on_FirebaseAuth_login_failed(nid, error_code, error_msg):
+	rpc_id(nid, "login_failed", error_code, error_msg)
+
+func _on_FirebaseAuth_register_succeeded(nid, auth):
+	pass
+
+func _on_FirebaseAuth_userdata_updated(nid, auth):
+	pass
 
 func send_username(id, name):
 	rpc_id(id, "receive_username", name)
