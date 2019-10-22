@@ -13,7 +13,8 @@ var enemy_name = ""
 var round_num = 1
 var round_score = 0
 var enemy_round_score = 0
-
+var player_score = 0
+var enemy_score = 0
 remote func receive_username(username):
 	print(username)
 	Global.username = username
@@ -95,6 +96,7 @@ remote func receive_round_result(result:bool, game_over:bool, round_info):
 	round_num = round_info["round"]
 	round_score = round_info["round_score"]
 	enemy_round_score = round_info["enemy_round_score"]
+	play.set_score(round_info)
 	if game_over:
 		if result:
 			play.set_winlose_text("Win")

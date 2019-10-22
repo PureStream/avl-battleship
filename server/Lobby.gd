@@ -244,13 +244,16 @@ func round_over(curr_player, curr_enemy, curr_session):
 		var enemy = player.connected_player
 		
 		player.ready = false
-		player.all_scores.append(player.score)
-		player.score = 0
+#		player.all_scores.append(player.score)
+#		player.score = 0
 		
 		var round_info = {
 		"round":curr_session.round_num,
 		"round_score": player.round_score, 
-		"enemy_round_score": enemy.round_score}
+		"enemy_round_score": enemy.round_score,
+		"player":player.score,
+		"enemy":enemy.score
+		}
 		
 		var round_won = player == curr_player
 		rpc_id(player.id, "receive_round_result", round_won, game_over, round_info)

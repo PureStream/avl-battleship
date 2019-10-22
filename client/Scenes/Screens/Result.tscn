@@ -30,7 +30,6 @@ custom_fonts/font = ExtResource( 2 )
 text = "Quit"
 
 [node name="Popup" type="Popup" parent="."]
-visible = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -77,6 +76,32 @@ margin_top = 442.0
 margin_right = 816.0
 margin_bottom = 462.0
 rect_min_size = Vector2( 0, 20 )
+
+[node name="Player_Hit_score" type="Label" parent="."]
+margin_left = 506.911
+margin_top = 358.909
+margin_right = 815.911
+margin_bottom = 483.909
+rect_pivot_offset = Vector2( -1250, 540 )
+custom_fonts/font = ExtResource( 2 )
+
+[node name="Enemy_Hit_score" type="Label" parent="."]
+margin_left = 1301.0
+margin_top = 309.0
+margin_right = 1712.0
+margin_bottom = 441.0
+rect_pivot_offset = Vector2( -1250, 540 )
+custom_fonts/font = ExtResource( 2 )
+
+[node name="Label3" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_pivot_offset = Vector2( -1250, 540 )
+
+[node name="Label4" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_pivot_offset = Vector2( -1250, 540 )
 [connection signal="pressed" from="Rematch" to="." method="_on_Rematch_pressed"]
 [connection signal="pressed" from="Quit" to="." method="_on_Quit_pressed"]
 [connection signal="pressed" from="Popup/Panel/VBoxContainer/Cancel" to="." method="_on_Cancel_pressed"]

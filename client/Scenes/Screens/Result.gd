@@ -3,14 +3,19 @@ extends Control
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text
+const play = preload("res://Scenes/Screens/Play.tscn")
 onready var quit := $Quit
 onready var rematch := $Rematch
 onready var popup := $Popup
+onready var player_hit_score := $Player_Hit_score
+onready var enemy_hit_score := $Enemy_Hit_score
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Global.viewing_result = true
 	Lobby.result = self
+	player_hit_score.text = ": " + str(Lobby.player_score)
+	enemy_hit_score.text = ": " + str(Lobby.enemy_score)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

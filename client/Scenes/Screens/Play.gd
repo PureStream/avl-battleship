@@ -26,6 +26,8 @@ func _ready():
 	timer.set_wait_time(1)
 	round_num.text = "Round "+ str(Lobby.round_num) 
 	round_score.text = "Round Score: " + str(Lobby.round_score)
+	enemy_score.text = ": " + str(Lobby.enemy_score)
+	your_score.text = ": " + str(Lobby.player_score)
 	set_player_names()
 	var ships = ShipLayout.ships_list
 	for ship in ships:
@@ -73,10 +75,10 @@ func new_turn():
 	timer.start()
 	
 func set_score(score):
-	var p_score = score["player"]
-	var e_score = score["enemy"]
-	enemy_score.text = ": " + str(e_score)
-	your_score.text = ": " + str(p_score)
+	Lobby.player_score = score["player"]
+	Lobby.enemy_score = score["enemy"]
+	enemy_score.text = ": " + str(Lobby.player_score)
+	your_score.text = ": " + str(Lobby.enemy_score)
 
 func set_player_names():
 	player_name.text = Global.username
