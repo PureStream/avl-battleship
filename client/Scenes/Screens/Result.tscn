@@ -65,7 +65,7 @@ margin_top = 94.0
 margin_right = 1804.0
 margin_bottom = 168.0
 custom_fonts/font = ExtResource( 2 )
-text = "Damage"
+text = "Damage Dealt"
 align = 1
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
