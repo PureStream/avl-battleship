@@ -67,9 +67,6 @@ var game_mode = GameMode.CLASSIC
 
 var menu_buttons = []
 
-var sound_value = 50
-var music_value = 50
-
 #const IP_ADDRESS = "25.30.166.184"
 const IP_ADDRESS = "127.0.0.1"
 

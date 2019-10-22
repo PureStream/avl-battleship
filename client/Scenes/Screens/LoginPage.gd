@@ -13,6 +13,9 @@ onready var register_password := $MarginContainer2/RegisterPopUpMenu/MarginConta
 func _ready():
 	Firebase.Auth.connect("login_succeeded", self, "_on_FirebaseAuth_login_succeeded")
 	Firebase.Auth.connect("login_failed", self, "_on_login_failed")
+	Settings.load_email()
+	if Settings.login_email != "":
+		login_email.text = Settings.login_email
 #	registerPopUpMenu 
 
 func _on_Sign_In_pressed():
@@ -24,10 +27,10 @@ func _on_Register_pressed():
 func _on_FirebaseAuth_login_succeeded(auth):
 	print("login success: " + auth.email)
 	get_tree().change_scene("res://Scenes/MainMenu.tscn")
+	Settings.login_email = auth.email
+	Settings.save_email()
 
 func _on_login_failed(error_code, message):
-	if message == "WEAK_PASSWORD : Password should be at least 6 characters":
-		message = "Password should be at least 6 characters"		
 	errorPopUpDialog.show()
 	error_text.text = message
 	print("error code: " + str(error_code))
