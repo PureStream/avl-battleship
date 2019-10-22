@@ -27,7 +27,7 @@ func _on_Sign_In_pressed():
 func _on_Register_pressed():
 	Lobby.email_pwd_register(register_email.text, register_password.text, register_username.text)
 
-func _on_login_succeeded():
+func _on_login_succeeded(auth):
 	get_tree().change_scene("res://Scenes/MainMenu.tscn")
 	Settings.login_email = auth.email
 	Settings.save_email()

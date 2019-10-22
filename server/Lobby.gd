@@ -32,7 +32,7 @@ remote func receive_login_data(type, email, pwd, username):
 	if (request_player): 
 		match type:
 			CONNECT_TYPE.GUEST:
-				rpc_id(id, "login_succeeded", { "displayname": "guest"+str(id) })
+				rpc_id(id, "login_succeeded", { "email": "", "displayname": "guest"+str(id) })
 			CONNECT_TYPE.LOGIN:
 				Firebase.Auth.login_with_email_and_password(request_player, email, pwd)
 			CONNECT_TYPE.REGISTER:
