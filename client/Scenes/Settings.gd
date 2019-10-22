@@ -2,12 +2,13 @@ extends Node
 
 onready var settings_file = "user://settings.save"
 var login_email := ""
+var login_password := ""
 var password := ""
 var sound_value = 50
 var music_value = 50
 
 func _ready():
-	pass # Replace with function body.
+	pass 
 	
 func save():
 	var save_dict = {
@@ -32,4 +33,5 @@ func load_email():
 	f.open(settings_file, File.READ)
 	var curr_line = parse_json(f.get_line())
 	login_email = curr_line["email"]
+	login_password = curr_line["password"]
 	f.close()

@@ -164,6 +164,7 @@ custom_fonts/font = ExtResource( 5 )
 text = "Quit"
 
 [node name="Popup" type="Popup" parent="."]
+editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
