@@ -4,18 +4,18 @@ extends Control
 # var a = 2
 # var b = "text
 const play = preload("res://Scenes/Screens/Play.tscn")
-onready var quit := $Quit
-onready var rematch := $Rematch
-onready var popup := $Popup
-onready var player_hit_score := $Hitbar/PlayerHit/Player_Hit_score
-onready var enemy_hit_score := $Hitbar/EnemyHit/Enemy_Hit_score
-onready var player_round_score := $Roundbar/PlayerScore/Player_Round_score
-onready var enemy_round_score := $Roundbar/EnemyScore/Enemy_Round_score
-onready var hit_bar := $Hitbar
-onready var round_bar := $Roundbar
-onready var time_bar := $Timebar
-onready var player_name := $PlayerName
-onready var enemy_name := $EnemyName
+onready var quit := $MarginContainer/VBoxContainer/HBoxContainer2/Quit
+onready var rematch := $MarginContainer/VBoxContainer/HBoxContainer2/Rematch
+onready var popup := $MarginContainer2/Popup
+onready var player_hit_score := $MarginContainer/VBoxContainer/HBoxContainer3/PlayerHit/MarginContainer/Player_Hit_score
+onready var enemy_hit_score := $MarginContainer/VBoxContainer/HBoxContainer3/EnemyHit/MarginContainer/Enemy_Hit_score
+onready var player_round_score := $MarginContainer/VBoxContainer/HBoxContainer4/PlayerScore/MarginContainer/Player_Round_score
+onready var enemy_round_score := $MarginContainer/VBoxContainer/HBoxContainer4/EnemyScore/MarginContainer/Enemy_Round_score
+onready var hit_bar := $MarginContainer/VBoxContainer/HBoxContainer3/Hitbar
+onready var round_bar := $MarginContainer/VBoxContainer/HBoxContainer4/Roundbar
+onready var time_bar := $MarginContainer/VBoxContainer/HBoxContainer5/Timebar
+onready var player_name := $MarginContainer/VBoxContainer/HBoxContainer/PlayerName
+onready var enemy_name := $MarginContainer/VBoxContainer/HBoxContainer/EnemyName
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
