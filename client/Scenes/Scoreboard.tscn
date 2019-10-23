@@ -1,0 +1,121 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Scenes/Scoreboard.gd" type="Script" id=1]
+[ext_resource path="res://Fonts/Roboto_Small.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Scenes/RoundCounter.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Images/UI/ship_counter_ico.png" type="Texture" id=4]
+[ext_resource path="res://Fonts/Roboto_Medium.tres" type="DynamicFont" id=5]
+
+[sub_resource type="StyleBoxLine" id=1]
+color = Color( 0.109804, 0.109804, 0.109804, 1 )
+grow_begin = -2.0
+grow_end = 2.0
+thickness = 3
+vertical = true
+
+[node name="MarginContainer" type="MarginContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 2
+script = ExtResource( 1 )
+
+[node name="Scoreboard" type="HBoxContainer" parent="."]
+margin_left = 20.0
+margin_right = 1900.0
+margin_bottom = 1078.0
+rect_min_size = Vector2( 0, 100 )
+
+[node name="NameLabel" type="Label" parent="Scoreboard"]
+margin_top = 515.0
+margin_right = 1383.0
+margin_bottom = 563.0
+rect_min_size = Vector2( 260, 0 )
+rect_clip_content = true
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 2 )
+text = "Player Name"
+valign = 1
+
+[node name="VSeparator" type="VSeparator" parent="Scoreboard"]
+margin_left = 1387.0
+margin_right = 1387.0
+margin_bottom = 1078.0
+size_flags_horizontal = 0
+size_flags_vertical = 7
+custom_styles/separator = SubResource( 1 )
+custom_constants/separation = 0
+
+[node name="ScoreMargin" type="MarginContainer" parent="Scoreboard"]
+margin_left = 1391.0
+margin_right = 1561.0
+margin_bottom = 1078.0
+custom_constants/margin_right = 10
+custom_constants/margin_left = 10
+
+[node name="ScoreLabel" type="Label" parent="Scoreboard/ScoreMargin"]
+margin_left = 10.0
+margin_top = 515.0
+margin_right = 160.0
+margin_bottom = 563.0
+rect_min_size = Vector2( 150, 0 )
+custom_fonts/font = ExtResource( 2 )
+text = "0 pts."
+align = 1
+
+[node name="VSeparator2" type="VSeparator" parent="Scoreboard"]
+margin_left = 1565.0
+margin_right = 1565.0
+margin_bottom = 1078.0
+size_flags_horizontal = 0
+size_flags_vertical = 7
+custom_styles/separator = SubResource( 1 )
+custom_constants/separation = 0
+
+[node name="RoundCounters" type="HBoxContainer" parent="Scoreboard"]
+margin_left = 1569.0
+margin_right = 1713.0
+margin_bottom = 1078.0
+custom_constants/separation = 0
+
+[node name="RoundCounter" parent="Scoreboard/RoundCounters" instance=ExtResource( 3 )]
+
+[node name="RoundCounter2" parent="Scoreboard/RoundCounters" instance=ExtResource( 3 )]
+margin_left = 72.0
+margin_right = 144.0
+
+[node name="RoundCounter3" parent="Scoreboard/RoundCounters" instance=ExtResource( 3 )]
+visible = false
+margin_left = 144.0
+margin_right = 216.0
+
+[node name="VSeparator3" type="VSeparator" parent="Scoreboard"]
+margin_left = 1717.0
+margin_right = 1717.0
+margin_bottom = 1078.0
+size_flags_horizontal = 0
+size_flags_vertical = 7
+custom_styles/separator = SubResource( 1 )
+custom_constants/separation = 0
+
+[node name="ShipCountContainer" type="HBoxContainer" parent="Scoreboard"]
+margin_left = 1721.0
+margin_right = 1880.0
+margin_bottom = 1078.0
+
+[node name="Ship" type="TextureRect" parent="Scoreboard/ShipCountContainer"]
+margin_top = 489.0
+margin_right = 128.0
+margin_bottom = 589.0
+rect_min_size = Vector2( 100, 100 )
+size_flags_vertical = 4
+texture = ExtResource( 4 )
+
+[node name="ShipCount" type="Label" parent="Scoreboard/ShipCountContainer"]
+margin_left = 132.0
+margin_top = 501.0
+margin_right = 159.0
+margin_bottom = 576.0
+custom_fonts/font = ExtResource( 5 )
+text = "4"

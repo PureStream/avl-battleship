@@ -16,7 +16,7 @@ func _ready():
 	hide_buttons()
 
 func select_mode(btn):
-	if btn.get_meta("mode") != Global.game_mode || is_show:
+	if btn.get_meta("mode") != Lobby.game_mode || is_show:
 		emit_signal("select_mode", btn.get_meta("mode"))
 		hide_buttons()
 	else:

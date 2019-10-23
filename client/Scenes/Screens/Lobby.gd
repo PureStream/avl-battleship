@@ -20,7 +20,7 @@ class mode_data:
 func _ready():
 	Lobby.lobby = self
 	Global.viewing_result = false
-	change_mode(Global.game_mode)
+	change_mode(Lobby.game_mode)
 
 func change_mode(mode):
 	var mode_arr = []
@@ -35,7 +35,7 @@ func change_mode(mode):
 			new_data.mode = key
 			mode_arr.append(new_data)
 	mode_button.set_buttons(mode_arr)
-	Global.game_mode = mode
+	Lobby.game_mode = mode
 	enable_buttons()
 
 func disable_buttons():
@@ -74,7 +74,7 @@ func _on_disconnect():
 	popup_obj.queue_free()
 
 func _proceed():
-	Lobby.ready_to_match({"mode": Global.game_mode})
+	Lobby.ready_to_match({"mode": Lobby.game_mode})
 
 func start_matching():
 	popup_obj.matching()

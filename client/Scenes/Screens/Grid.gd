@@ -7,20 +7,19 @@ var ship_type = []
 var cell_size = 96
 var grid_width = 0
 var grid_height = 0
+var grid_offset = 0
+
 onready var ships_node = get_node("/root/ShipLayout")
-export (Texture) var grid8
-export (Texture) var grid10
-	
-func _ready():
-	var s = get_grid_size(self)
-	grid_width = s.x
-	grid_height = s.y
-	print (grid_height)
-   
+
+func _ready():   
 	for x in range(grid_width):
 		grid[x] = {}
 		for y in range(grid_height):
 			grid[x][y] = false
+
+func set_grid_size(x,y):
+	grid_width = x
+	grid_height = y
 
 func insert_ship(ship):
 	var ship_pos = get_proper_position(ship)
@@ -29,7 +28,7 @@ func insert_ship(ship):
 	var ship_size = get_grid_size(ship)
 	if is_grid_space_available(g_pos.x, g_pos.y, ship_size.x, ship_size.y):
 		set_grid_space(g_pos.x, g_pos.y, ship_size.x, ship_size.y, true)
-		ship.rect_position = rect_position + Vector2(g_pos.x, g_pos.y) * cell_size
+		ship.rect_position = rect_position + Vector2(g_pos.x + grid_offset, g_pos.y + grid_offset) * cell_size
 		fix_position(ship)
 		ships.append(ship)
 		ship.set_meta("grid_pos",g_pos)
@@ -76,10 +75,10 @@ func grab_ship(pos):
 	return ship
  
 func pos_to_grid_coord(pos):
-	var local_pos = pos - rect_position
+	var local_pos = pos - rect_global_position
 	var results = {}
-	results.x = int(local_pos.x / cell_size)
-	results.y = int(local_pos.y / cell_size)
+	results.x = int(local_pos.x / cell_size) - grid_offset
+	results.y = int(local_pos.y / cell_size) - grid_offset
 	return results
  
 func get_grid_size(ship):
@@ -97,7 +96,7 @@ func insert_ship_at_first_available_spot(ship):
 	for y in range(grid_height):
 		for x in range(grid_width):
 			if !grid[x][y]:
-				ship.rect_position = rect_position + Vector2(x, y) * cell_size
+				ship.rect_position = Vector2(x, y) * cell_size
 				if insert_ship(ship):
 					return true
 	return false

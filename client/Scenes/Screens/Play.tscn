@@ -1,307 +1,467 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=30 format=2]
 
-[ext_resource path="res://Images/UI/grid8.png" type="Texture" id=1]
-[ext_resource path="res://Images/UI/grid10.png" type="Texture" id=2]
-[ext_resource path="res://Fonts/Roboto_Medium.tres" type="DynamicFont" id=3]
-[ext_resource path="res://Time.gd" type="Script" id=4]
-[ext_resource path="res://Scenes/PlayerGrid.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Fonts/test_font.tres" type="DynamicFont" id=6]
-[ext_resource path="res://Scenes/EnemyGrid.gd" type="Script" id=7]
-[ext_resource path="res://Sounds/ClickSound.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scenes/Screens/Play.gd" type="Script" id=1]
+[ext_resource path="res://Images/UI/grid8.png" type="Texture" id=2]
+[ext_resource path="res://Images/UI/grid10.png" type="Texture" id=3]
+[ext_resource path="res://Images/UI/grid8_s.png" type="Texture" id=4]
+[ext_resource path="res://Images/UI/grid10_s.png" type="Texture" id=5]
+[ext_resource path="res://panel_ui.tres" type="StyleBox" id=6]
+[ext_resource path="res://Scenes/Scoreboard.tscn" type="PackedScene" id=7]
+[ext_resource path="res://separator_ui.tres" type="StyleBox" id=8]
+[ext_resource path="res://Scenes/ShipSlots2.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Fonts/Roboto_Medium.tres" type="DynamicFont" id=10]
+[ext_resource path="res://Scenes/Timer.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Fonts/test_font.tres" type="DynamicFont" id=12]
+[ext_resource path="res://Scenes/Screens/ShootButton.gd" type="Script" id=13]
+[ext_resource path="res://Fonts/RobotoCondensed-Regular.ttf" type="DynamicFontData" id=14]
+[ext_resource path="res://Scenes/PlayerGrid.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Fonts/Roboto_Small.tres" type="DynamicFont" id=16]
+[ext_resource path="res://Scenes/EnemyGrid.gd" type="Script" id=17]
+[ext_resource path="res://Sounds/ClickSound.tscn" type="PackedScene" id=18]
+[ext_resource path="res://Scenes/Screens/TurnPanel.gd" type="Script" id=19]
+[ext_resource path="res://Fonts/RobotoTitle.tres" type="DynamicFont" id=20]
 
-[sub_resource type="GDScript" id=1]
-script/source = "extends Control
+[sub_resource type="DynamicFont" id=1]
+size = 80
+font_data = ExtResource( 14 )
 
-var DisplayValue = 10
-const ship_base = preload(\"res://Scenes/ShipBase.tscn\")
-var count = 0
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.145098, 0.145098, 0.164706, 1 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color( 0.109804, 0.109804, 0.109804, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+expand_margin_bottom = 3.0
 
-onready var timer = get_node(\"Timer\")
-onready var player_grid = $PlayerGrid
-onready var enemy_grid = $EnemyGrid
-onready var confirm = $Confirm
-onready var time = $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer/Time
-onready var your_score := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer/YourScore
-onready var enemy_score := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer2/EnemyScore
-onready var ship_status := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/ShipStatus
-onready var round_num := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer/RoundNum
-onready var round_score := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/RoundScore
-onready var win_lose := $MarginContainer/WinLose
-onready var win_lose_text := $MarginContainer/WinLose/VBoxContainer/WinLoseText
-onready var player_name := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer/PlayerNickname
-onready var enemy_name := $MainMarginContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer2/EnemyNickname
-export (Texture) var grid8
-export (Texture) var grid10
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.0941176, 0.0941176, 0.0941176, 1 )
 
- 
-func _ready():
-	Lobby.connect(\"target_info_received\", self, \"render_hit\")
-	confirm.disabled = true
-	Lobby.play = self
-	timer.set_wait_time(1)
-	round_num.text = \"Round \"+ str(Lobby.round_num) 
-	round_score.text = \"Round Score: \" + str(Lobby.round_score)
-	set_player_names()
-	set_board_size()
-	yield(get_tree().create_timer(0.1),\"timeout\")
-	player_grid._ready()
-	enemy_grid._ready()
-	var ships = ShipLayout.ships_list
-	for ship in ships:
-		player_grid.insert_item(ship)
-	if Lobby.your_turn:
-		new_turn()
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.239216, 0.239216, 0.239216, 0.537255 )
 
-func set_board_size():
-	if Lobby.boardsize == 8:
-		player_grid.texture = grid8
-		enemy_grid.texture = grid8
-	else:
-		player_grid.texture = grid10
-		enemy_grid.texture = grid10
-	print(Lobby.boardsize)	
+[sub_resource type="Animation" id=5]
+resource_name = "Begin"
+length = 1.6
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1.6 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "play_begin2_animation"
+} ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("VBoxContainer/TurnLabel:rect_position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 710, 120 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("VBoxContainer/TurnLabel:self_modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 1, 1.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("VBoxContainer/SubtitleLabel:self_modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
 
-func _on_Timer_timeout():
-	if DisplayValue > 0:
-		DisplayValue -= 1
-		time.text = str(DisplayValue)
-	else:
-		Lobby.end_turn()
-		timer.stop()
+[sub_resource type="Animation" id=6]
+resource_name = "Begin2"
+length = 0.56
+tracks/0/type = "value"
+tracks/0/path = NodePath("VBoxContainer/TurnLabel:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.16, 0.56 ),
+"transitions": PoolRealArray( 0.5, 0.5, 0.5 ),
+"update": 0,
+"values": [ Vector2( -680, 32 ), Vector2( -680, 32 ), Vector2( 710, 32 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("VBoxContainer/SubtitleLabel:rect_position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.16, 0.56 ),
+"transitions": PoolRealArray( 0.5, 0.5, 0.5 ),
+"update": 0,
+"values": [ Vector2( 2000, 263 ), Vector2( 2000, 263 ), Vector2( 710, 263 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("VBoxContainer/TurnLabel:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("VBoxContainer/SubtitleLabel:self_modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
 
-func _on_Confirm_pressed():
-	var x = enemy_grid.reticle_pos.x 
-	var y = enemy_grid.reticle_pos.y 
-	confirm.disabled = true
-	timer.stop()
-	Lobby.send_target_position({\"x\":x,\"y\":y})
-	Lobby.end_turn()
-	
-func render_hit(hit):
-	var x = enemy_grid.reticle_pos.x 
-	var y = enemy_grid.reticle_pos.y 
-	if hit:
-		enemy_grid.insert_mark({\"id\":\"Hit\",\"g_pos\":{\"x\":x,\"y\":y}})
-	else:
-		enemy_grid.insert_mark({\"id\":\"Miss\",\"g_pos\":{\"x\":x,\"y\":y}})
-	enemy_grid.reticle.visible = false
-	enemy_grid.hit_map[x][y] = false
+[sub_resource type="Animation" id=7]
+resource_name = "End"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("VBoxContainer/TurnLabel:rect_position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 2 ),
+"update": 0,
+"values": [ Vector2( 710, 100 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("VBoxContainer/SubtitleLabel:rect_position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 2 ),
+"update": 0,
+"values": [ Vector2( 710, 263 ) ]
+}
 
-func receive_hit(pos, value):
-	var x = pos[\"x\"] 
-	var y = pos[\"y\"] 
-	if value:
-		player_grid.insert_mark({\"id\":\"Hit\",\"g_pos\":{\"x\":x,\"y\":y}})
-	else:
-		player_grid.insert_mark({\"id\":\"Miss\",\"g_pos\":{\"x\":x,\"y\":y}})
+[sub_resource type="Animation" id=8]
+resource_name = "In"
+length = 0.56
+tracks/0/type = "value"
+tracks/0/path = NodePath("VBoxContainer/TurnLabel:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.16, 0.56 ),
+"transitions": PoolRealArray( 0.5, 1 ),
+"update": 0,
+"values": [ Vector2( -680, 32 ), Vector2( 710, 32 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("VBoxContainer/SubtitleLabel:rect_position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.16, 0.56 ),
+"transitions": PoolRealArray( 0.5, 1 ),
+"update": 0,
+"values": [ Vector2( 2000, 263 ), Vector2( 710, 263 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.32 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
 
-func new_turn():
-	DisplayValue = 10
-	time.text = str(DisplayValue)
-	timer.start()
-	
-func set_score(score):
-	var p_score = score[\"player\"]
-	var e_score = score[\"enemy\"]
-	enemy_score.text = \": \" + str(e_score)
-	your_score.text = \": \" + str(p_score)
-
-func set_player_names():
-	player_name.text = Global.username
-	enemy_name.text = Lobby.enemy_name 
-	
-func receive_ships_left(ship_left):
-	ship_status.text = \"Ship left: \" + str(ship_left)
-
-func previous():
-	get_tree().change_scene(\"res://Scenes/SetShip.tscn\")
-
-func to_lobby():
-	get_tree().change_scene(\"res://Scenes/Screens/Lobby.tscn\")
-
-func set_winlose_text(winlost_text:String):
-	win_lose_text.text = \"You \" + winlost_text + \"!\"
-
-func show_popup():
-	win_lose.show()
-
-func to_result():
-	get_tree().change_scene(\"res://Scenes/Screens/Result.tscn\")
-
-func clear():
-	ShipLayout.clear_ship()
-
-func _on_Button_pressed():
-	to_lobby()
-
-func _on_Skip_pressed():
-	Lobby.concede()
-"
+[sub_resource type="Animation" id=9]
+resource_name = "Out"
+length = 0.56
+tracks/0/type = "value"
+tracks/0/path = NodePath("VBoxContainer/TurnLabel:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 2, 0.5 ),
+"update": 0,
+"values": [ Vector2( 710, 32 ), Vector2( 2000, 32 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("VBoxContainer/SubtitleLabel:rect_position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 2, 0.5 ),
+"update": 0,
+"values": [ Vector2( 710, 263 ), Vector2( -680, 263 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.24, 0.56 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
 
 [node name="Play" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -2.65002
-margin_bottom = -2.65002
-script = SubResource( 1 )
-grid8 = ExtResource( 1 )
-grid10 = ExtResource( 2 )
+script = ExtResource( 1 )
+grid8 = ExtResource( 2 )
+grid10 = ExtResource( 3 )
+grid8_s = ExtResource( 4 )
+grid10_s = ExtResource( 5 )
 
 [node name="MainMarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -1.58667
-margin_top = -1.58667
-margin_right = -1.58667
-margin_bottom = -1.58667
-custom_constants/margin_right = 60
-custom_constants/margin_top = 40
-custom_constants/margin_left = 60
-custom_constants/margin_bottom = 40
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainMarginContainer"]
-margin_left = 60.0
-margin_top = 40.0
-margin_right = 1860.0
-margin_bottom = 1128.0
+[node name="MainBoxContainer" type="HBoxContainer" parent="MainMarginContainer"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 1900.0
+margin_bottom = 1060.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainMarginContainer/HBoxContainer"]
-margin_right = 972.0
-margin_bottom = 1088.0
+[node name="PlayerContainer" type="VBoxContainer" parent="MainMarginContainer/MainBoxContainer"]
+margin_right = 900.0
+margin_bottom = 1040.0
+size_flags_horizontal = 0
+custom_constants/separation = 20
 
-[node name="ScorePanel" type="Panel" parent="MainMarginContainer/HBoxContainer/VBoxContainer"]
+[node name="ScorePanel" type="Panel" parent="MainMarginContainer/MainBoxContainer/PlayerContainer"]
+margin_right = 900.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 0, 200 )
+custom_styles/panel = ExtResource( 6 )
+
+[node name="ScoreContainer" type="VBoxContainer" parent="MainMarginContainer/MainBoxContainer/PlayerContainer/ScorePanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -2.72076
+margin_bottom = -2.72076
+custom_constants/separation = 0
+
+[node name="PScoreboard" parent="MainMarginContainer/MainBoxContainer/PlayerContainer/ScorePanel/ScoreContainer" instance=ExtResource( 7 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 900.0
+margin_bottom = 102.0
+
+[node name="HSeparator" type="HSeparator" parent="MainMarginContainer/MainBoxContainer/PlayerContainer/ScorePanel/ScoreContainer"]
+margin_top = 102.0
+margin_right = 900.0
+margin_bottom = 102.0
+size_flags_vertical = 0
+custom_styles/separator = ExtResource( 8 )
+custom_constants/separation = 0
+
+[node name="EScoreboard" parent="MainMarginContainer/MainBoxContainer/PlayerContainer/ScorePanel/ScoreContainer" instance=ExtResource( 7 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 102.0
+margin_right = 900.0
+margin_bottom = 204.0
+
+[node name="PlayerThings" type="HBoxContainer" parent="MainMarginContainer/MainBoxContainer/PlayerContainer"]
+margin_top = 220.0
+margin_right = 900.0
+margin_bottom = 1040.0
+size_flags_horizontal = 0
+size_flags_vertical = 3
+custom_constants/separation = 20
+
+[node name="ShipOptions" type="VBoxContainer" parent="MainMarginContainer/MainBoxContainer/PlayerContainer/PlayerThings"]
 editor/display_folded = true
-margin_right = 972.0
-margin_bottom = 312.0
-rect_min_size = Vector2( 972, 312 )
-size_flags_horizontal = 2
-size_flags_vertical = 2
+margin_right = 400.0
+margin_bottom = 820.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 20
+
+[node name="ShipSlots" parent="MainMarginContainer/MainBoxContainer/PlayerContainer/PlayerThings/ShipOptions" instance=ExtResource( 9 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 400.0
+margin_bottom = 719.0
+size_flags_horizontal = 0
+
+[node name="Options" type="Button" parent="MainMarginContainer/MainBoxContainer/PlayerContainer/PlayerThings/ShipOptions"]
+margin_top = 739.0
+margin_right = 400.0
+margin_bottom = 820.0
+size_flags_vertical = 0
+custom_fonts/font = ExtResource( 10 )
+text = "Options"
+align = 0
+
+[node name="ControlContainer" type="VBoxContainer" parent="MainMarginContainer/MainBoxContainer/PlayerContainer/PlayerThings"]
+margin_left = 420.0
+margin_right = 900.0
+margin_bottom = 820.0
+size_flags_horizontal = 0
+custom_constants/separation = 20
+
+[node name="Timer" parent="MainMarginContainer/MainBoxContainer/PlayerContainer/PlayerThings/ControlContainer" instance=ExtResource( 11 )]
+
+[node name="ShootButton" type="Button" parent="MainMarginContainer/MainBoxContainer/PlayerContainer/PlayerThings/ControlContainer"]
+margin_top = 92.0
+margin_right = 480.0
+margin_bottom = 321.0
+rect_min_size = Vector2( 300, 100 )
+focus_mode = 0
+size_flags_horizontal = 5
+size_flags_vertical = 7
+custom_fonts/font = ExtResource( 12 )
+enabled_focus_mode = 0
+script = ExtResource( 13 )
+
+[node name="Label" type="Label" parent="MainMarginContainer/MainBoxContainer/PlayerContainer/PlayerThings/ControlContainer/ShootButton"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Shoot"
+align = 1
+valign = 1
+
+[node name="PlayerGrid" parent="MainMarginContainer/MainBoxContainer/PlayerContainer/PlayerThings/ControlContainer" instance=ExtResource( 15 )]
+margin_top = 341.0
+margin_right = 480.0
+margin_bottom = 820.0
+rect_clip_content = true
+size_flags_horizontal = 10
+size_flags_vertical = 10
+
+[node name="EnemyContainer" type="VBoxContainer" parent="MainMarginContainer/MainBoxContainer"]
+margin_left = 920.0
+margin_right = 1880.0
+margin_bottom = 1040.0
+size_flags_horizontal = 10
+custom_constants/separation = 0
+
+[node name="EnemyGridPanel" type="Panel" parent="MainMarginContainer/MainBoxContainer/EnemyContainer"]
+editor/display_folded = true
+margin_right = 960.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 2 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel"]
-margin_right = 1800.0
-margin_bottom = 1000.0
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer"]
-margin_right = 700.0
-margin_bottom = 312.0
-rect_min_size = Vector2( 700, 0 )
-size_flags_vertical = 0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer2"]
-margin_right = 700.0
-margin_bottom = 75.0
-
-[node name="PlayerNickname" type="Label" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer"]
-margin_right = 84.0
-margin_bottom = 75.0
-rect_pivot_offset = Vector2( 979.273, -180.563 )
-custom_fonts/font = ExtResource( 3 )
-text = "You"
-
-[node name="YourScore" type="Label" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer"]
-margin_left = 88.0
-margin_right = 140.0
-margin_bottom = 75.0
-custom_fonts/font = ExtResource( 3 )
-text = ": 0"
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer2"]
-margin_top = 79.0
-margin_right = 700.0
-margin_bottom = 154.0
-
-[node name="EnemyNickname" type="Label" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer2"]
-margin_right = 146.0
-margin_bottom = 75.0
-custom_fonts/font = ExtResource( 3 )
-text = "Enemy"
-
-[node name="EnemyScore" type="Label" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer2/HBoxContainer2"]
-margin_left = 150.0
-margin_right = 202.0
-margin_bottom = 75.0
-custom_fonts/font = ExtResource( 3 )
-text = ": 0"
-
-[node name="ShipStatus" type="Label" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer2"]
-margin_top = 158.0
-margin_right = 700.0
-margin_bottom = 233.0
-custom_fonts/font = ExtResource( 3 )
-text = "Ship left: 4"
-
-[node name="RoundScore" type="Label" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer2"]
-margin_top = 237.0
-margin_right = 700.0
-margin_bottom = 312.0
-custom_fonts/font = ExtResource( 3 )
-text = "Round Score: 0"
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer"]
-margin_left = 704.0
-margin_right = 976.0
-margin_bottom = 239.0
-rect_min_size = Vector2( 272, 0 )
-size_flags_horizontal = 0
-size_flags_vertical = 0
-
-[node name="RoundNum" type="Label" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer"]
-margin_left = 46.0
-margin_right = 225.0
-margin_bottom = 75.0
-size_flags_horizontal = 4
-custom_fonts/font = ExtResource( 3 )
-text = "Round 1"
-
-[node name="Time" type="Label" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer"]
-margin_left = 109.0
-margin_top = 79.0
-margin_right = 163.0
-margin_bottom = 154.0
-size_flags_horizontal = 4
-custom_fonts/font = ExtResource( 3 )
-text = "10"
+[node name="EnemyGridLabel" type="Label" parent="MainMarginContainer/MainBoxContainer/EnemyContainer/EnemyGridPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -0.656982
+margin_bottom = -0.656982
+size_flags_vertical = 6
+custom_fonts/font = ExtResource( 16 )
+text = "Enemy Grid"
 align = 1
-script = ExtResource( 4 )
+valign = 1
 
-[node name="Skip" type="Button" parent="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer"]
-margin_left = 82.0
-margin_top = 158.0
-margin_right = 189.0
-margin_bottom = 239.0
-size_flags_horizontal = 4
-custom_fonts/font = ExtResource( 3 )
-text = "Skip"
+[node name="EnemyGrid" type="TextureRect" parent="MainMarginContainer/MainBoxContainer/EnemyContainer"]
+show_behind_parent = true
+margin_top = 80.0
+margin_right = 960.0
+margin_bottom = 1040.0
+size_flags_horizontal = 6
+size_flags_vertical = 10
+texture = ExtResource( 2 )
+script = ExtResource( 17 )
 
-[node name="PlayerGrid" parent="MainMarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource( 5 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 320.0
-margin_right = 972.0
-margin_bottom = 1088.0
+[node name="Panel" type="Panel" parent="MainMarginContainer/MainBoxContainer/EnemyContainer/EnemyGrid"]
+modulate = Color( 1, 1, 1, 0.470588 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 3 )
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MainMarginContainer/HBoxContainer"]
-margin_left = 976.0
-margin_right = 1744.0
-margin_bottom = 1088.0
+[node name="PanelTween" type="Tween" parent="MainMarginContainer/MainBoxContainer/EnemyContainer/EnemyGrid"]
 
-[node name="Confirm" type="Button" parent="MainMarginContainer/HBoxContainer/VBoxContainer2"]
-margin_right = 768.0
-margin_bottom = 80.0
-custom_fonts/font = ExtResource( 6 )
-text = "Confirm"
-
-[node name="EnemyGrid" type="TextureRect" parent="MainMarginContainer/HBoxContainer/VBoxContainer2"]
-margin_top = 84.0
-margin_right = 768.0
-margin_bottom = 852.0
-texture = ExtResource( 1 )
-script = ExtResource( 7 )
-
-[node name="Timer" type="Timer" parent="."]
+[node name="Delay" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 editor/display_folded = true
@@ -310,6 +470,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="WinLose" type="PopupPanel" parent="MarginContainer"]
+visible = true
 margin_left = 785.0
 margin_top = 435.0
 margin_right = 1135.0
@@ -333,7 +494,7 @@ margin_left = 52.0
 margin_right = 289.0
 margin_bottom = 74.0
 size_flags_horizontal = 4
-custom_fonts/font = ExtResource( 6 )
+custom_fonts/font = ExtResource( 12 )
 text = "Default"
 align = 1
 valign = 1
@@ -345,11 +506,73 @@ margin_right = 240.0
 margin_bottom = 158.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-custom_fonts/font = ExtResource( 6 )
+custom_fonts/font = ExtResource( 12 )
 text = "quit"
 
-[node name="ClickSound" parent="." instance=ExtResource( 8 )]
-[connection signal="pressed" from="MainMarginContainer/HBoxContainer/VBoxContainer/ScorePanel/HBoxContainer/VBoxContainer/Skip" to="." method="_on_Skip_pressed"]
-[connection signal="pressed" from="MainMarginContainer/HBoxContainer/VBoxContainer2/Confirm" to="." method="_on_Confirm_pressed"]
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[node name="ClickSound" parent="." instance=ExtResource( 18 )]
+visible = false
+
+[node name="TurnPanel" type="Panel" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = -172.678
+margin_bottom = 227.322
+rect_min_size = Vector2( 0, 400 )
+rect_pivot_offset = Vector2( 210, 1662.68 )
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+custom_styles/panel = SubResource( 4 )
+script = ExtResource( 19 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TurnPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="TurnLabel" type="Label" parent="TurnPanel/VBoxContainer"]
+margin_left = 660.0
+margin_top = 32.0
+margin_right = 1260.0
+margin_bottom = 165.0
+rect_min_size = Vector2( 600, 0 )
+size_flags_horizontal = 4
+size_flags_vertical = 6
+custom_fonts/font = ExtResource( 20 )
+text = "Turn 0"
+align = 1
+
+[node name="SubtitleLabel" type="Label" parent="TurnPanel/VBoxContainer"]
+margin_left = 660.0
+margin_top = 263.0
+margin_right = 1260.0
+margin_bottom = 338.0
+rect_min_size = Vector2( 600, 0 )
+size_flags_horizontal = 4
+size_flags_vertical = 6
+custom_fonts/font = ExtResource( 10 )
+text = "Click anywhere to continue."
+align = 1
+
+[node name="TurnAnimation" type="AnimationPlayer" parent="TurnPanel"]
+anims/Begin = SubResource( 5 )
+anims/Begin2 = SubResource( 6 )
+anims/End = SubResource( 7 )
+anims/In = SubResource( 8 )
+anims/Out = SubResource( 9 )
+
+[node name="Timer" type="Timer" parent="TurnPanel"]
+wait_time = 1.2
+one_shot = true
+[connection signal="timeout" from="MainMarginContainer/MainBoxContainer/PlayerContainer/PlayerThings/ControlContainer/Timer" to="." method="_on_Timer_timeout"]
+[connection signal="pressed" from="MainMarginContainer/MainBoxContainer/PlayerContainer/PlayerThings/ControlContainer/ShootButton" to="." method="_on_Confirm_pressed"]
+[connection signal="target_selected" from="MainMarginContainer/MainBoxContainer/EnemyContainer/EnemyGrid" to="." method="_on_EnemyGrid_target_selected"]
 [connection signal="pressed" from="MarginContainer/WinLose/VBoxContainer/Button" to="." method="_on_Button_pressed"]
+[connection signal="animation_completed" from="TurnPanel" to="." method="_on_TurnPanel_animation_completed"]
+[connection signal="animation_finished" from="TurnPanel/TurnAnimation" to="TurnPanel" method="_on_TurnAnimation_animation_finished"]

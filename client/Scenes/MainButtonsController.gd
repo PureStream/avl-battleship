@@ -62,7 +62,7 @@ func change_screen(ID):
 	if ID in MenuButtonEnums.get_button_names().keys():
 		if ID in Global.SCREEN_PATH.keys():
 			if ID in Global.GameMode.SCREEN_MODE.keys():
-				Global.game_mode = Global.GameMode.SCREEN_MODE[ID]
+				Lobby.game_mode = Global.GameMode.SCREEN_MODE[ID]
 			get_tree().change_scene(Global.SCREEN_PATH[ID]["path"])
 	else:
 		return

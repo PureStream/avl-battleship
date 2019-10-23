@@ -16,38 +16,50 @@ var last_container = null
 var last_pos = Vector2()
 var last_rot = 0
 
+var confirmed = false
+
 func _ready():
 	Lobby.set_ship = self
+	confirm.disabled = true
 	set_board_size()
 	grid.call_deferred("_ready")
-	pickup_ship("Ship4")
-	pickup_ship("Ship4")
-	pickup_ship("Ship4")
-	pickup_ship("Ship4")
+	match(Lobby.game_mode):
+		Global.GameMode.BASIC:
+			collect_ships(Global.SHIPS_DEFAULT_BASIC)
+		Global.GameMode.CLASSIC:
+			collect_ships(Global.SHIPS_DEFAULT_CLASSIC)
+		Global.GameMode.STANDARD:
+			pass
 
-var grab_toggle = false
+func collect_ships(arr):
+	for string in arr:
+		if typeof(string) == TYPE_STRING:
+			pickup_ship(string)
 
 func set_board_size():
+	grid.set_grid_size(Lobby.boardsize, Lobby.boardsize)
 	if Lobby.boardsize == 8:
 		grid.texture = grid8
+		grid.grid_offset = 1
 	else:
 		grid.texture = grid10
-	print(Lobby.boardsize)	
+		grid.grid_offset = 0
+#	print(Lobby.boardsize)
 
 func _process(delta):
 	var cursor_pos = get_global_mouse_position()
 	if Input.is_action_just_pressed("inv_grab"):
-		if !grab_toggle:
-			grab(cursor_pos)
-		else:
-			release(cursor_pos)
-		grab_toggle = !grab_toggle
+		if !confirmed:
+			if ship_held == null:
+				grab(cursor_pos)
+			else:
+				release(cursor_pos)
 	if ship_held != null:
 		ship_held.rect_global_position = cursor_pos + ship_offset
 
 func _input(event):
 	if event.is_action_pressed("inv_rotate"):
-		if grab_toggle:
+		if ship_held != null:
 			rotate_held_ship()
 	if event.is_action_pressed("debug_insert_all_ships"):
 		for pos in range(ship_slots.ships.size()):
@@ -60,6 +72,7 @@ func _input(event):
 func grab(cursor_pos):
 	var c = get_container_under_cursor(cursor_pos)
 	if c != null and c.has_method("grab_ship"):
+		call_deferred("check")
 		ship_held = c.grab_ship(cursor_pos)
 		if ship_held != null:
 			last_container = c
@@ -96,10 +109,20 @@ func release(cursor_pos):
 	elif c.has_method("insert_ship"):
 		if c.insert_ship(ship_held):
 			ship_held = null
+			call_deferred("check")
 		else:
 			return_ship()
+			call_deferred("check")
 	else:
 		return_ship()
+		call_deferred("check")
+
+func check():
+	var check = int(Global.GameMode.board_size[Lobby.game_mode]/2)
+	if check == grid.ships.size():
+		confirm.disabled = false
+	else:
+		confirm.disabled = true
 
 func rotate_held_ship():
 	if ship_held != null:
@@ -141,13 +164,13 @@ func pickup_ship(ship_id):
 	return true
 	
 func _on_Button_pressed():
-	if grid.ships.size() == 4:
-		for ship in grid.ships:
-			var dict = grid.ship_to_dict(ship)
-			ShipLayout.ships_list.append(dict)
-		ShipLayout.ships = grid.grid
-		confirm.disabled = true	
-		Lobby.send_ship_layout(ShipLayout.ships_list)
+	for ship in grid.ships:
+		var dict = grid.ship_to_dict(ship)
+		ShipLayout.ships_list.append(dict)
+	ShipLayout.ships = grid.grid
+	confirm.disabled = true
+	confirmed = true
+	Lobby.send_ship_layout(ShipLayout.ships_list)
 
 func next():
 	get_tree().change_scene("res://Scenes/Screens/Play.tscn")

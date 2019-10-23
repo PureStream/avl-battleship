@@ -63,7 +63,11 @@ class GameMode:
 		MenuButtonEnums.STANDARD:STANDARD
 	}
 
-var game_mode = GameMode.CLASSIC
+const SHIPS_DEFAULT_BASIC = ["Ship4", "Ship4", "Ship4", "Ship4"]
+
+const SHIPS_DEFAULT_CLASSIC = ["Ship5", "Ship4", "Ship3", "Ship3", "Ship2"]
+
+var ships_setup = []
 
 var menu_buttons = []
 
