@@ -16,7 +16,7 @@ func _on_request_completed(result, response_code, headers, body):
 	emit_signal("firebase_request_completed", self, result, response_code, headers, body)
 
 func begin_refresh_countdown():
-	var expires_in = 5
+	var expires_in = 1000
 	var auth = get_owner().auth
 	if auth:
 		if auth.has("refreshToken"):
