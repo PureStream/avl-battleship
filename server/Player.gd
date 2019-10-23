@@ -12,8 +12,12 @@ var round_score = 0
 var ready = false
 var player_name = ""
 
+var needs_refresh = false
+var auth = null
+var userdata = null
+
 func _ready():
-	pass # Replace with function body.
+	pass
 
 func set_id(id):
 	self.id = id
@@ -71,7 +75,7 @@ func set_grid(pos, length, is_right, value):
 	else:
 		for i in range(length):
 			ship_loc[pos.x][pos.y+i] = value					
-			
+		
 func reset():
 	pass
 	#set everything back to zero or empty array/dict

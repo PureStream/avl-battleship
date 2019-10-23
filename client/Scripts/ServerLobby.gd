@@ -1,5 +1,8 @@
 extends Node
 
+signal login_succeeded(auth)
+signal login_failed(error_code, error_msg)
+
 func _ready():
 	pass # Replace with function body.
 
@@ -17,13 +20,71 @@ var turn_num = 1
 var round_num = 1
 var round_score = 0
 var enemy_round_score = 0
+var player_score = 0
+var enemy_score = 0
+
+var connect_type
+var connect_email
+var connect_username
+var connect_pwd
+
+const CONNECT_TYPE = {
+	"LOGIN": "LOGIN",
+	"REGISTER": "REGISTER",
+	"GUEST": "GUEST",
+}
+
+func guest_login():
+	connect_to_server(CONNECT_TYPE.GUEST, '', '', '')
+
+func email_pwd_login(email, pwd):
+	connect_to_server(CONNECT_TYPE.LOGIN, email, pwd, '')
+
+func email_pwd_register(email, pwd, username):
+	connect_to_server(CONNECT_TYPE.REGISTER, email, pwd, username)
+
+func connect_to_server(type, email, pwd, username):
+	connect_type = type
+	connect_email = email
+	connect_pwd = pwd
+	connect_username = username
+
+	var network = NetworkedMultiplayerENet.new()
+	network.create_client(Global.IP_ADDRESS, Global.PORT)
+	get_tree().set_network_peer(network)
+	print("connecting to server")
+	network.connect("connection_failed", self, "_on_connection_failed")
+	network.connect("connection_succeeded", self, "_on_connection_success")
+
+func disconnect_from_server():
+	get_tree().set_network_peer(null)
+
+func _on_connection_failed():
+	print("Error connecting to server")
+	disconnect_from_server()
+
+func _on_connection_success():
+	print("connect success!")
+	rpc_id(1, "receive_login_data", connect_type, connect_email, connect_pwd, connect_username)
+
+remote func login_succeeded(auth):
+	print("login success: " + auth.displayname)
+	set_username(auth.displayname)
+	emit_signal("login_succeeded", auth)
+
+remote func login_failed(error_code, message):
+	print("error code: " + str(error_code))
+	print("message: " + message)
+	emit_signal("login_failed", str(error_code), message)
+
+func set_username(name):
+	Global.username = name
 
 var your_turn = false
 signal target_info_received
 
 remote func receive_username(username):
-	print(username)
-	Global.username = username
+	set_username(username)
 
 func ready_to_match(info):
 	rpc_id(1,"ready_to_match", info)

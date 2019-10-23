@@ -8,32 +8,15 @@
 
 config_version=4
 
-_global_script_classes=[ {
-"base": "Resource",
-"class": "FirebaseResource",
-"language": "GDScript",
-"path": "res://addons/GDFirebase/FirebaseResource.gd"
-}, {
-"base": "HTTPRequest",
-"class": "FirebaseStorage",
-"language": "GDScript",
-"path": "res://addons/GDFirebase/FirebaseStorage.gd"
-}, {
-"base": "Reference",
-"class": "FirebaseUserData",
-"language": "GDScript",
-"path": "res://addons/GDFirebase/FirebaseUserData.gd"
-} ]
+_global_script_classes=[  ]
 _global_script_class_icons={
-"FirebaseResource": "",
-"FirebaseStorage": "",
-"FirebaseUserData": ""
+
 }
 
 [application]
 
 config/name="avl_battleship"
-run/main_scene="res://Scenes/MainMenu.tscn"
+run/main_scene="res://Scenes/Screens/LoginPage.tscn"
 
 [autoload]
 
@@ -43,6 +26,7 @@ ShipLayout="*res://Scripts/ShipLayout.gd"
 MenuButtonEnums="*res://Scripts/MenuButtonEnums.gd"
 Global="*res://Scripts/Global.gd"
 Lobby="*res://Scripts/ServerLobby.gd"
+Settings="*res://Scenes/Settings.gd"
 
 [display]
 
@@ -53,7 +37,7 @@ window/stretch/aspect="keep"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "GDFirebase" )
+enabled=PoolStringArray(  )
 
 [input]
 
@@ -97,3 +81,7 @@ Left_Mouse={
 "events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
  ]
 }
+
+[locale]
+
+locale_filter=[ 0, [ "th", "th_TH" ] ]

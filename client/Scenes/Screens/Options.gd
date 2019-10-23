@@ -18,8 +18,8 @@ func _on_CheckButton_toggled(button_pressed):
 
 
 func _on_SoundContainer_update_value(value):
-	Global.sound_value = value
+	Settings.sound_value = value
 
 
 func _on_MusicContainer_update_value(value):
-	Global.music_value = value
+	Settings.music_value = value

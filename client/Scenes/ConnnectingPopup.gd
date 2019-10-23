@@ -2,17 +2,22 @@ extends Control
 
 signal cancel
 
+onready var dialog := $CenterContainer/ConfirmationDialog
+
 func _ready():
 	pass # Replace with function body.
 
 func show():
-	$CenterContainer/ConfirmationDialog.popup()
+	dialog.popup()
+	
+func hide():
+	dialog.hide()
 
 func _on_ConfirmationDialog_confirmed():
 	emit_signal("cancel")
 
 func connecting():
-	$CenterContainer/ConfirmationDialog.dialog_text = "Connecting..."
+	dialog.dialog_text = "Connecting..."
 	
 func matching():
-	$CenterContainer/ConfirmationDialog.dialog_text = "Looking for player..."
+	dialog.dialog_text = "Looking for player..."

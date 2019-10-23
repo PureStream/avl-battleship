@@ -11,6 +11,7 @@ onready var players = $Players
 onready var session_container = $HBoxContainer/VBoxContainer/SessionContainer/SessionButtonContainer
 onready var session_label = $HBoxContainer/VBoxContainer/SelectedSessionLabel
 var player = preload("res://Player.tscn")
+var player_request = preload("res://PlayerRequest.tscn")
 var session_btn = preload("res://SessionSelectButton.tscn")
 
 func _ready():
@@ -28,29 +29,12 @@ func _ready():
 func _peer_connected(id):
 	status_label.text += "\n" + str(id) + " connected."
 	user_count_label.text = "Total users: " +  str(get_tree().get_network_connected_peers().size())
-	var new_player = player.instance()
-	new_player.set_id(id)
-	players.add_child(new_player)
-	Lobby.send_username(id, str(id))
+	Lobby.peer_connected(id)
 	
 func _peer_disconnected(id):
 	status_label.text += "\n" + str(id) + " disconnected."
 	user_count_label.text = "Total users: " +  str(get_tree().get_network_connected_peers().size())
-	for player in players.get_children():
-		if player.id == id:
-			player.queue_free()
-			return
-	for player in Lobby.matching.get_children():
-		if player.id == id:
-			player.queue_free()
-			return
-	for player in Lobby.in_game.get_children():
-		if player.id == id:
-			var session_to_stop = player.session_id
-			if session_to_stop != null:
-				Lobby.quit_session(session_to_stop)
-			player.queue_free()
-			return
+	Lobby.peer_disconnected(id)
 
 func _on_Reset_pressed(): 
 	if selected_session >= 0:

@@ -10,8 +10,8 @@ func _ready():
 	pass # Replace with function body.
 
 func on_load():
-	label.text = str(Global.sound_value)
-	slider.value = Global.sound_value
+	label.text = str(Settings.sound_value)
+	slider.value = Settings.sound_value
 
 func _on_HSlider_value_changed(value):
 	label.text = str(int(value))
