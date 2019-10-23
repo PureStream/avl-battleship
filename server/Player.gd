@@ -1,5 +1,7 @@
 extends Node
 
+onready var player_request := $PlayerRequest
+
 var session_id = -1
 var matching_info = {}
 var ships = {}
@@ -10,6 +12,7 @@ var score = 0
 var all_scores = []
 var round_score = 0
 var ready = false
+var uid = ""
 var player_name = ""
 
 var needs_refresh = false
@@ -17,11 +20,32 @@ var auth = null
 var userdata = null
 
 func _ready():
-	pass
+	player_request.set_id(id)
 
 func set_id(id):
 	self.id = id
 	self.name = str(id)
+	
+func set_profile(auth):
+	self.auth = auth
+	uid = auth.localid
+	player_name = auth.displayname
+
+func soft_reset():
+	score = 0
+	all_scores = []
+	round_score = 0 
+	ready = false
+
+func reset_session():
+	matching_info = {}
+	ships = {}
+	ship_loc = {}
+	connected_player = null
+	score = 0
+	all_scores = []
+	round_score = 0
+	ready = false
 	
 func init_grid(size):
 	for x in range(size):

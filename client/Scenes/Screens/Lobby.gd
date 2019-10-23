@@ -63,7 +63,7 @@ func _on_Connection_pressed():
 	popup_obj.show()
 	# popup_obj.connecting()
 	popup_obj.matching()
-	Lobby.ready_to_match()
+	Lobby.ready_to_match({"mode": Lobby.game_mode})
 	# var network = NetworkedMultiplayerENet.new()
 	# network.create_client(Global.IP_ADDRESS, Global.PORT)
 	# get_tree().set_network_peer(network)

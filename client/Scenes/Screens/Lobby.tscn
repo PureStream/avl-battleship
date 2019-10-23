@@ -15,7 +15,7 @@ font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=3]
 size = 36
-font_data = ExtResource( 5 )
+font_data = ExtResource( 3 )
 
 [node name="Lobby" type="Node"]
 script = ExtResource( 1 )
@@ -214,7 +214,7 @@ color = Color( 0.658824, 0.898039, 0.882353, 1 )
 [node name="PlayerSearchTimeout" type="Timer" parent="."]
 wait_time = 3.0
 
-[node name="ClickSound" parent="." instance=ExtResource( 6 )]
+[node name="ClickSound" parent="." instance=ExtResource( 5 )]
 [connection signal="disable_button" from="MarginContainer/HBoxContainer/ModePanel/MarginContainer/ModeButton" to="." method="disable_buttons"]
 [connection signal="select_mode" from="MarginContainer/HBoxContainer/ModePanel/MarginContainer/ModeButton" to="." method="change_mode"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/ModePanel/VBoxContainer/QuickplayButton" to="." method="_on_Connection_pressed"]

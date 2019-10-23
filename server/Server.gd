@@ -11,7 +11,6 @@ onready var players = $Players
 onready var session_container = $HBoxContainer/VBoxContainer/SessionContainer/SessionButtonContainer
 onready var session_label = $HBoxContainer/VBoxContainer/SelectedSessionLabel
 var player = preload("res://Player.tscn")
-var player_request = preload("res://PlayerRequest.tscn")
 var session_btn = preload("res://SessionSelectButton.tscn")
 
 func _ready():

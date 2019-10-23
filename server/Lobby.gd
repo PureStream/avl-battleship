@@ -8,7 +8,6 @@ var matching = null
 var sessions = null
 var session = preload("res://Session.tscn")
 var player = preload("res://Player.tscn")
-var player_request = preload("res://PlayerRequest.tscn")
 
 class GameMode:
 	enum{
@@ -42,11 +41,7 @@ remote func receive_login_data(type, email, pwd, username):
 	print("receive login data")
 	var id = get_tree().get_rpc_sender_id()
 
-	var request_player = null
-	for node in player_dict[id].get_children():
-		if node is HTTPRequest:
-			request_player = node
-			break
+	var request_player = player_dict[id].get_node("PlayerRequest")
 	
 	if (request_player): 
 		match type:
@@ -66,7 +61,12 @@ remote func receive_login_data(type, email, pwd, username):
 
 func _on_FirebaseAuth_login_succeeded(nid, auth):
 	print("LoginUser: ", auth.displayname)
-	player_dict[nid].player_name = auth.displayname
+	for player in players.get_children():
+		if player.uid == auth.localid:
+			_on_FirebaseAuth_login_failed(nid, 409, "This user already logged in.")
+			return
+	var player = player_dict[nid]
+	player.set_profile(auth)
 	rpc_id(nid, "login_succeeded", auth)
 
 func _on_FirebaseAuth_login_failed(nid, error_code, error_msg):
@@ -80,10 +80,7 @@ func _on_FirebaseAuth_userdata_updated(nid, auth):
 
 func peer_connected(id):
 	var new_player = player.instance()
-	var p_request = player_request.instance()
 	new_player.set_id(id)
-	p_request.set_id(id)
-	new_player.add_child(p_request)
 	player_dict[id] = new_player
 	players.add_child(new_player)
 
@@ -244,12 +241,14 @@ remote func quit_session(session_id):
 		var curr_session = session_dict[session_id]
 		
 		for player in curr_session.connected_players:
+			player.reset_session()
 			if player.id != id:
 				rpc_id(player.id, "end_session")
 			remove_from_game(player)
 		
 		if server.selected_session == session_id:
 			server.deselect()
+		curr_session.reset()
 		curr_session.button.queue_free()
 		curr_session.queue_free()
 		session_dict.erase(session_id)
@@ -296,15 +295,9 @@ func reset():
 
 func reset_session(session_id):
 	var curr_session = session_dict[session_id]
-	curr_session.prev_winner = null
-	curr_session.player_turn = null
-	curr_session.round_num = 1
-	curr_session.turn_num = 1
+	curr_session.soft_reset()
 	for player in curr_session.connected_players:
-		player.score = 0
-		player.all_scores = []
-		player.round_score = 0 
-		player.ready = false
+		player.soft_reset()
 		rpc_id(player.id,"reset_game")
 	
 remote func concede(session_id):
@@ -367,15 +360,13 @@ func round_over(curr_player, curr_enemy, curr_session):
 		var enemy = player.connected_player
 		
 		player.ready = false
-#		player.all_scores.append(player.score)
-#		player.score = 0
+		player.all_scores.append(player.score)
+		player.score = 0
 		
 		var round_info = {
-		"round":curr_session.round_num,
-		"round_score": player.round_score, 
-		"enemy_round_score": enemy.round_score,
-		"player":player.score,
-		"enemy":enemy.score
+			"round":curr_session.round_num,
+			"round_score": player.round_score, 
+			"enemy_round_score": enemy.round_score
 		}
 		
 		var round_won = player == curr_player

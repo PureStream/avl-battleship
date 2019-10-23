@@ -196,6 +196,7 @@ func cancel_rematch():
 func quit():
 	if session_id >-1:
 		rpc_id(1, "quit_session", session_id)
+		clear_variables()
 	else:
 		print("session error")
 
