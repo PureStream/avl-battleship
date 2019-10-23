@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="avl_battleship"
-run/main_scene="res://Scenes/MainMenu.tscn"
+run/main_scene="res://Scenes/Screens/LoginPage.tscn"
 
 [autoload]
 
