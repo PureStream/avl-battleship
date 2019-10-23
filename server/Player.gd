@@ -74,7 +74,7 @@ func set_grid(pos, length, is_right, value):
 	else:
 		for i in range(length):
 			ship_loc[pos.x][pos.y+i] = value					
-			
+		
 func reset():
 	pass
 	#set everything back to zero or empty array/dict

@@ -1,5 +1,5 @@
 extends "res://Scenes/VolumeSlider.gd"
 
 func on_load():
-	label.text = str(Global.music_value)
-	slider.value = Global.music_value
+	label.text = str(Settings.music_value)
+	slider.value = Settings.music_value

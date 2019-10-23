@@ -7,11 +7,13 @@ var in_game = null
 var matching = null
 var sessions = null
 var session = preload("res://Session.tscn")
+var player = preload("res://Player.tscn")
+var player_request = preload("res://PlayerRequest.tscn")
 
 var ships_left = 4
 var session_id = 0
 var session_dict = {}
-var player_request_dict = {}
+var player_dict = {}
 
 const CONNECT_TYPE = {
 	"LOGIN": "LOGIN",
@@ -28,11 +30,18 @@ func _ready():
 remote func receive_login_data(type, email, pwd, username):
 	print("receive login data")
 	var id = get_tree().get_rpc_sender_id()
-	var request_player = player_request_dict.id
+
+	var request_player = null
+	for node in player_dict[id].get_children():
+		if node is HTTPRequest:
+			request_player = node
+			break
+	
 	if (request_player): 
 		match type:
 			CONNECT_TYPE.GUEST:
-				rpc_id(id, "login_succeeded", { "displayname": "guest"+str(id) })
+				player_dict[id].player_name = "guest"+str(id)
+				rpc_id(id, "login_succeeded", { "email": "", "displayname": "guest"+str(id) })
 			CONNECT_TYPE.LOGIN:
 				Firebase.Auth.login_with_email_and_password(request_player, email, pwd)
 			CONNECT_TYPE.REGISTER:
@@ -41,10 +50,12 @@ remote func receive_login_data(type, email, pwd, username):
 			var unknown:
 				print("UNKNOWN_TYPE: ", unknown)
 	else:
-		print("Player not found?") 
+		print("Player not found?")
+		peer_disconnected(id)
 
 func _on_FirebaseAuth_login_succeeded(nid, auth):
 	print("LoginUser: ", auth.displayname)
+	player_dict[nid].player_name = auth.displayname
 	rpc_id(nid, "login_succeeded", auth)
 
 func _on_FirebaseAuth_login_failed(nid, error_code, error_msg):
@@ -56,8 +67,32 @@ func _on_FirebaseAuth_register_succeeded(nid, auth):
 func _on_FirebaseAuth_userdata_updated(nid, auth):
 	pass
 
-# func send_username(id, name):
-# 	rpc_id(id, "receive_username", name)
+func peer_connected(id):
+	var new_player = player.instance()
+	var p_request = player_request.instance()
+	new_player.set_id(id)
+	p_request.set_id(id)
+	new_player.add_child(p_request)
+	player_dict[id] = new_player
+	players.add_child(new_player)
+
+func peer_disconnected(id):
+	player_dict.erase(id)
+	for player in players.get_children():
+		if player.id == id:
+			player.queue_free()
+			return
+	for player in matching.get_children():
+		if player.id == id:
+			player.queue_free()
+			return
+	for player in in_game.get_children():
+		if player.id == id:
+			var session_to_stop = player.session_id
+			if session_to_stop != null:
+				quit_session(session_to_stop)
+			player.queue_free()
+			return
 
 remote func ready_to_match():
 	var id = get_tree().get_rpc_sender_id()
@@ -285,13 +320,16 @@ func round_over(curr_player, curr_enemy, curr_session):
 		var enemy = player.connected_player
 		
 		player.ready = false
-		player.all_scores.append(player.score)
-		player.score = 0
+#		player.all_scores.append(player.score)
+#		player.score = 0
 		
 		var round_info = {
 		"round":curr_session.round_num,
 		"round_score": player.round_score, 
-		"enemy_round_score": enemy.round_score}
+		"enemy_round_score": enemy.round_score,
+		"player":player.score,
+		"enemy":enemy.score
+		}
 		
 		var round_won = player == curr_player
 		rpc_id(player.id, "receive_round_result", round_won, game_over, round_info)
