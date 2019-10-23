@@ -51,23 +51,26 @@ func _ready():
 func login_with_email_and_password(player, email, password):
 	login_request_body.email = email
 	login_request_body.password = password
-	player.request(login_request_url, ["Content-Type: application/json"], true, HTTPClient.METHOD_POST, JSON.print(login_request_body))
+	if player:
+		player.request(login_request_url, ["Content-Type: application/json"], true, HTTPClient.METHOD_POST, JSON.print(login_request_body))
 
 func signup_with_email_and_password(player, email, password):
 	login_request_body.email = email
 	login_request_body.password = password
-	player.request(register_request_url, ["Content-Type: application/json"], true, HTTPClient.METHOD_POST, JSON.print(login_request_body))
+	if player:
+		player.request(register_request_url, ["Content-Type: application/json"], true, HTTPClient.METHOD_POST, JSON.print(login_request_body))
 
 func _on_registered_request_succeeded(player, auth):
-	var username = player.get_request_name()
-	player.request(update_profile_request_url, ["Content-Type: application/json"], true, HTTPClient.METHOD_POST, JSON.print({
-		"idToken":auth.idtoken,
-		"displayName":username,
-		"returnSecureToken":true,
-	}))
-	yield(self, "userdata_updated")
-	auth.displayname = username
-	emit_signal("login_succeeded", player.get_id(), auth)
+	if player:
+		var username = player.get_request_name()
+		player.request(update_profile_request_url, ["Content-Type: application/json"], true, HTTPClient.METHOD_POST, JSON.print({
+			"idToken":auth.idtoken,
+			"displayName":username,
+			"returnSecureToken":true,
+		}))
+		yield(self, "userdata_updated")
+		auth.displayname = username
+		emit_signal("login_succeeded", player.get_id(), auth)
 
 func login_as_guest():
 	request(login_guest_request_url, ["Content-Type: application/json"], true, HTTPClient.METHOD_POST, JSON.print({"returnSecureToken": true}))
@@ -81,49 +84,59 @@ func _on_FirebaseAuth_request_completed(player, result, response_code, headers, 
 	
 	var auth
 	var res = json_result.result
-	var nid = player.get_id()
-	if response_code == HTTPClient.RESPONSE_OK:
-		if not res.has("kind"):
-			auth = get_clean_keys(res)
-			begin_refresh_countdown(player, auth)
-		else:
-			match res.kind:
-				RESPONSE_SIGNIN:
-					auth = get_clean_keys(res)
-					emit_signal("login_succeeded", nid, auth)
-					begin_refresh_countdown(player, auth)
-				RESPONSE_SIGNUP:
-					auth = get_clean_keys(res)
-					if (auth.has("email")):
-						emit_signal("register_succeeded", player, auth)
-					# Guest Login case
-					else:
+	
+	if player:
+		var nid = player.get_id()
+		if response_code == HTTPClient.RESPONSE_OK:
+			if not res.has("kind"):
+				auth = get_clean_keys(res)
+				player.begin_refresh_countdown()
+			else:
+				match res.kind:
+					RESPONSE_SIGNIN:
+						auth = get_clean_keys(res)
 						emit_signal("login_succeeded", nid, auth)
-				RESPONSE_USERDATA:
-					var userdata = FirebaseUserData.new(res.users[0])
-					emit_signal("userdata_received", nid, userdata)
-				RESPONSE_UPDATE:
-					auth = get_clean_keys(res)
-					emit_signal("userdata_updated", nid, auth)
-					begin_refresh_countdown(player, auth)
-				var RESPONSE_KIND:
-					print("RESPONSE_KIND: " + RESPONSE_KIND)
-	else:
-		# error message would be INVALID_EMAIL, EMAIL_NOT_FOUND, INVALID_PASSWORD, USER_DISABLED or WEAK_PASSWORD
-		emit_signal("login_failed", nid, res.error.code, res.error.message)
+						player.begin_refresh_countdown()
+					RESPONSE_SIGNUP:
+						auth = get_clean_keys(res)
+						if (auth.has("email")):
+							emit_signal("register_succeeded", player, auth)
+						# Guest Login case
+						else:
+							emit_signal("login_succeeded", nid, auth)
+					RESPONSE_USERDATA:
+						var userdata = FirebaseUserData.new(res.users[0])
+						emit_signal("userdata_received", nid, userdata)
+					RESPONSE_UPDATE:
+						auth = get_clean_keys(res)
+						emit_signal("userdata_updated", nid, auth)
+						player.begin_refresh_countdown()
+					var RESPONSE_KIND:
+						print("RESPONSE_KIND: " + RESPONSE_KIND)
+		else:
+			# error message would be INVALID_EMAIL, EMAIL_NOT_FOUND, INVALID_PASSWORD, USER_DISABLED or WEAK_PASSWORD
+			emit_signal("login_failed", nid, res.error.code, res.error.message)
 
-func begin_refresh_countdown(player, auth):
+#func begin_refresh_countdown(player, auth):
+#	var refresh_token = null
+#	var expires_in = 5
+#	auth = get_clean_keys(auth)
+#	if auth.has("refreshToken"):
+#		refresh_token = auth.refreshToken
+#		expires_in = auth.expiresIn
+#	elif auth.has("refresh_token"):
+#		refresh_token = auth.refresh_token
+#		expires_in = auth.expires_in
+#	# needs_refresh = true
+#	yield(get_tree().create_timer(float(expires_in)), "timeout")
+		
+func refresh_token(player, auth):
 	var refresh_token = null
-	var expires_in = 1000
 	auth = get_clean_keys(auth)
 	if auth.has("refreshToken"):
 		refresh_token = auth.refreshToken
-		expires_in = auth.expiresIn
 	elif auth.has("refresh_token"):
 		refresh_token = auth.refresh_token
-		expires_in = auth.expires_in
-	# needs_refresh = true
-	yield(get_tree().create_timer(float(expires_in)), "timeout")
 	player.request(refresh_request_url, ["Content-Type: application/json"], true, HTTPClient.METHOD_POST, JSON.print({
 		"grant_type": "refresh_token",
 		"refresh_token": refresh_token
@@ -139,7 +152,9 @@ func get_user_data(player, auth):
 	if auth == null or auth.has("idtoken") == false:
 		print_debug("Not logged in")
 		return
-	player.request(userdata_request_url, ["Content-Type: application/json"], true, HTTPClient.METHOD_POST, JSON.print({"idToken":auth.idtoken}))
+	if player:
+		player.request(userdata_request_url, ["Content-Type: application/json"], true, HTTPClient.METHOD_POST, JSON.print({"idToken":auth.idtoken}))
 
 func update_user_data(player, auth, data):
-	player.request(update_profile_request_url, ["Content-Type: application/json"], true, HTTPClient.METHOD_POST, JSON.print(update_profile_body))
+	if player:
+		player.request(update_profile_request_url, ["Content-Type: application/json"], true, HTTPClient.METHOD_POST, JSON.print(update_profile_body))

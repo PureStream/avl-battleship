@@ -4,24 +4,29 @@ var ships = []
 
 const ship_base = preload("res://Scenes/ShipBase.tscn")
 const hit_or_miss = preload("res://Scenes/HitOrMiss.tscn")
- 
-var cell_size = 96
+
+var cell_size = 48
 var grid_width = 0
 var grid_height = 0
+
+var grid_offset = 0
  
 func _ready():
-	var s = get_grid_size(self)
-	grid_width = s.x
-	grid_height = s.y
+	pass
  
+func set_grid_size(x,y):
+	grid_width = x
+	grid_height = y
+
 func insert_item(ship):
 	var ship_obj = ship_base.instance()
 	var ship_id = ship["id"]
 	ship_obj.rect_rotation = ship["angle"]
 	ship_obj.texture = load(ShipDB.get_ship(ship_id)["icon"])
+	ship_obj.rect_scale = Vector2(0.5,0.5)
 	ship_obj.rect_pivot_offset = ship_obj.texture.get_size()/2
 	var grid_pos = ship["g_pos"]
-	ship_obj.rect_position = Vector2(grid_pos.x, grid_pos.y) * cell_size
+	ship_obj.rect_position = Vector2(grid_pos.x + grid_offset, grid_pos.y + grid_offset) * cell_size
 	fix_position(ship_obj)
 	add_child(ship_obj)
 	ships.append(ship_obj)
@@ -31,9 +36,10 @@ func insert_mark(mark):
 	var mark_id = mark["id"]
 	var grid_pos = mark["g_pos"]
 	mark_obj.texture = load(ShipDB.get_mark(mark_id))
-	mark_obj.rect_position = Vector2(grid_pos.x, grid_pos.y) * cell_size
+	mark_obj.rect_scale = Vector2(0.5,0.5)
+	mark_obj.rect_position = Vector2(grid_pos.x + grid_offset, grid_pos.y + grid_offset) * cell_size
 	add_child(mark_obj)
-	
+
 func swap_xy(vector:Vector2):
 	var tmp = vector.x
 	vector.x = vector.y
@@ -43,7 +49,9 @@ func swap_xy(vector:Vector2):
 func fix_position(item):
 	match int(abs(item.rect_rotation)) % 180:
 		90:
-			item.rect_position -= item.rect_pivot_offset - swap_xy(item.rect_pivot_offset)
+			item.rect_position -= item.rect_pivot_offset - swap_xy(item.rect_pivot_offset)/2
+		0: 
+			item.rect_position -= item.rect_pivot_offset/2
  
 func get_grid_size(item):
 	var results = {}

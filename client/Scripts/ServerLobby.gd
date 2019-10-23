@@ -12,7 +12,11 @@ var play = null
 var result = null
 var session_id = -1
 var enemy_name = ""
+var boardsize = -1
+var game_mode = -1
+var max_ship = -1
 
+var turn_num = 1
 var round_num = 1
 var round_score = 0
 var enemy_round_score = 0
@@ -76,17 +80,20 @@ remote func login_failed(error_code, message):
 func set_username(name):
 	Global.username = name
 
+var your_turn = false
+signal target_info_received
+
 remote func receive_username(username):
 	set_username(username)
 
-func ready_to_match():
-	rpc_id(1,"ready_to_match")
+func ready_to_match(info):
+	rpc_id(1,"ready_to_match", info)
 
 remote func start_matching():
 	lobby.start_matching()
 
-func look_for_player(info):
-	rpc_id(1,"match_make", info)
+func look_for_player():
+	rpc_id(1,"match_make")
 	
 remote func player_found(session_id, enemy_name):
 	print("found player: " + enemy_name)
@@ -101,10 +108,8 @@ func send_ship_layout(layout):
 	else:
 		print("session error")
 
-var your_turn = false
-signal target_info_received
-
 remote func receive_game_begin(player_turn:bool):
+	turn_num = 1
 	set_ship.next()
 	your_turn = player_turn
 
@@ -123,6 +128,8 @@ func clear_variables():
 	round_num = 1
 	round_score = 0
 	enemy_round_score = 0
+	boardsize = -1
+	max_ship = -1
 
 func send_target_position(pos):
 	if session_id > -1:
@@ -139,12 +146,20 @@ func concede():
 remote func receive_target_information(value):
 	emit_signal("target_info_received", value)
 
-remote func receive_turn_start():
-	your_turn = true
+remote func receive_turn_start(turn, turn_num):
+	print("turn start")
+	your_turn = turn
+	self.turn_num = turn_num
 	play.new_turn()
-	
-remote func receive_ships_left(ship_left):
-	play.receive_ships_left(ship_left)
+
+func end_turn_ready():
+	rpc_id(1, "end_turn_ready", session_id)
+
+#remote func receive_turn_end():
+#	play.end_turn()
+
+remote func receive_ships_left(p_ship, e_ship):
+	play.receive_ships_left(p_ship, e_ship)
 	
 remote func receive_hit(pos, value):
 	play.receive_hit(pos, value)
@@ -156,19 +171,15 @@ remote func receive_round_result(result:bool, game_over:bool, round_info):
 	round_num = round_info["round"]
 	round_score = round_info["round_score"]
 	enemy_round_score = round_info["enemy_round_score"]
-	play.set_score(round_info)
+	play.set_round_score(round_score, enemy_round_score)
 	if game_over:
-		if result:
-			play.set_winlose_text("Win")
-		else:
-			play.set_winlose_text("Lose")
-		play.clear()
-		play.to_result()
+		play.end_game(result)
 		return
-		#move to result screen
-	#show round result
-	play.clear()
-	play.previous()
+	play.end_round(result)
+
+remote func receive_board_and_ship(board_size, max_ship):
+	self.boardsize = board_size
+	self.max_ship = max_ship
 
 func rematch():
 	if session_id >-1:
@@ -185,15 +196,24 @@ func cancel_rematch():
 func quit():
 	if session_id >-1:
 		rpc_id(1, "quit_session", session_id)
+		clear_variables()
 	else:
 		print("session error")
-				
-func end_turn():
-	your_turn = false
-	rpc_id(1,"next_turn", session_id)
+
+func timeout():
+	rpc_id(1, "timeout", session_id)
+
+remote func force_turn_end():
+	print("force turn end")
+	play.end_turn()
+
+#func end_turn():
+#	your_turn = false
+#	rpc_id(1,"next_turn", session_id)
 
 remote func end_session():
 	var curr_scene = get_tree().root
+	clear_variables()
 	if Global.viewing_result:
 		result.disable_rematch()
 	else:

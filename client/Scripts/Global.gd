@@ -10,27 +10,27 @@ func _ready():
 const SCREEN_PATH = {
 	MenuButtonEnums.CLASSIC:{
 		"path":"res://Scenes/Screens/Lobby.tscn",
-		"iden":"CLASSIC"
+		},
+	MenuButtonEnums.BASIC:{
+		"path":"res://Scenes/Screens/Lobby.tscn",
+		},
+	MenuButtonEnums.STANDARD:{
+		"path":"res://Scenes/Screens/Lobby.tscn",
 		},
 	MenuButtonEnums.CREDITS:{
 		"path":"res://Scenes/Screens/Credits.tscn",
-		"iden":"CREDITS"
 		},
 	MenuButtonEnums.DATABASE:{
 		"path":"res://Scenes/Screens/Database.tscn",
-		"iden":"DATABASE"
 		},
 	MenuButtonEnums.HOW_TO_PLAY:{
 		"path":"res://Scenes/Screens/HowToPlay.tscn",
-		"iden":"HOW_TO_PLAY"
 		},
 	MenuButtonEnums.OPTIONS:{
 		"path":"res://Scenes/Screens/Options.tscn",
-		"iden":"OPTIONS"
 		},
 	MenuButtonEnums.TEAM_SETUP:{
 		"path":"res://Scenes/Screens/TeamSetUp.tscn",
-		"iden":"TEAM_SETUP"
 		},
 	}
 
@@ -43,6 +43,31 @@ class Characters:
 		E,
 		Total
 	}
+
+class GameMode:
+	enum{
+		BASIC,
+		CLASSIC,
+		STANDARD
+	}
+	
+	const board_size = {
+		BASIC: 8,
+		CLASSIC: 10,
+		STANDARD: 10
+	}
+	
+	const SCREEN_MODE = {
+		MenuButtonEnums.CLASSIC:CLASSIC,
+		MenuButtonEnums.BASIC:BASIC,
+		MenuButtonEnums.STANDARD:STANDARD
+	}
+
+const SHIPS_DEFAULT_BASIC = ["Ship4", "Ship4", "Ship4", "Ship4"]
+
+const SHIPS_DEFAULT_CLASSIC = ["Ship5", "Ship4", "Ship3", "Ship3", "Ship2"]
+
+var ships_setup = []
 
 var menu_buttons = []
 
