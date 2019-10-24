@@ -10,8 +10,9 @@ var ship_loc = {}
 var id = -1
 var connected_player = null
 var score = 0
+var shot_fired = 0
 var all_scores = []
-var round_score = 0
+var round_score = 05
 var ready = false
 var uid = ""
 var player_name = ""
@@ -54,6 +55,7 @@ func reset_session():
 	score = 0
 	all_scores = []
 	round_score = 0
+	shot_fired = 0
 	ready = false
 	
 func init_grid(size):
