@@ -4,6 +4,7 @@ onready var slots = $VBoxContainer.get_children()
 var ships = {}
  
 func _ready():
+	slots.remove(0)
 	for slot in slots:
 		ships[slot.name] = null
  

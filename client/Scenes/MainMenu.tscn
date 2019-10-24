@@ -55,6 +55,7 @@ margin_bottom = 846.0
 size_flags_vertical = 3
 
 [node name="CharSelectContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+editor/display_folded = true
 margin_left = 1034.0
 margin_top = 850.0
 margin_right = 1800.0
@@ -102,7 +103,6 @@ enabled_focus_mode = 0
 text = ">"
 
 [node name="MainButtonsController" type="Node" parent="."]
-editor/display_folded = true
 script = ExtResource( 5 )
 btn_default = ExtResource( 6 )
 
