@@ -1,10 +1,5 @@
 extends Node
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	Settings.load_profile()
 
@@ -25,4 +20,5 @@ func _on_MusicContainer_update_value(value):
 	Settings.save_profile()
 
 func _on_LogOutButton_pressed():
+	Lobby.disconnect_from_server()
 	get_tree().change_scene("res://Scenes/Screens/LoginPage.tscn")

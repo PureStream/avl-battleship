@@ -43,7 +43,6 @@ func _on_Register_pressed():
 		return
 	Lobby.email_pwd_register(register_email.text, register_password.text, register_username.text)
 	
-	
 func _on_login_succeeded(auth):
 	get_tree().change_scene("res://Scenes/MainMenu.tscn")
 	Settings.login_email = auth.email
