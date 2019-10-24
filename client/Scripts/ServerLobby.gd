@@ -71,8 +71,8 @@ func _on_connection_success():
 func get_userdata():
 	rpc_id(1, "get_userdata")
 
-func create_userdata():
-	rpc_id(1, "create_userdata")
+# func create_userdata():
+# 	rpc_id(1, "create_userdata")
 
 remote func login_succeeded(auth):
 	print("login success: " + auth.displayname)
@@ -83,6 +83,10 @@ remote func login_failed(error_code, message):
 	print("error code: " + str(error_code))
 	print("message: " + message)
 	emit_signal("login_failed", str(error_code), message)
+
+remote func receive_userdata(data):
+	print("receive data: ", data)
+	Global.userdata = data
 
 func set_username(name):
 	Global.username = name

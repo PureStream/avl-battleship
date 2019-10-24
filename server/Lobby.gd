@@ -75,19 +75,13 @@ func _on_FirebaseAuth_login_failed(nid, error_code, error_msg):
 # func _on_FirebaseAuth_userdata_updated(nid, auth):
 # 	pass
 
-remote func create_userdata():
-	var id = get_tree().get_rpc_sender_id()
-	var player = player_dict[id]
+func create_userdata(player, data):
 	var request_player = player.get_node("FirestoreRequest")
-
-	var data := {
-		"win": { "integerValue": 69 },
-		"lose": { "integerValue": 96 },
-		"hit": { "integerValue": 43 },
-		"miss": { "integerValue": 34 },
-	}
-
 	Firebase.Firestore.save_document(request_player, "users?documentId=%s" % player.uid, data)
+
+func update_userdata(player, data):
+	var request_player = player.get_node("FirestoreRequest")
+	Firebase.Firestore.update_document(request_player, "users?documentId=%s" % player.uid, data)
 
 remote func get_userdata():
 	print("get userdata")
@@ -99,8 +93,9 @@ remote func get_userdata():
 
 func _on_Firestore_request_succeeded(nid, data):
 	print("received userdata")
-	player_dict[nid].set_userdata(data)
-	print(str(player_dict[nid].userdata))
+	var player = player_dict[nid]
+	player.set_userdata(data)
+	rpc_id(nid, "receive_userdata", player.userdata)
 
 func _on_Firestore_request_failed(nid, error_code, error_msg):
 	print(error_msg)
@@ -397,6 +392,29 @@ func round_over(curr_player, curr_enemy, curr_session):
 		}
 		
 		var round_won = player == curr_player
+
+		if game_over:
+			var is_first_time = player.is_first_time()
+			var userdata = player.userdata
+			var hit_value = userdata.hit
+			for val in player.all_scores:
+				hit_value += val
+			var win_value = userdata.win + 1 if round_won else userdata.win
+			var lose_value = userdata.lose + 1 if !round_won else userdata.lose
+			var miss_value = userdata.miss + (player.shot_fired - hit_value)
+			player.map_userdata(win_value, lose_value, hit_value, miss_value)
+
+			var update_data = {
+				"win": { "integerValue": userdata.win },
+				"lose": { "integerValue": userdata.lose },
+				"hit": { "integerValue": userdata.hit },
+				"miss": { "integerValue": userdata.miss },
+			}
+			if is_first_time:
+				create_userdata(player, update_data)
+			else:
+				pass	
+
 		rpc_id(player.id, "receive_round_result", round_won, game_over, round_info)
 	
 #	if(curr_player.round_score >= 2):

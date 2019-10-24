@@ -3,6 +3,7 @@ extends Node
 var username = "avalon"
 var viewing_result = false
 var is_welcome = false
+var userdata = {}
 
 func _ready():
 	pass # Replace with function body.

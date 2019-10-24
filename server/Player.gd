@@ -19,7 +19,12 @@ var player_name = ""
 
 # var needs_refresh = false
 var auth = null
-var userdata = {}
+var userdata = {
+	"win": 0,
+	"lose": 0,
+	"hit": 0,
+	"miss": 0,
+}
 
 func _ready():
 	auth_request.set_id(id)
@@ -35,11 +40,23 @@ func set_profile(auth):
 	player_name = auth.displayname
 	firestore_request.set_auth(auth)
 
+func is_first_time() -> bool:
+	for val in userdata.values():
+		if val:
+			return false
+	return true
+
 func set_userdata(data):
 	userdata.win = data.win.integerValue
 	userdata.lose = data.lose.integerValue
 	userdata.hit = data.hit.integerValue
 	userdata.miss = data.miss.integerValue
+
+func map_userdata(win, lose, hit, miss):
+	userdata.win = win
+	userdata.lose = lose
+	userdata.hit = hit
+	userdata.miss = miss
 
 func soft_reset():
 	score = 0
