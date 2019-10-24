@@ -19,7 +19,8 @@ func _ready():
 	Lobby.connect("login_succeeded", self, "_on_login_succeeded")
 	Lobby.connect("login_failed", self, "_on_login_failed")
 	Settings.load_profile()
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), Settings.music_value-45)
+	var db = 2*log(Settings.music_value)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), db)
 	blank.hide()
 	if Settings.login_email != "":
 		login_email.text = Settings.login_email
