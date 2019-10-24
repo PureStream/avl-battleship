@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://Scenes/Screens/Play.gd" type="Script" id=1]
 [ext_resource path="res://Images/UI/grid8.png" type="Texture" id=2]
@@ -20,6 +20,8 @@
 [ext_resource path="res://Sounds/ClickSound.tscn" type="PackedScene" id=18]
 [ext_resource path="res://Scenes/Screens/TurnPanel.gd" type="Script" id=19]
 [ext_resource path="res://Fonts/RobotoTitle.tres" type="DynamicFont" id=20]
+[ext_resource path="res://Scenes/VolumeSlider.tscn" type="PackedScene" id=21]
+[ext_resource path="res://Scenes/BGMContainer.tscn" type="PackedScene" id=22]
 
 [sub_resource type="DynamicFont" id=1]
 size = 80
@@ -351,7 +353,6 @@ size_flags_vertical = 3
 custom_constants/separation = 20
 
 [node name="ShipOptions" type="VBoxContainer" parent="MainMarginContainer/MainBoxContainer/PlayerContainer/PlayerThings"]
-editor/display_folded = true
 margin_right = 400.0
 margin_bottom = 820.0
 size_flags_horizontal = 3
@@ -372,7 +373,6 @@ margin_bottom = 820.0
 size_flags_vertical = 0
 custom_fonts/font = ExtResource( 10 )
 text = "Options"
-align = 0
 
 [node name="ControlContainer" type="VBoxContainer" parent="MainMarginContainer/MainBoxContainer/PlayerContainer/PlayerThings"]
 margin_left = 420.0
@@ -513,6 +513,7 @@ text = "quit"
 visible = false
 
 [node name="TurnPanel" type="Panel" parent="."]
+editor/display_folded = true
 modulate = Color( 1, 1, 1, 0 )
 anchor_top = 0.5
 anchor_right = 1.0
@@ -570,9 +571,82 @@ anims/Out = SubResource( 9 )
 [node name="Timer" type="Timer" parent="TurnPanel"]
 wait_time = 1.2
 one_shot = true
+
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 575
+custom_constants/margin_top = 250
+custom_constants/margin_left = 575
+custom_constants/margin_bottom = 250
+
+[node name="PopupMenu" type="PopupMenu" parent="MarginContainer2"]
+margin_left = 575.0
+margin_top = 250.0
+margin_right = 1345.0
+margin_bottom = 830.0
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer2/PopupMenu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 40
+custom_constants/margin_top = 40
+custom_constants/margin_left = 40
+custom_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer2/PopupMenu/MarginContainer"]
+margin_left = 40.0
+margin_top = 40.0
+margin_right = 730.0
+margin_bottom = 540.0
+
+[node name="Options" type="Label" parent="MarginContainer2/PopupMenu/MarginContainer/VBoxContainer"]
+margin_right = 690.0
+margin_bottom = 75.0
+custom_fonts/font = ExtResource( 10 )
+text = "Options"
+align = 1
+
+[node name="Filler" type="Label" parent="MarginContainer2/PopupMenu/MarginContainer/VBoxContainer"]
+margin_top = 79.0
+margin_right = 690.0
+margin_bottom = 179.0
+rect_min_size = Vector2( 0, 100 )
+size_flags_vertical = 0
+
+[node name="SoundContainer" parent="MarginContainer2/PopupMenu/MarginContainer/VBoxContainer" instance=ExtResource( 21 )]
+margin_top = 183.0
+margin_right = 690.0
+margin_bottom = 263.0
+
+[node name="SoundContainer2" parent="MarginContainer2/PopupMenu/MarginContainer/VBoxContainer" instance=ExtResource( 22 )]
+margin_top = 267.0
+margin_right = 690.0
+margin_bottom = 347.0
+size_flags_vertical = 2
+
+[node name="Concede" type="Button" parent="MarginContainer2/PopupMenu/MarginContainer/VBoxContainer"]
+margin_top = 419.0
+margin_right = 690.0
+margin_bottom = 500.0
+custom_fonts/font = ExtResource( 10 )
+text = "Concede"
+
+[node name="CloseIcon" type="Button" parent="MarginContainer2/PopupMenu/MarginContainer"]
+margin_left = 690.0
+margin_top = 40.0
+margin_right = 730.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 40, 40 )
+size_flags_horizontal = 8
+size_flags_vertical = 0
+[connection signal="pressed" from="MainMarginContainer/MainBoxContainer/PlayerContainer/PlayerThings/ShipOptions/Options" to="." method="_on_Options_pressed"]
 [connection signal="timeout" from="MainMarginContainer/MainBoxContainer/PlayerContainer/PlayerThings/ControlContainer/Timer" to="." method="_on_Timer_timeout"]
 [connection signal="pressed" from="MainMarginContainer/MainBoxContainer/PlayerContainer/PlayerThings/ControlContainer/ShootButton" to="." method="_on_Confirm_pressed"]
 [connection signal="target_selected" from="MainMarginContainer/MainBoxContainer/EnemyContainer/EnemyGrid" to="." method="_on_EnemyGrid_target_selected"]
 [connection signal="pressed" from="MarginContainer/WinLose/VBoxContainer/Button" to="." method="_on_Button_pressed"]
 [connection signal="animation_completed" from="TurnPanel" to="." method="_on_TurnPanel_animation_completed"]
 [connection signal="animation_finished" from="TurnPanel/TurnAnimation" to="TurnPanel" method="_on_TurnAnimation_animation_finished"]
+[connection signal="pressed" from="MarginContainer2/PopupMenu/MarginContainer/VBoxContainer/Concede" to="." method="_on_Concede_pressed"]
+[connection signal="pressed" from="MarginContainer2/PopupMenu/MarginContainer/CloseIcon" to="." method="_on_CloseIcon_pressed"]
