@@ -18,6 +18,7 @@ var uid = ""
 var player_name = ""
 
 # var needs_refresh = false
+var is_guest = false
 var auth = null
 var userdata = {
 	"win": 0,
@@ -47,10 +48,12 @@ func is_first_time() -> bool:
 	return true
 
 func set_userdata(data):
-	userdata.win = data.win.integerValue
-	userdata.lose = data.lose.integerValue
-	userdata.hit = data.hit.integerValue
-	userdata.miss = data.miss.integerValue
+	map_userdata(
+		int(data.win.integerValue),
+		int(data.lose.integerValue),
+		int(data.hit.integerValue),
+		int(data.miss.integerValue)
+	)
 
 func map_userdata(win, lose, hit, miss):
 	userdata.win = win

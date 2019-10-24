@@ -45,6 +45,7 @@ func _on_Register_pressed():
 	
 func _on_login_succeeded(auth):
 	get_tree().change_scene("res://Scenes/MainMenu.tscn")
+	Lobby.get_userdata()
 	Settings.login_email = auth.email
 	if (checkbox.pressed):
 		Settings.login_password = login_password.text

@@ -41,12 +41,14 @@ func _ready():
 remote func receive_login_data(type, email, pwd, username):
 	print("receive login data")
 	var id = get_tree().get_rpc_sender_id()
-	var request_player = player_dict[id].get_node("AuthRequest")
+	var player = player_dict[id]
+	var request_player = player.get_node("AuthRequest")
 	
 	if (request_player): 
 		match type:
 			CONNECT_TYPE.GUEST:
-				player_dict[id].player_name = "guest"+str(id)
+				player.is_guest = true
+				player.player_name = "guest"+str(id)
 				rpc_id(id, "login_succeeded", { "email": "", "displayname": "guest"+str(id) })
 			CONNECT_TYPE.LOGIN:
 				Firebase.Auth.login_with_email_and_password(request_player, email, pwd)
@@ -84,21 +86,21 @@ func update_userdata(player, data):
 	Firebase.Firestore.update_document(request_player, "users?documentId=%s" % player.uid, data)
 
 remote func get_userdata():
-	print("get userdata")
 	var id = get_tree().get_rpc_sender_id()
 	var player = player_dict[id]
-	var request_player = player.get_node("FirestoreRequest")
-	
-	Firebase.Firestore.get_document(request_player, "users/%s" % player.uid)
+	print("User get userdata: ", player.player_name)
+	if !player.is_guest:
+		var request_player = player.get_node("FirestoreRequest")
+		Firebase.Firestore.get_document(request_player, "users/%s" % player.uid)
 
 func _on_Firestore_request_succeeded(nid, data):
-	print("received userdata")
+	print("Firestore success: received userdata")
 	var player = player_dict[nid]
 	player.set_userdata(data)
 	rpc_id(nid, "receive_userdata", player.userdata)
 
 func _on_Firestore_request_failed(nid, error_code, error_msg):
-	print(error_msg)
+	print("Firestore error: ", error_msg)
 
 func peer_connected(id):
 	var new_player = player.instance()
@@ -393,7 +395,7 @@ func round_over(curr_player, curr_enemy, curr_session):
 		
 		var round_won = player == curr_player
 
-		if game_over:
+		if game_over && !player.is_guest:
 			var is_first_time = player.is_first_time()
 			var userdata = player.userdata
 			var hit_value = userdata.hit
@@ -413,7 +415,7 @@ func round_over(curr_player, curr_enemy, curr_session):
 			if is_first_time:
 				create_userdata(player, update_data)
 			else:
-				pass	
+				update_userdata(player, update_data)
 
 		rpc_id(player.id, "receive_round_result", round_won, game_over, round_info)
 	

@@ -28,8 +28,7 @@ func _input(event):
 			select_step(-1)
 
 func _on_PrevBtn_pressed():
-	Lobby.get_userdata()
-#	step(-1)
+	step(-1)
 
 func _on_NextBtn_pressed():
 	step(1)
