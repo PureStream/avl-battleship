@@ -1,6 +1,6 @@
 extends Node
 
-onready var bgm := $BGMPlayer
+#onready var bgm := $BGMPlayer
 onready var settings_file = "user://settings.save"
 var login_email := ""
 var login_password := ""
@@ -8,11 +8,14 @@ var is_remember_password = false
 var sound_value = 100
 var music_value = 100
 var curr_scene = self.name
-
+var bgm = null
+var curr_music = " "
 	
 func _ready():
-	call_deferred("play", bgm)
-	#play_bgm()
+	#call_deferred("play", bgm)
+	bgm = AudioStreamPlayer.new()
+	bgm.set_bus("Music")
+	self.add_child(bgm)
 	
 func save():
 	var save_dict = {
@@ -44,12 +47,24 @@ func load_profile():
 	music_value = curr_line["music_value"]
 	f.close()
 
-func play_bgm():
-	var bgm = AudioStreamPlayer.new()
-	bgm.set_bus("Music")
-	self.add_child(bgm)
-	bgm.stream = load("res://Sounds/Hopes and Dreams.ogg")
-	bgm.play()
+var music_list = {
+	"BGM1": "res://Sounds/Hopes and Dreams.ogg"
+}
+
+var sound_list = {
+	"On_Hit": "res://Sounds/On_Hit.wav",
+	"On_Hit2": "res://Sounds/On_Hit2.wav",
+	"On_Miss": "res://Sounds/On_Missed.wav",
+	"Ship_Destroyed": "res://Sounds/Ship_Destroyed.wav",
+	"Target_Locked": "res://Sounds/Target_Locked.wav",
+	"Button_Pressed": "res://Sounds/Tiny Button Push-SoundBible.com-513260752.wav"
+}
+	
+func play_bgm(key):
+	if key in music_list.keys() && curr_music != key:
+		curr_music = key
+		bgm.stream = load(music_list[key])
+		bgm.play()
 
 func stop_bgm():
-	pass
+	bgm.stop()
