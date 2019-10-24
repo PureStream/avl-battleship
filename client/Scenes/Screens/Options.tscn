@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scenes/Screens/Options.gd" type="Script" id=1]
 [ext_resource path="res://Fonts/RobotoTitle.tres" type="DynamicFont" id=2]
@@ -8,6 +8,8 @@
 [ext_resource path="res://Scenes/MusicSlider.gd" type="Script" id=6]
 [ext_resource path="res://Scenes/BackButton.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Sounds/ClickSound.tscn" type="PackedScene" id=8]
+
+[sub_resource type="StyleBoxEmpty" id=1]
 
 [node name="Options" type="Node"]
 script = ExtResource( 1 )
@@ -119,6 +121,15 @@ size_flags_horizontal = 10
 size_flags_vertical = 4
 align = 1
 
+[node name="LogOutButton" type="Button" parent="MarginContainer/Filler/VBoxContainer"]
+margin_top = 646.0
+margin_right = 700.0
+margin_bottom = 727.0
+custom_styles/focus = SubResource( 1 )
+custom_fonts/font = ExtResource( 3 )
+custom_constants/hseparation = 0
+text = "Log Out"
+
 [node name="FillerRight" type="Label" parent="MarginContainer/Filler"]
 margin_left = 1258.0
 margin_top = 493.0
@@ -137,3 +148,4 @@ size_flags_vertical = 8
 [connection signal="update_value" from="MarginContainer/Filler/VBoxContainer/SoundContainer" to="." method="_on_SoundContainer_update_value"]
 [connection signal="update_value" from="MarginContainer/Filler/VBoxContainer/MusicContainer" to="." method="_on_MusicContainer_update_value"]
 [connection signal="toggled" from="MarginContainer/Filler/VBoxContainer/ConfirmButtonContainer/CheckButton" to="." method="_on_CheckButton_toggled"]
+[connection signal="pressed" from="MarginContainer/Filler/VBoxContainer/LogOutButton" to="." method="_on_LogOutButton_pressed"]
