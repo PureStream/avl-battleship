@@ -324,7 +324,7 @@ remote func receive_target_position(session_id, pos):
 
 	if value != null:
 		rpc_id(id, "receive_target_information", value)
-		#check for round completion
+		curr_player.shot_fired += 1
 		if value:
 			curr_player.score += 1
 			curr_enemy.set_damage(pos)

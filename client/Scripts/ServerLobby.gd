@@ -22,6 +22,7 @@ var round_score = 0
 var enemy_round_score = 0
 var player_score = 0
 var enemy_score = 0
+var shot_fired = 0
 
 var connect_type
 var connect_email
