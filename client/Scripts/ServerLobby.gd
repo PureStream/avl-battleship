@@ -190,9 +190,12 @@ func rematch():
 	else:
 		print("session error")
 
-func send_time_used(cur_sess_id):
-	rpc_id(1, "receive_time_used", cur_sess_id, Lobby.time_used)
-
+remote func send_time_used():
+	if session_id >-1:
+		rpc_id(1, "receive_time_used", session_id, Lobby.time_used)
+	else:
+		print("session error")
+		
 func cancel_rematch():
 	if session_id >-1:
 		rpc_id(1, "cancel_rematch", session_id)

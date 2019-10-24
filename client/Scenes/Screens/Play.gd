@@ -97,7 +97,7 @@ func render_hit(hit):
 		enemy_grid.insert_mark({"id":"Miss","g_pos":{"x":x,"y":y}})
 	enemy_grid.reticle.visible = false
 	enemy_grid.hit_map[x][y] = false
-
+	
 	end_turn()
 
 func receive_hit(pos, value):
@@ -123,16 +123,17 @@ func end_turn():
 	shoot.disabled = true
 	if Lobby.your_turn:
 		enemy_grid.deactivate()
+		counter.stop()
 	Lobby.your_turn = false #not really needed
 	timer.stop_timer()
-	counter.stop()
+	Lobby.send_time_used()
 	Lobby.end_turn_ready()
 
 func _on_TurnPanel_animation_completed():
 	if Lobby.your_turn:
 		enemy_grid.activate()
+		counter.start()
 	timer.start_timer()
-	counter.start()
 
 func set_score(score):
 	var p_score = score["player"]
