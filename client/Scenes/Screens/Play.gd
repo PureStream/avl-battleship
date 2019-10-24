@@ -12,6 +12,7 @@ onready var player_score = score_container.get_node("PScoreboard")
 onready var enemy_score = score_container.get_node("EScoreboard")
 onready var delay = $Delay
 onready var turn_panel = $TurnPanel
+onready var options_popup := $MarginContainer2/PopupMenu
 
 export (Texture) var grid8
 export (Texture) var grid10
@@ -186,3 +187,13 @@ func _on_Timer_timeout():
 
 func _on_EnemyGrid_target_selected():
 	shoot.set_active()
+
+func _on_Options_pressed():
+	options_popup.show()
+
+func _on_Concede_pressed():
+	options_popup.hide()
+	Lobby.concede()
+
+func _on_CloseIcon_pressed():
+	options_popup.hide()
