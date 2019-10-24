@@ -43,9 +43,7 @@ func add(documentId = null, data = null):
         if documentId:
             url += query_tag + documentId_tag + documentId
         
-        
         pusher.request(url, [authorization_header + auth.idtoken], true, HTTPClient.METHOD_POST, JSON.print(data))
-        pass
 
 func build_fake_data():
     var packed_scene = PackedScene.new()
@@ -55,7 +53,6 @@ func build_fake_data():
 
 func _get_request_url():
     return base_url + extended_url + collection_name
-    pass
     
 func doc(documentId = "", data = null):
     pass
@@ -65,7 +62,5 @@ func on_pusher_request_complete(result, response_code, headers, body):
     var bod = body.get_string_from_utf8()
     if response_code == HTTPClient.RESPONSE_OK:
         emit_signal("new_document", JSON.parse(bod))
-        pass
     else:
         print(bod)
-    pass

@@ -144,13 +144,13 @@ func get_clean_keys(auth_result):
 		cleaned[key.replace("_", "").to_lower()] = auth_result[key]
 	return cleaned
 	
-func get_user_data(player, auth):
+func get_userdata(player, auth):
 	if auth == null or auth.has("idtoken") == false:
 		print_debug("Not logged in")
 		return
 	if player:
 		player.request(userdata_request_url, ["Content-Type: application/json"], true, HTTPClient.METHOD_POST, JSON.print({"idToken":auth.idtoken}))
 
-func update_user_data(player, auth, data):
+func update_userdata(player, auth, data):
 	if player:
 		player.request(update_profile_request_url, ["Content-Type: application/json"], true, HTTPClient.METHOD_POST, JSON.print(update_profile_body))

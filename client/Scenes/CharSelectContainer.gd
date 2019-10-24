@@ -28,10 +28,12 @@ func _input(event):
 			select_step(-1)
 
 func _on_PrevBtn_pressed():
-	step(-1)
+	Lobby.get_userdata()
+#	step(-1)
 
 func _on_NextBtn_pressed():
-	step(1)
+	Lobby.create_userdata()
+#	step(1)
 
 func _on_Character_pressed(obj):
 	for i in range(char_view):

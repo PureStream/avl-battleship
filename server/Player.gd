@@ -16,9 +16,9 @@ var ready = false
 var uid = ""
 var player_name = ""
 
-var needs_refresh = false
+# var needs_refresh = false
 var auth = null
-var userdata = null
+var userdata = {}
 
 func _ready():
 	auth_request.set_id(id)
@@ -32,6 +32,13 @@ func set_profile(auth):
 	self.auth = auth
 	uid = auth.localid
 	player_name = auth.displayname
+	firestore_request.set_auth(auth)
+
+func set_userdata(data):
+	userdata.win = data.win.integerValue
+	userdata.lose = data.lose.integerValue
+	userdata.hit = data.hit.integerValue
+	userdata.miss = data.miss.integerValue
 
 func soft_reset():
 	score = 0

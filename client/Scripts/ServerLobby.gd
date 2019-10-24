@@ -67,6 +67,12 @@ func _on_connection_success():
 	print("connect success!")
 	rpc_id(1, "receive_login_data", connect_type, connect_email, connect_pwd, connect_username)
 
+func get_userdata():
+	rpc_id(1, "get_userdata")
+
+func create_userdata():
+	rpc_id(1, "create_userdata")
+
 remote func login_succeeded(auth):
 	print("login success: " + auth.displayname)
 	set_username(auth.displayname)

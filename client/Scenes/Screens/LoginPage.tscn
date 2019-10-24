@@ -201,7 +201,6 @@ custom_constants/margin_left = 500
 custom_constants/margin_bottom = 100
 
 [node name="RegisterPopUpMenu" type="PopupMenu" parent="MarginContainer2"]
-visible = true
 margin_left = 500.0
 margin_top = 100.0
 margin_right = 1420.0

@@ -1,6 +1,6 @@
 extends HTTPRequest
 
-signal firebase_request_completed(network_id, result, response_code, headers, body)
+signal firebase_request_completed(request, result, response_code, headers, body)
 
 var auth = null
 var nid = -1

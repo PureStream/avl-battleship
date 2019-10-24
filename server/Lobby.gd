@@ -34,14 +34,14 @@ const CONNECT_TYPE = {
 func _ready():
 	Firebase.Auth.connect("login_succeeded", self, "_on_FirebaseAuth_login_succeeded")
 	Firebase.Auth.connect("login_failed", self, "_on_FirebaseAuth_login_failed")
-	Firebase.Auth.connect("register_succeeded", self, "_on_FirebaseAuth_register_succeeded")
-	Firebase.Auth.connect("userdata_updated", self, "_on_FirebaseAuth_userdata_updated")
+	Firebase.Firestore.connect("request_succeeded", self, "_on_Firestore_request_succeeded")
+	Firebase.Firestore.connect("request_failed", self, "_on_Firestore_request_failed")
+	# Firebase.Auth.connect("userdata_updated", self, "_on_FirebaseAuth_userdata_updated")
 
 remote func receive_login_data(type, email, pwd, username):
 	print("receive login data")
 	var id = get_tree().get_rpc_sender_id()
-
-	var request_player = player_dict[id].get_node("PlayerRequest")
+	var request_player = player_dict[id].get_node("AuthRequest")
 	
 	if (request_player): 
 		match type:
@@ -72,11 +72,38 @@ func _on_FirebaseAuth_login_succeeded(nid, auth):
 func _on_FirebaseAuth_login_failed(nid, error_code, error_msg):
 	rpc_id(nid, "login_failed", error_code, error_msg)
 
-func _on_FirebaseAuth_register_succeeded(nid, auth):
-	pass
+# func _on_FirebaseAuth_userdata_updated(nid, auth):
+# 	pass
 
-func _on_FirebaseAuth_userdata_updated(nid, auth):
-	pass
+remote func create_userdata():
+	var id = get_tree().get_rpc_sender_id()
+	var player = player_dict[id]
+	var request_player = player.get_node("FirestoreRequest")
+
+	var data := {
+		"win": { "integerValue": 69 },
+		"lose": { "integerValue": 96 },
+		"hit": { "integerValue": 43 },
+		"miss": { "integerValue": 34 },
+	}
+
+	Firebase.Firestore.save_document(request_player, "users?documentId=%s" % player.uid, data)
+
+remote func get_userdata():
+	print("get userdata")
+	var id = get_tree().get_rpc_sender_id()
+	var player = player_dict[id]
+	var request_player = player.get_node("FirestoreRequest")
+	
+	Firebase.Firestore.get_document(request_player, "users/%s" % player.uid)
+
+func _on_Firestore_request_succeeded(nid, data):
+	print("received userdata")
+	player_dict[nid].set_userdata(data)
+	print(str(player_dict[nid].userdata))
+
+func _on_Firestore_request_failed(nid, error_code, error_msg):
+	print(error_msg)
 
 func peer_connected(id):
 	var new_player = player.instance()
@@ -365,7 +392,7 @@ func round_over(curr_player, curr_enemy, curr_session):
 		
 		var round_info = {
 			"round":curr_session.round_num,
-			"round_score": player.round_score, 
+			"round_score": player.round_score, 	
 			"enemy_round_score": enemy.round_score
 		}
 		
