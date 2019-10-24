@@ -13,10 +13,13 @@ onready var register_username := $MarginContainer2/RegisterPopUpMenu/MarginConta
 onready var register_password := $MarginContainer2/RegisterPopUpMenu/MarginContainer/VBoxContainer/VBoxContainer3/PasswordTypeBox
 onready var blank := $Blank
 
+var music_value = 0
+
 func _ready():
 	Lobby.connect("login_succeeded", self, "_on_login_succeeded")
 	Lobby.connect("login_failed", self, "_on_login_failed")
 	Settings.load_profile()
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), Settings.music_value-45)
 	blank.hide()
 	if Settings.login_email != "":
 		login_email.text = Settings.login_email
@@ -40,8 +43,6 @@ func _on_Register_pressed():
 		return
 	Lobby.email_pwd_register(register_email.text, register_password.text, register_username.text)
 	
-	
-
 func _on_login_succeeded(auth):
 	get_tree().change_scene("res://Scenes/MainMenu.tscn")
 	Settings.login_email = auth.email

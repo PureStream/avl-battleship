@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/On_Hit2.wav-127d22d6807b9035df4f9f8af560b94f.sample"
+
+[deps]
+
+source_file="res://Sounds/On_Hit2.wav"
+dest_files=[ "res://.import/On_Hit2.wav-127d22d6807b9035df4f9f8af560b94f.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

@@ -4,11 +4,14 @@ onready var settings_file = "user://settings.save"
 var login_email := ""
 var login_password := ""
 var is_remember_password = false
-var sound_value = 50
-var music_value = 50
+var sound_value = 100
+var music_value = 100
 
 func _ready():
-	pass 
+	var bgm = AudioStreamPlayer.new()
+	self.add_child(bgm)
+	bgm.stream = load("res://Sounds/Hopes and Dreams.ogg")
+	bgm.play()
 	
 func save():
 	var save_dict = {
@@ -36,4 +39,6 @@ func load_profile():
 	login_email = curr_line["email"]
 	login_password = curr_line["password"]
 	is_remember_password = curr_line["is_remember_password"]
+	sound_value = curr_line["sound_value"]
+	music_value = curr_line["music_value"]
 	f.close()
