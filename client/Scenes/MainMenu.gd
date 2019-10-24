@@ -5,5 +5,6 @@ onready var displayname := $MarginContainer/VBoxContainer/NameContainer/DisplayN
 
 func _ready():
 	displayname.text = Global.username
+	Settings.stop_bgm()
 
 
