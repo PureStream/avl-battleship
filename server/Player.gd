@@ -1,6 +1,7 @@
 extends Node
 
-onready var player_request := $PlayerRequest
+onready var auth_request := $AuthRequest
+onready var firestore_request := $FirestoreRequest
 
 var session_id = -1
 var matching_info = {}
@@ -20,7 +21,8 @@ var auth = null
 var userdata = null
 
 func _ready():
-	player_request.set_id(id)
+	auth_request.set_id(id)
+	firestore_request.set_id(id)
 
 func set_id(id):
 	self.id = id

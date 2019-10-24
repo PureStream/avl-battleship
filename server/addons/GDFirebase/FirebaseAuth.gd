@@ -81,34 +81,30 @@ func _on_FirebaseAuth_request_completed(player, result, response_code, headers, 
 	if json_result.error != OK:
 		print_debug("Error while parsing body json")
 		return
-	
-	var auth
+
 	var res = json_result.result
 	
 	if player:
 		var nid = player.get_id()
+		var auth = get_clean_keys(res)
 		if response_code == HTTPClient.RESPONSE_OK:
 			if not res.has("kind"):
-				auth = get_clean_keys(res)
 				player.begin_refresh_countdown()
 			else:
 				match res.kind:
 					RESPONSE_SIGNIN:
-						auth = get_clean_keys(res)
 						emit_signal("login_succeeded", nid, auth)
 						player.begin_refresh_countdown()
 					RESPONSE_SIGNUP:
-						auth = get_clean_keys(res)
 						if (auth.has("email")):
 							emit_signal("register_succeeded", player, auth)
 						# Guest Login case
-						else:
-							emit_signal("login_succeeded", nid, auth)
+						# else:
+						# 	emit_signal("login_succeeded", nid, auth)
 					RESPONSE_USERDATA:
 						var userdata = FirebaseUserData.new(res.users[0])
 						emit_signal("userdata_received", nid, userdata)
 					RESPONSE_UPDATE:
-						auth = get_clean_keys(res)
 						emit_signal("userdata_updated", nid, auth)
 						player.begin_refresh_countdown()
 					var RESPONSE_KIND:
