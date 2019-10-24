@@ -18,9 +18,14 @@ export (Texture) var grid8
 export (Texture) var grid10
 export (Texture) var grid8_s
 export (Texture) var grid10_s
- 
+var counter = null
+
 func _ready():
 	Lobby.connect("target_info_received", self, "render_hit")
+	counter = Timer.new()
+	counter.set_wait_time(1)
+	counter.connect("timeout", self, "on_timeout_complete")
+	add_child(counter)
 	shoot.disabled = true
 	enemy_grid.shoot = shoot
 	Lobby.play = self
@@ -42,6 +47,10 @@ func _ready():
 	for ship in ships:
 		player_grid.insert_item(ship)
 	start_game(Lobby.your_turn)
+
+func on_timeout_complete():
+	Lobby.time_used += 1
+	print("time used:"+str(Lobby.time_used))
 
 func _input(event):
 	if event.is_action_pressed("inv_grab"):
@@ -116,12 +125,14 @@ func end_turn():
 		enemy_grid.deactivate()
 	Lobby.your_turn = false #not really needed
 	timer.stop_timer()
+	counter.stop()
 	Lobby.end_turn_ready()
 
 func _on_TurnPanel_animation_completed():
 	if Lobby.your_turn:
 		enemy_grid.activate()
 	timer.start_timer()
+	counter.start()
 
 func set_score(score):
 	var p_score = score["player"]

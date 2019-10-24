@@ -348,6 +348,10 @@ remote func receive_target_position(session_id, pos):
 	rpc_id(id, "receive_score", {"player":curr_player.score, "enemy":curr_enemy.score})
 	rpc_id(curr_enemy.id, "receive_score", {"player":curr_enemy.score, "enemy":curr_player.score})
 
+func receive_time_used(curr_session, time_used):
+	for player in curr_session.connected_players:
+		player.time_used = time_used
+
 func round_over(curr_player, curr_enemy, curr_session):
 	curr_session.prev_winner = curr_player
 	curr_session.round_num += 1
@@ -358,7 +362,7 @@ func round_over(curr_player, curr_enemy, curr_session):
 	
 	for player in curr_session.connected_players:
 		var enemy = player.connected_player
-		
+		rpc_id(player.id, "send_time_used", curr_session)
 		player.ready = false
 		player.all_scores.append(player.score)
 		player.score = 0
@@ -366,7 +370,8 @@ func round_over(curr_player, curr_enemy, curr_session):
 		var round_info = {
 			"round":curr_session.round_num,
 			"round_score": player.round_score, 
-			"enemy_round_score": enemy.round_score
+			"enemy_round_score": enemy.round_score,
+			"enemy_time_used": enemy.time_used
 		}
 		
 		var round_won = player == curr_player

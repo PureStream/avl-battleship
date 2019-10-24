@@ -26,6 +26,7 @@ func _ready():
 	round_bar.set_label("Rounds won")
 	round_bar.set_values(Lobby.round_score, Lobby.enemy_round_score)
 	time_bar.set_label("Time taken")
+	time_bar.set_values(Lobby.time_used, Lobby.enemy_time_used)
 	player_name.text = Global.username
 	enemy_name.text = Lobby.enemy_name
 	

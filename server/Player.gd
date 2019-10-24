@@ -14,6 +14,7 @@ var round_score = 0
 var ready = false
 var uid = ""
 var player_name = ""
+var time_used = 0
 
 var needs_refresh = false
 var auth = null

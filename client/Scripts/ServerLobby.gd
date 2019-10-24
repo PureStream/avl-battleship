@@ -22,6 +22,8 @@ var round_score = 0
 var enemy_round_score = 0
 var player_score = 0
 var enemy_score = 0
+var time_used = 0
+var enemy_time_used = 0
 
 var connect_type
 var connect_email
@@ -171,6 +173,7 @@ remote func receive_round_result(result:bool, game_over:bool, round_info):
 	round_num = round_info["round"]
 	round_score = round_info["round_score"]
 	enemy_round_score = round_info["enemy_round_score"]
+	enemy_time_used = round_info["enemy_time_used"]
 	play.set_round_score(round_score, enemy_round_score)
 	if game_over:
 		play.end_game(result)
@@ -186,6 +189,9 @@ func rematch():
 		rpc_id(1, "rematch", session_id)
 	else:
 		print("session error")
+
+func send_time_used(cur_sess_id):
+	rpc_id(1, "receive_time_used", cur_sess_id, Lobby.time_used)
 
 func cancel_rematch():
 	if session_id >-1:
