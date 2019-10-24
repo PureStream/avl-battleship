@@ -648,5 +648,7 @@ size_flags_vertical = 0
 [connection signal="pressed" from="MarginContainer/WinLose/VBoxContainer/Button" to="." method="_on_Button_pressed"]
 [connection signal="animation_completed" from="TurnPanel" to="." method="_on_TurnPanel_animation_completed"]
 [connection signal="animation_finished" from="TurnPanel/TurnAnimation" to="TurnPanel" method="_on_TurnAnimation_animation_finished"]
+[connection signal="update_value" from="MarginContainer2/PopupMenu/MarginContainer/VBoxContainer/SoundContainer" to="." method="_on_SoundContainer_update_value"]
+[connection signal="update_value" from="MarginContainer2/PopupMenu/MarginContainer/VBoxContainer/SoundContainer2" to="." method="_on_MusicContainer_update_value"]
 [connection signal="pressed" from="MarginContainer2/PopupMenu/MarginContainer/VBoxContainer/Concede" to="." method="_on_Concede_pressed"]
 [connection signal="pressed" from="MarginContainer2/PopupMenu/MarginContainer/CloseIcon" to="." method="_on_CloseIcon_pressed"]

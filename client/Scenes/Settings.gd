@@ -1,17 +1,25 @@
 extends Node
 
+#onready var bgm := $BGMPlayer
 onready var settings_file = "user://settings.save"
 var login_email := ""
 var login_password := ""
 var is_remember_password = false
 var sound_value = 100
 var music_value = 100
+var curr_scene = ""
 
+	
 func _ready():
+	#call_deferred("play",bgm)
 	var bgm = AudioStreamPlayer.new()
+	bgm.set_bus("Music")
 	self.add_child(bgm)
 	bgm.stream = load("res://Sounds/Hopes and Dreams.ogg")
-	bgm.play()
+	if curr_scene == ("res://Scenes/SetShip.tscn"):	bgm.stop()
+	if curr_scene == ("res://Scenes/Screens/Play.tscn"): bgm.stop()
+	if curr_scene == ("res://Scenes/Screens/Result.tscn"): bgm.stop()
+	else: bgm.play()
 	
 func save():
 	var save_dict = {
@@ -19,7 +27,7 @@ func save():
 		"password": login_password,
 		"sound_value": sound_value,
 		"music_value": music_value,
-		"is_remember_password": is_remember_password
+		"is_remember_password": is_remember_password,
 	}
 	return save_dict
 	
@@ -42,3 +50,4 @@ func load_profile():
 	sound_value = curr_line["sound_value"]
 	music_value = curr_line["music_value"]
 	f.close()
+	

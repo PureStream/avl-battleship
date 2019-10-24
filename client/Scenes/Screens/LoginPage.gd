@@ -13,6 +13,7 @@ onready var register_username := $MarginContainer2/RegisterPopUpMenu/MarginConta
 onready var register_password := $MarginContainer2/RegisterPopUpMenu/MarginContainer/VBoxContainer/VBoxContainer3/PasswordTypeBox
 onready var blank := $Blank
 
+var curr_scene = self.name
 var music_value = 0
 
 func _ready():
@@ -26,6 +27,7 @@ func _ready():
 		login_email.text = Settings.login_email
 		login_password.text = Settings.login_password
 		checkbox.pressed = Settings.is_remember_password
+		curr_scene = Settings.curr_scene 
 
 func _on_Guest_Login_pressed():
 	blank.show()

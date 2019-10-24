@@ -20,6 +20,7 @@ export (Texture) var grid8_s
 export (Texture) var grid10_s
  
 func _ready():
+	Settings.load_profile()
 	Lobby.connect("target_info_received", self, "render_hit")
 	shoot.disabled = true
 	enemy_grid.shoot = shoot
@@ -197,3 +198,15 @@ func _on_Concede_pressed():
 
 func _on_CloseIcon_pressed():
 	options_popup.hide()
+
+func _on_SoundContainer_update_value(value):
+	Settings.sound_value = value
+	#var db = 2*log(Settings.music_value)
+	#AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), db)
+	Settings.save_profile()
+
+func _on_MusicContainer_update_value(value):
+	Settings.music_value = value
+	var db = 2*log(Settings.music_value)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), db)
+	Settings.save_profile()
