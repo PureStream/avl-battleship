@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scenes/Screens/Lobby.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/ModeButton.tscn" type="PackedScene" id=2]
@@ -9,13 +9,7 @@
 [sub_resource type="StyleBoxEmpty" id=1]
 
 [sub_resource type="DynamicFont" id=2]
-size = 90
-use_filter = true
-font_data = ExtResource( 2 )
-
-[sub_resource type="DynamicFont" id=3]
 size = 36
-font_data = ExtResource( 3 )
 
 [node name="Lobby" type="Node"]
 script = ExtResource( 1 )
@@ -47,20 +41,16 @@ margin_bottom = 165.0
 custom_constants/margin_bottom = 30
 
 [node name="ModeButton" parent="MarginContainer/HBoxContainer/ModePanel/MarginContainer" instance=ExtResource( 2 )]
-margin_right = 500.0
+margin_right = 400.0
 margin_bottom = 135.0
 rect_min_size = Vector2( 400, 135 )
 size_flags_horizontal = 0
-custom_styles/focus = SubResource( 1 )
-custom_fonts/font = SubResource( 2 )
-custom_constants/hseparation = 0
-text = "Classic"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ModePanel"]
 show_behind_parent = true
 margin_top = 169.0
 margin_right = 500.0
-margin_bottom = 916.0
+margin_bottom = 922.0
 mouse_filter = 2
 size_flags_vertical = 3
 custom_constants/separation = 20
@@ -104,8 +94,8 @@ align = 0
 
 [node name="BackButton" parent="MarginContainer/HBoxContainer/ModePanel" instance=ExtResource( 4 )]
 margin_left = 0.0
-margin_top = 920.0
-margin_right = 164.0
+margin_top = 926.0
+margin_right = 152.0
 margin_bottom = 1000.0
 
 [node name="TeamPanel" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
@@ -117,12 +107,12 @@ size_flags_horizontal = 10
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/TeamPanel"]
 margin_right = 510.0
-margin_bottom = 116.0
+margin_bottom = 100.0
 custom_constants/separation = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/TeamPanel/HBoxContainer"]
 margin_right = 390.0
-margin_bottom = 116.0
+margin_bottom = 100.0
 
 [node name="TeamName" type="Label" parent="MarginContainer/HBoxContainer/TeamPanel/HBoxContainer/VBoxContainer"]
 margin_right = 390.0
@@ -133,24 +123,23 @@ text = "Team Name"
 [node name="CommanderName" type="Label" parent="MarginContainer/HBoxContainer/TeamPanel/HBoxContainer/VBoxContainer"]
 margin_top = 78.0
 margin_right = 390.0
-margin_bottom = 116.0
-custom_fonts/font = SubResource( 3 )
+margin_bottom = 79.0
+custom_fonts/font = SubResource( 2 )
 text = "Commander Name"
 
 [node name="Commander" type="ColorRect" parent="MarginContainer/HBoxContainer/TeamPanel/HBoxContainer"]
 margin_left = 410.0
-margin_top = 8.0
 margin_right = 510.0
-margin_bottom = 108.0
+margin_bottom = 100.0
 rect_min_size = Vector2( 100, 100 )
 size_flags_horizontal = 10
 size_flags_vertical = 4
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/TeamPanel"]
 editor/display_folded = true
-margin_top = 120.0
+margin_top = 104.0
 margin_right = 510.0
-margin_bottom = 990.0
+margin_bottom = 974.0
 custom_constants/separation = 10
 
 [node name="Ship1" type="ColorRect" parent="MarginContainer/HBoxContainer/TeamPanel/VBoxContainer"]

@@ -7,15 +7,19 @@ var login_password := ""
 var is_remember_password = false
 var sound_value = 100
 var music_value = 100
-var curr_scene = self.name
 var bgm = null
+var sound = null
 var curr_music = " "
 	
 func _ready():
+	load_profile()
 	#call_deferred("play", bgm)
 	bgm = AudioStreamPlayer.new()
 	bgm.set_bus("Music")
 	self.add_child(bgm)
+	sound = AudioStreamPlayer.new()
+	sound.set_bus("Sound")
+	self.add_child(sound)
 	
 func save():
 	var save_dict = {
@@ -68,3 +72,11 @@ func play_bgm(key):
 
 func stop_bgm():
 	bgm.stop()
+	
+func play_sound(key):
+	if key in sound_list.keys():
+		sound.stream = load(sound_list[key])
+		sound.play()
+		
+func stop_sound():
+	sound.stop()

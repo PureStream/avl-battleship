@@ -12,7 +12,9 @@ onready var player_score = score_container.get_node("PScoreboard")
 onready var enemy_score = score_container.get_node("EScoreboard")
 onready var delay = $Delay
 onready var turn_panel = $TurnPanel
-onready var options_popup := $MarginContainer2/PopupMenu
+onready var options_popup := $MarginContainer2/PopupMenu 
+
+onready var option_btn := $MainMarginContainer/MainBoxContainer/PlayerContainer/PlayerThings/ShipOptions/Options
 
 export (Texture) var grid8
 export (Texture) var grid10
@@ -20,7 +22,6 @@ export (Texture) var grid8_s
 export (Texture) var grid10_s
  
 func _ready():
-	Settings.load_profile()
 	Lobby.connect("target_info_received", self, "render_hit")
 	shoot.disabled = true
 	enemy_grid.shoot = shoot
@@ -97,8 +98,10 @@ func receive_hit(pos, value):
 	var y = pos["y"] 
 	if value:
 		player_grid.insert_mark({"id":"Hit","g_pos":{"x":x,"y":y}})
+		Settings.play_sound("On_Hit2")
 	else:
 		player_grid.insert_mark({"id":"Miss","g_pos":{"x":x,"y":y}})
+		Settings.play_sound("On_Miss")
 	#play hit animation before sending ready signal
 	end_turn()
 
@@ -153,6 +156,7 @@ var click_to_exit = false
 func end_game(win:bool):
 	turn_panel.set_end_game(win)
 	turn_panel.play_end_animation()
+	enemy_grid.deactivate()
 	delay.start()
 	timer.stop_timer()
 	yield(delay, "timeout")
@@ -191,6 +195,9 @@ func _on_EnemyGrid_target_selected():
 
 func _on_Options_pressed():
 	options_popup.show()
+	if Lobby.your_turn:
+		enemy_grid.deactivate()
+	option_btn.disabled = true
 
 func _on_Concede_pressed():
 	options_popup.hide()
@@ -198,15 +205,17 @@ func _on_Concede_pressed():
 
 func _on_CloseIcon_pressed():
 	options_popup.hide()
+	if Lobby.your_turn:
+		enemy_grid.activate()
+	option_btn.disabled = false
+	Settings.save_profile()
 
 func _on_SoundContainer_update_value(value):
 	Settings.sound_value = value
-	#var db = 2*log(Settings.music_value)
-	#AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), db)
-	Settings.save_profile()
+	var db = 2*log(Settings.sound_value)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Sound"), db)
 
 func _on_MusicContainer_update_value(value):
 	Settings.music_value = value
 	var db = 2*log(Settings.music_value)
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), db)
-	Settings.save_profile()

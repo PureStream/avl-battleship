@@ -17,9 +17,10 @@ var curr_scene = self.name
 var music_value = 0
 
 func _ready():
+	Settings.play_bgm("BGM1")
 	Lobby.connect("login_succeeded", self, "_on_login_succeeded")
 	Lobby.connect("login_failed", self, "_on_login_failed")
-	Settings.load_profile()
+#	Settings.load_profile()
 	var db = 2*log(Settings.music_value)
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), db)
 	blank.hide()

@@ -69,6 +69,7 @@ func select_target(pos):
 		reticle.rect_position = Vector2(grid_pos.x + grid_offset, grid_pos.y + grid_offset) * cell_size
 		reticle_pos = grid_pos
 		emit_signal("target_selected")
+		Settings.play_sound("Target_Locked")
 
 func pos_to_grid_coord(pos):
 	var local_pos = pos - rect_global_position

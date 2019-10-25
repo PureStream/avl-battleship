@@ -20,7 +20,6 @@ run/main_scene="res://Scenes/Screens/LoginPage.tscn"
 
 [autoload]
 
-Firebase="*res://addons/GDFirebase/Firebase.gd"
 ShipDB="*res://Scripts/ShipDB.gd"
 ShipLayout="*res://Scripts/ShipLayout.gd"
 MenuButtonEnums="*res://Scripts/MenuButtonEnums.gd"

@@ -145,6 +145,7 @@ margin_bottom = 1040.0
 size_flags_vertical = 8
 
 [node name="ClickSound" parent="." instance=ExtResource( 8 )]
+[connection signal="tree_exiting" from="." to="." method="_on_Options_tree_exiting"]
 [connection signal="update_value" from="MarginContainer/Filler/VBoxContainer/SoundContainer" to="." method="_on_SoundContainer_update_value"]
 [connection signal="update_value" from="MarginContainer/Filler/VBoxContainer/MusicContainer" to="." method="_on_MusicContainer_update_value"]
 [connection signal="toggled" from="MarginContainer/Filler/VBoxContainer/ConfirmButtonContainer/CheckButton" to="." method="_on_CheckButton_toggled"]

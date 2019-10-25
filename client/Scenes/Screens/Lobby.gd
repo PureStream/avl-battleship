@@ -85,6 +85,7 @@ func start_matching():
 
 func next():
 	get_tree().change_scene("res://Scenes/SetShip.tscn")
+	Settings.stop_bgm()
 
 func _on_PlayerSearchTimeout_timeout():
 	Lobby.look_for_player()

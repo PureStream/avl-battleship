@@ -245,7 +245,6 @@ texture = ExtResource( 14 )
 expand = true
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-editor/display_folded = true
 margin_left = 478.0
 margin_top = 886.0
 margin_right = 1325.0

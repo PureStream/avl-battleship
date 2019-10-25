@@ -49,6 +49,7 @@ func _on_Rematch_pressed():
 func _on_Quit_pressed():
 	get_tree().change_scene("res://Scenes/Screens/Lobby.tscn")# Replace with function body.
 	Lobby.quit()
+	Settings.play_bgm("BGM1")
 
 func _on_Cancel_pressed():
 	if popup.cancel_enabled:
