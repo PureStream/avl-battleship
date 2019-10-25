@@ -28,7 +28,6 @@ func _ready():
 		login_email.text = Settings.login_email
 		login_password.text = Settings.login_password
 		checkbox.pressed = Settings.is_remember_password
-		curr_scene = Settings.curr_scene 
 
 func _on_Guest_Login_pressed():
 	blank.show()
