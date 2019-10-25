@@ -21,7 +21,11 @@ func set_colors(col1:Color, col2:Color):
 func set_values(num1, num2):
 	var value = 50
 	if num1 + num2 != 0:
-		value = num2 / (num1 + num2) * 100
+		value = float(num2) / (num1 + num2) * 100
 	progress_front.value = value
-	player.text = str(num1)
-	enemy.text = str(num2)
+	if typeof(num1) == TYPE_INT:
+		player.text = str(num1)
+		enemy.text = str(num2)
+	else: 
+		player.text = "%.2f" % num1
+		enemy.text = "%.2f" % num2

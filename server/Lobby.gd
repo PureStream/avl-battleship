@@ -300,15 +300,16 @@ func reset_session(session_id):
 		player.soft_reset()
 		rpc_id(player.id,"reset_game")
 	
-remote func concede(session_id):
+remote func concede(session_id, time_used):
 	var id = get_tree().get_rpc_sender_id()
 	print(str(id)+" conceded")
 	var curr_session = session_dict[session_id]
 	for player in curr_session.connected_players:
 		if player.id == id:
+			player.time_used += time_used
 			round_over(player.connected_player, player, curr_session)
 
-remote func receive_target_position(session_id, pos):
+remote func receive_target_position(session_id, pos, time_used):
 	var id = get_tree().get_rpc_sender_id()
 	var curr_session = session_dict[session_id]
 	
@@ -321,6 +322,8 @@ remote func receive_target_position(session_id, pos):
 	var curr_player = curr_session.player_turn
 	var curr_enemy = curr_session.player_turn.connected_player
 	var all_destroyed = false
+
+	curr_player.time_used += time_used
 
 	if value != null:
 		rpc_id(id, "receive_target_information", value)
@@ -354,7 +357,7 @@ remote func receive_time_used(session_id, time_used):
 	for player in curr_session.connected_players:
 		if player.id == id:
 			player.time_used = time_used
-			print("recieve time used:"+str(player.time_used))
+			print(player.player_name + "recieve time used:"+str(player.time_used))
 
 func round_over(curr_player, curr_enemy, curr_session):
 	curr_session.prev_winner = curr_player
@@ -365,6 +368,7 @@ func round_over(curr_player, curr_enemy, curr_session):
 	var game_over = curr_player.round_score >= 2 #make it a variable instead?
 	
 	for player in curr_session.connected_players:
+#		rpc_id(player.id, "send_time_used")
 		var enemy = player.connected_player
 		player.ready = false
 		player.all_scores.append(player.score)
@@ -418,6 +422,8 @@ remote func timeout(session_id):
 	if id != curr_session.player_turn.id:
 		print("invalid turn from player: "+ str(id))
 		return
+	
+	curr_session.player_turn.time_used += 10 #maybe variable later
 	
 	rpc_id(curr_session.player_turn.connected_player.id, "force_turn_end")
 

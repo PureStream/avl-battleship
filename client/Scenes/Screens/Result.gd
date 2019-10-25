@@ -4,8 +4,8 @@ extends Control
 # var a = 2
 # var b = "text
 const play = preload("res://Scenes/Screens/Play.tscn")
-onready var quit := $MarginContainer/VBoxContainer/HBoxContainer2/Quit
-onready var rematch := $MarginContainer/VBoxContainer/HBoxContainer2/Rematch
+onready var quit := $MarginContainer/VBoxContainer/Buttons/Quit/Quit
+onready var rematch := $MarginContainer/VBoxContainer/Buttons/Rematch
 onready var popup := $MarginContainer2/Popup
 onready var player_name := $MarginContainer/VBoxContainer/NameContainer/PlayerName
 onready var enemy_name := $MarginContainer/VBoxContainer/NameContainer/EnemyName

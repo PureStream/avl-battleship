@@ -133,15 +133,15 @@ func clear_variables():
 	boardsize = -1
 	max_ship = -1
 
-func send_target_position(pos):
+func send_target_position(pos, time):
 	if session_id > -1:
-		rpc_id(1, "receive_target_position", session_id, pos)
+		rpc_id(1, "receive_target_position", session_id, pos, time)
 	else:
 		print("session error")
 
-func concede():
+func concede(time_used):
 	if session_id >-1:
-		rpc_id(1, "concede", session_id)
+		rpc_id(1, "concede", session_id, time_used)
 	else:
 		print("session error")
 
@@ -192,6 +192,7 @@ func rematch():
 
 remote func send_time_used():
 	if session_id >-1:
+		print("time used sent:" + str(time_used))
 		rpc_id(1, "receive_time_used", session_id, Lobby.time_used)
 	else:
 		print("session error")
