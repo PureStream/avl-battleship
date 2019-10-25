@@ -22,6 +22,8 @@ var round_score = 0
 var enemy_round_score = 0
 var player_score = 0
 var enemy_score = 0
+var time_used = 0
+var enemy_time_used = 0
 
 var connect_type
 var connect_email
@@ -131,15 +133,15 @@ func clear_variables():
 	boardsize = -1
 	max_ship = -1
 
-func send_target_position(pos):
+func send_target_position(pos, time):
 	if session_id > -1:
-		rpc_id(1, "receive_target_position", session_id, pos)
+		rpc_id(1, "receive_target_position", session_id, pos, time)
 	else:
 		print("session error")
 
-func concede():
+func concede(time_used):
 	if session_id >-1:
-		rpc_id(1, "concede", session_id)
+		rpc_id(1, "concede", session_id, time_used)
 	else:
 		print("session error")
 
@@ -171,6 +173,7 @@ remote func receive_round_result(result:bool, game_over:bool, round_info):
 	round_num = round_info["round"]
 	round_score = round_info["round_score"]
 	enemy_round_score = round_info["enemy_round_score"]
+	enemy_time_used = round_info["enemy_time_used"]
 	play.set_round_score(round_score, enemy_round_score)
 	if game_over:
 		play.end_game(result)
@@ -187,6 +190,13 @@ func rematch():
 	else:
 		print("session error")
 
+remote func send_time_used():
+	if session_id >-1:
+		print("time used sent:" + str(time_used))
+		rpc_id(1, "receive_time_used", session_id, Lobby.time_used)
+	else:
+		print("session error")
+		
 func cancel_rematch():
 	if session_id >-1:
 		rpc_id(1, "cancel_rematch", session_id)

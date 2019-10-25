@@ -14,6 +14,8 @@ var round_score = 0
 var ready = false
 var uid = ""
 var player_name = ""
+var time_used = 0
+var shot_fired = 0
 
 var needs_refresh = false
 var auth = null
@@ -35,6 +37,8 @@ func soft_reset():
 	score = 0
 	all_scores = []
 	round_score = 0 
+	time_used = 0
+	shot_fired = 0
 	ready = false
 
 func reset_session():
@@ -46,6 +50,8 @@ func reset_session():
 	all_scores = []
 	round_score = 0
 	ready = false
+	time_used = 0
+	shot_fired = 0
 	
 func init_grid(size):
 	for x in range(size):

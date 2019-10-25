@@ -20,9 +20,14 @@ export (Texture) var grid8
 export (Texture) var grid10
 export (Texture) var grid8_s
 export (Texture) var grid10_s
- 
+#var counter = null
+
 func _ready():
 	Lobby.connect("target_info_received", self, "render_hit")
+#	counter = Timer.new()
+#	counter.set_wait_time(1)
+#	counter.connect("timeout", self, "on_timeout_complete")
+#	add_child(counter)
 	shoot.disabled = true
 	enemy_grid.shoot = shoot
 	Lobby.play = self
@@ -45,13 +50,17 @@ func _ready():
 		player_grid.insert_item(ship)
 	start_game(Lobby.your_turn)
 
+#func on_timeout_complete():
+#	Lobby.time_used += 1
+#	print("time used:"+str(Lobby.time_used))
+
 func _input(event):
 	if event.is_action_pressed("inv_grab"):
 		if click_to_exit:
 			clear()
 			to_result()
 	if event.is_action_pressed("debug_insert_all_ships"):
-		_on_Skip_pressed()
+		_on_Concede_pressed()
 
 func start_game(yours):
 	turn_panel.set_round_begin(Lobby.round_num)
@@ -78,8 +87,12 @@ func set_board_size():
 func _on_Confirm_pressed():
 	var x = enemy_grid.reticle_pos.x 
 	var y = enemy_grid.reticle_pos.y 
-	Lobby.send_target_position({"x":x,"y":y})
+	Lobby.send_target_position({"x":x,"y":y}, get_time())
 	shoot.disabled = true
+
+func get_time():
+	Lobby.time_used += timer.get_time()
+	return timer.get_time()
 
 func render_hit(hit):
 	var x = enemy_grid.reticle_pos.x 
@@ -90,7 +103,7 @@ func render_hit(hit):
 		enemy_grid.insert_mark({"id":"Miss","g_pos":{"x":x,"y":y}})
 	enemy_grid.reticle.visible = false
 	enemy_grid.hit_map[x][y] = false
-
+	
 	end_turn()
 
 func receive_hit(pos, value):
@@ -118,13 +131,16 @@ func end_turn():
 	shoot.disabled = true
 	if Lobby.your_turn:
 		enemy_grid.deactivate()
+#		counter.stop()
 	Lobby.your_turn = false #not really needed
 	timer.stop_timer()
+#	Lobby.send_time_used()
 	Lobby.end_turn_ready()
 
 func _on_TurnPanel_animation_completed():
 	if Lobby.your_turn:
 		enemy_grid.activate()
+#		counter.start()
 	timer.start_timer()
 
 func set_score(score):
@@ -180,14 +196,11 @@ func clear():
 func _on_Button_pressed():
 	to_lobby()
 
-func _on_Skip_pressed():
-	timer.stop_timer()
-	Lobby.concede()
-
 func _on_Timer_timeout():
 #	print("timeout")
 	if Lobby.your_turn:
 		Lobby.timeout()
+		get_time()
 		end_turn()
 
 func _on_EnemyGrid_target_selected():
@@ -201,7 +214,7 @@ func _on_Options_pressed():
 
 func _on_Concede_pressed():
 	options_popup.hide()
-	Lobby.concede()
+	Lobby.concede(get_time())
 
 func _on_CloseIcon_pressed():
 	options_popup.hide()

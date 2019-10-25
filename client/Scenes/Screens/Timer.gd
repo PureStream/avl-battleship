@@ -9,6 +9,9 @@ onready var anim = $TimerIcon/TimerAnim
 func _ready():
 	pass # Replace with function body.
 
+func get_time():
+	return anim.current_animation_position
+
 func start_timer():
 	resetting = false
 	anim.playback_speed = 1
@@ -26,6 +29,6 @@ func _on_TimerAnim_animation_finished(anim_name):
 
 func reset():
 	resetting = true
-	var length = anim.current_animation_length
+	var length = anim.current_animation_position
 	anim.playback_speed = length / 1.5
 	anim.play_backwards("TimerAnimation")

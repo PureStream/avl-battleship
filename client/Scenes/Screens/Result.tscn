@@ -1,22 +1,11 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scenes/Screens/Result.gd" type="Script" id=1]
 [ext_resource path="res://Fonts/test_font.tres" type="DynamicFont" id=2]
-[ext_resource path="res://Images/UI/pngs/blue/meter_bar_holder_left_edge_blue.png" type="Texture" id=3]
-[ext_resource path="res://Images/UI/pngs/blue/meter_bar_holder_center-repeating_blue.png" type="Texture" id=4]
-[ext_resource path="res://Images/UI/pngs/blue/meter_bar_center-repeating_blue.png" type="Texture" id=5]
-[ext_resource path="res://Images/UI/pngs/blue/meter_bar_holder_right_edge_blue.png" type="Texture" id=6]
-[ext_resource path="res://Images/UI/pngs/pink/meter_bar_holder_left_edge_pink.png" type="Texture" id=7]
-[ext_resource path="res://Images/UI/pngs/pink/meter_bar_holder_center-repeating_pink.png" type="Texture" id=8]
-[ext_resource path="res://Images/UI/pngs/pink/meter_bar_center-repeating_pink.png" type="Texture" id=9]
-[ext_resource path="res://Images/UI/pngs/pink/meter_bar_holder_right_edge_pink.png" type="Texture" id=10]
-[ext_resource path="res://Images/UI/pngs/orange/meter_bar_holder_left_edge_orange.png" type="Texture" id=11]
-[ext_resource path="res://Images/UI/pngs/orange/meter_bar_holder_center-repeating_orange.png" type="Texture" id=12]
-[ext_resource path="res://Images/UI/pngs/orange/meter_bar_center-repeating_orange.png" type="Texture" id=13]
-[ext_resource path="res://Images/UI/pngs/orange/meter_bar_holder_right_edge_orange.png" type="Texture" id=14]
-[ext_resource path="res://Scenes/Popup.gd" type="Script" id=15]
-[ext_resource path="res://Fonts/Roboto_Small.tres" type="DynamicFont" id=16]
-[ext_resource path="res://Fonts/Roboto_VerySmall.tres" type="DynamicFont" id=17]
+[ext_resource path="res://Scenes/ResultBar.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Popup.gd" type="Script" id=4]
+[ext_resource path="res://Fonts/Roboto_Small.tres" type="DynamicFont" id=5]
+[ext_resource path="res://Fonts/Roboto_VerySmall.tres" type="DynamicFont" id=6]
 
 [node name="Result" type="Control"]
 anchor_right = 1.0
@@ -36,13 +25,13 @@ margin_left = 60.0
 margin_top = 40.0
 margin_right = 1864.0
 margin_bottom = 1040.0
-custom_constants/separation = 20
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="NameContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+editor/display_folded = true
 margin_right = 1804.0
 margin_bottom = 74.0
 
-[node name="PlayerName" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="PlayerName" type="Label" parent="MarginContainer/VBoxContainer/NameContainer"]
 margin_right = 900.0
 margin_bottom = 74.0
 rect_min_size = Vector2( 900, 0 )
@@ -50,7 +39,7 @@ size_flags_horizontal = 0
 custom_fonts/font = ExtResource( 2 )
 text = "Player"
 
-[node name="EnemyName" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="EnemyName" type="Label" parent="MarginContainer/VBoxContainer/NameContainer"]
 margin_left = 904.0
 margin_right = 1804.0
 margin_bottom = 74.0
@@ -60,208 +49,60 @@ custom_fonts/font = ExtResource( 2 )
 text = "Enemy"
 align = 2
 
-[node name="Damage" type="Label" parent="MarginContainer/VBoxContainer"]
-margin_top = 94.0
+[node name="BarMargin" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+margin_top = 78.0
 margin_right = 1804.0
-margin_bottom = 168.0
-custom_fonts/font = ExtResource( 2 )
-text = "Damage Dealt"
-align = 1
+margin_bottom = 611.0
+custom_constants/margin_right = 400
+custom_constants/margin_left = 400
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-margin_top = 188.0
-margin_right = 1804.0
-margin_bottom = 338.0
-custom_constants/separation = 0
-alignment = 1
+[node name="BarContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BarMargin"]
+margin_left = 400.0
+margin_right = 1404.0
+margin_bottom = 533.0
 
-[node name="PlayerHit" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
-margin_left = 302.0
-margin_right = 402.0
-margin_bottom = 150.0
-rect_min_size = Vector2( 100, 150 )
-texture = ExtResource( 3 )
-expand = true
+[node name="ScoreBar" parent="MarginContainer/VBoxContainer/BarMargin/BarContainer" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 1004.0
+margin_bottom = 175.0
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer3/PlayerHit"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = -3.01465
-margin_bottom = -3.01465
+[node name="RoundBar" parent="MarginContainer/VBoxContainer/BarMargin/BarContainer" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 179.0
+margin_right = 1004.0
+margin_bottom = 354.0
 
-[node name="Player_Hit_score" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3/PlayerHit/MarginContainer"]
-margin_top = 38.0
-margin_right = 100.0
-margin_bottom = 112.0
-rect_pivot_offset = Vector2( -1250, 540 )
-custom_fonts/font = ExtResource( 2 )
-text = ":"
-align = 2
-valign = 1
-
-[node name="Hitbar" type="TextureProgress" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
-margin_left = 402.0
-margin_right = 1402.0
-margin_bottom = 150.0
-rect_min_size = Vector2( 1000, 120 )
-size_flags_horizontal = 4
-value = 30.0
-texture_under = ExtResource( 4 )
-texture_progress = ExtResource( 5 )
-nine_patch_stretch = true
-
-[node name="EnemyHit" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
-margin_left = 1402.0
-margin_right = 1502.0
-margin_bottom = 150.0
-rect_min_size = Vector2( 100, 150 )
-texture = ExtResource( 6 )
-expand = true
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer3/EnemyHit"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="Enemy_Hit_score" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3/EnemyHit/MarginContainer"]
-margin_top = 38.0
-margin_right = 100.0
-margin_bottom = 112.0
-rect_pivot_offset = Vector2( -1250, 540 )
-custom_fonts/font = ExtResource( 2 )
-text = ":"
-valign = 1
-
-[node name="Roundscore" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="TimeBar" parent="MarginContainer/VBoxContainer/BarMargin/BarContainer" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_top = 358.0
+margin_right = 1004.0
+margin_bottom = 533.0
+
+[node name="Buttons" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+margin_top = 757.0
 margin_right = 1804.0
-margin_bottom = 432.0
-custom_fonts/font = ExtResource( 2 )
-text = "Round Score"
-align = 1
+margin_bottom = 857.0
+size_flags_horizontal = 7
+size_flags_vertical = 6
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-margin_top = 452.0
-margin_right = 1804.0
-margin_bottom = 602.0
-custom_constants/separation = 0
-alignment = 1
-
-[node name="PlayerScore" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
-margin_left = 302.0
-margin_right = 402.0
-margin_bottom = 150.0
-rect_min_size = Vector2( 100, 150 )
-texture = ExtResource( 7 )
-expand = true
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer4/PlayerScore"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="Player_Round_score" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4/PlayerScore/MarginContainer"]
-margin_top = 38.0
-margin_right = 100.0
-margin_bottom = 112.0
-custom_fonts/font = ExtResource( 2 )
-text = ":"
-align = 2
-valign = 1
-
-[node name="Roundbar" type="TextureProgress" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
-margin_left = 402.0
-margin_right = 1402.0
-margin_bottom = 150.0
-rect_min_size = Vector2( 1000, 150 )
-size_flags_horizontal = 4
-value = 50.0
-texture_under = ExtResource( 8 )
-texture_progress = ExtResource( 9 )
-nine_patch_stretch = true
-
-[node name="EnemyScore" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
-margin_left = 1402.0
-margin_right = 1502.0
-margin_bottom = 150.0
-rect_min_size = Vector2( 100, 150 )
-texture = ExtResource( 10 )
-expand = true
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer4/EnemyScore"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="Enemy_Round_score" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4/EnemyScore/MarginContainer"]
-margin_top = 38.0
-margin_right = 100.0
-margin_bottom = 112.0
-rect_pivot_offset = Vector2( -1250, 540 )
-custom_fonts/font = ExtResource( 2 )
-text = ":"
-valign = 1
-autowrap = true
-
-[node name="Timeused" type="Label" parent="MarginContainer/VBoxContainer"]
-margin_top = 622.0
-margin_right = 1804.0
-margin_bottom = 696.0
-custom_fonts/font = ExtResource( 2 )
-text = "Time Used"
-align = 1
-autowrap = true
-
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-editor/display_folded = true
-margin_top = 716.0
-margin_right = 1804.0
-margin_bottom = 866.0
-custom_constants/separation = 0
-alignment = 1
-
-[node name="PlayerTime" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer5"]
-margin_left = 302.0
-margin_right = 402.0
-margin_bottom = 150.0
-rect_min_size = Vector2( 100, 120 )
-texture = ExtResource( 11 )
-expand = true
-
-[node name="Timebar" type="TextureProgress" parent="MarginContainer/VBoxContainer/HBoxContainer5"]
-margin_left = 402.0
-margin_right = 1402.0
-margin_bottom = 150.0
-rect_min_size = Vector2( 1000, 120 )
-size_flags_horizontal = 4
-value = 80.0
-texture_under = ExtResource( 12 )
-texture_progress = ExtResource( 13 )
-nine_patch_stretch = true
-
-[node name="EnemyTime" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer5"]
-margin_left = 1402.0
-margin_right = 1502.0
-margin_bottom = 150.0
-rect_min_size = Vector2( 100, 150 )
-texture = ExtResource( 14 )
-expand = true
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-margin_left = 478.0
-margin_top = 886.0
-margin_right = 1325.0
-margin_bottom = 966.0
-size_flags_horizontal = 4
-custom_constants/separation = 400
-
-[node name="Rematch" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
-margin_right = 291.0
-margin_bottom = 80.0
+[node name="Rematch" type="Button" parent="MarginContainer/VBoxContainer/Buttons"]
+margin_left = 275.0
+margin_right = 625.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 350, 100 )
+size_flags_horizontal = 6
 custom_fonts/font = ExtResource( 2 )
 text = "Rematch"
 
-[node name="Quit" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 691.0
-margin_right = 847.0
-margin_bottom = 80.0
+[node name="Quit" type="Button" parent="MarginContainer/VBoxContainer/Buttons"]
+margin_left = 1179.0
+margin_right = 1529.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 350, 0 )
+size_flags_horizontal = 6
 custom_fonts/font = ExtResource( 2 )
 text = "Quit"
 
@@ -285,7 +126,7 @@ margin_left = 650.0
 margin_top = 300.0
 margin_right = 1270.0
 margin_bottom = 680.0
-script = ExtResource( 15 )
+script = ExtResource( 4 )
 
 [node name="Panel" type="Panel" parent="MarginContainer2/Popup"]
 anchor_right = 1.0
@@ -303,7 +144,7 @@ margin_right = 486.0
 margin_bottom = 157.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
-custom_fonts/font = ExtResource( 16 )
+custom_fonts/font = ExtResource( 5 )
 text = "Waiting for other player..."
 align = 1
 
@@ -314,7 +155,7 @@ margin_right = 347.0
 margin_bottom = 333.0
 size_flags_horizontal = 6
 size_flags_vertical = 0
-custom_fonts/font = ExtResource( 17 )
+custom_fonts/font = ExtResource( 6 )
 text = "Cancel"
 
 [node name="Filler" type="Control" parent="MarginContainer2/Popup/Panel/VBoxContainer"]
@@ -322,6 +163,6 @@ margin_top = 360.0
 margin_right = 620.0
 margin_bottom = 380.0
 rect_min_size = Vector2( 0, 20 )
-[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/Rematch" to="." method="_on_Rematch_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/Quit" to="." method="_on_Quit_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Buttons/Rematch" to="." method="_on_Rematch_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Buttons/Quit" to="." method="_on_Quit_pressed"]
 [connection signal="pressed" from="MarginContainer2/Popup/Panel/VBoxContainer/Cancel" to="." method="_on_Cancel_pressed"]
