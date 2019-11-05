@@ -57,11 +57,12 @@ valign = 1
 [node name="Filler" type="Control" parent="MarginContainer/VBoxContainer"]
 margin_top = 79.0
 margin_right = 1800.0
-margin_bottom = 846.0
+margin_bottom = 1000.0
 size_flags_vertical = 3
 
 [node name="CharSelectContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 editor/display_folded = true
+visible = false
 margin_left = 1034.0
 margin_top = 850.0
 margin_right = 1800.0
