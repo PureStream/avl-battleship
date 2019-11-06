@@ -174,6 +174,7 @@ remote func receive_round_result(result:bool, game_over:bool, round_info):
 	round_score = round_info["round_score"]
 	enemy_round_score = round_info["enemy_round_score"]
 	enemy_time_used = round_info["enemy_time_used"]
+	time_used = round_info["player_time_used"]
 	play.set_round_score(round_score, enemy_round_score)
 	if game_over:
 		play.end_game(result)

@@ -33,8 +33,8 @@ func _ready():
 	Lobby.play = self
 	
 	#change to variable rule: Bo1, Bo3, Bo5
-	player_score.set_max_counter(2)
-	enemy_score.set_max_counter(2)
+	player_score.set_max_counter(1)
+	enemy_score.set_max_counter(1)
 	
 	set_round_score(Lobby.round_score, Lobby.enemy_round_score)
 	
@@ -146,8 +146,8 @@ func _on_TurnPanel_animation_completed():
 func set_score(score):
 	var p_score = score["player"]
 	var e_score = score["enemy"]
-	enemy_score.set_score(e_score)
-	player_score.set_score(p_score)
+	Lobby.enemy_score = e_score
+	Lobby.player_score = p_score
 	
 func set_round_score(score, enemy_score):
 	player_score.set_win_count(score)
