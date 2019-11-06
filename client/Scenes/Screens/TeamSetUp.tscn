@@ -1,16 +1,19 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scenes/Screens/TeamSetUp.gd" type="Script" id=1]
-[ext_resource path="res://Fonts/RobotoTitle.tres" type="DynamicFont" id=2]
-[ext_resource path="res://Fonts/Roboto_Medium.tres" type="DynamicFont" id=3]
-[ext_resource path="res://Scenes/TeamBox.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Scenes/BackButton.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Sounds/ClickSound.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Images/planet_mars.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Fonts/RobotoTitle.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Fonts/Roboto_Medium.tres" type="DynamicFont" id=4]
+[ext_resource path="res://Scenes/TeamBox.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/BackButton.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Sounds/ClickSound.tscn" type="PackedScene" id=7]
 
 [node name="TeamSetUp" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
+
+[node name="planet_mars" parent="." instance=ExtResource( 2 )]
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 editor/display_folded = true
@@ -31,7 +34,7 @@ margin_right = 1192.0
 margin_bottom = 173.0
 size_flags_horizontal = 4
 size_flags_vertical = 0
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 3 )
 text = "Team Setup"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
@@ -48,7 +51,7 @@ margin_bottom = 540.0
 rect_min_size = Vector2( 190, 0 )
 size_flags_horizontal = 2
 size_flags_vertical = 6
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 custom_constants/hseparation = 0
 text = "Left"
 
@@ -61,18 +64,18 @@ size_flags_horizontal = 5
 size_flags_vertical = 4
 custom_constants/separation = 40
 
-[node name="Team1" parent="MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource( 4 )]
+[node name="Team1" parent="MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource( 5 )]
 margin_left = 0.0
 margin_right = 404.0
 margin_bottom = 204.0
 
-[node name="Team3" parent="MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource( 4 )]
+[node name="Team3" parent="MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource( 5 )]
 margin_left = 0.0
 margin_top = 244.0
 margin_right = 404.0
 margin_bottom = 448.0
 
-[node name="Team5" parent="MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource( 4 )]
+[node name="Team5" parent="MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource( 5 )]
 margin_left = 0.0
 margin_top = 488.0
 margin_right = 404.0
@@ -87,18 +90,18 @@ size_flags_horizontal = 5
 size_flags_vertical = 4
 custom_constants/separation = 40
 
-[node name="Team2" parent="MarginContainer/HBoxContainer/VBoxContainer2" instance=ExtResource( 4 )]
+[node name="Team2" parent="MarginContainer/HBoxContainer/VBoxContainer2" instance=ExtResource( 5 )]
 margin_left = 0.0
 margin_right = 404.0
 margin_bottom = 204.0
 
-[node name="Team4" parent="MarginContainer/HBoxContainer/VBoxContainer2" instance=ExtResource( 4 )]
+[node name="Team4" parent="MarginContainer/HBoxContainer/VBoxContainer2" instance=ExtResource( 5 )]
 margin_left = 0.0
 margin_top = 244.0
 margin_right = 404.0
 margin_bottom = 448.0
 
-[node name="Team6" parent="MarginContainer/HBoxContainer/VBoxContainer2" instance=ExtResource( 4 )]
+[node name="Team6" parent="MarginContainer/HBoxContainer/VBoxContainer2" instance=ExtResource( 5 )]
 margin_left = 0.0
 margin_top = 488.0
 margin_right = 404.0
@@ -112,7 +115,7 @@ margin_bottom = 540.0
 rect_min_size = Vector2( 190, 0 )
 size_flags_horizontal = 10
 size_flags_vertical = 6
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 text = "Right"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer"]
@@ -127,21 +130,21 @@ custom_constants/separation = 100
 [node name="Page1" type="Button" parent="MarginContainer/HBoxContainer2"]
 margin_right = 39.0
 margin_bottom = 81.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 text = "1"
 
 [node name="Page2" type="Button" parent="MarginContainer/HBoxContainer2"]
 margin_left = 139.0
 margin_right = 178.0
 margin_bottom = 81.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 text = "2"
 
 [node name="Page3" type="Button" parent="MarginContainer/HBoxContainer2"]
 margin_left = 278.0
 margin_right = 317.0
 margin_bottom = 81.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 4 )
 text = "3"
 
 [node name="MarginContainer2" type="MarginContainer" parent="."]
@@ -154,12 +157,12 @@ custom_constants/margin_top = 40
 custom_constants/margin_left = 60
 custom_constants/margin_bottom = 40
 
-[node name="BackButton" parent="MarginContainer2" instance=ExtResource( 5 )]
+[node name="BackButton" parent="MarginContainer2" instance=ExtResource( 6 )]
 margin_left = 60.0
 margin_top = 40.0
-margin_right = 260.0
-margin_bottom = 120.0
+margin_right = 212.0
+margin_bottom = 114.0
 
-[node name="ClickSound" parent="." instance=ExtResource( 6 )]
+[node name="ClickSound" parent="." instance=ExtResource( 7 )]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/SlideLeft" to="." method="_on_SlideLeft_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/SlideRight" to="." method="_on_SlideRight_pressed"]

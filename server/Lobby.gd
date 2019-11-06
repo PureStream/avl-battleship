@@ -31,6 +31,8 @@ const CONNECT_TYPE = {
 	"GUEST": "GUEST",
 }
 
+const SALT_KEY = 'y!kfw3$Z4THvw:Zqyl2<bzqU)S={w4'
+
 func _ready():
 	Firebase.Auth.connect("login_succeeded", self, "_on_FirebaseAuth_login_succeeded")
 	Firebase.Auth.connect("login_failed", self, "_on_FirebaseAuth_login_failed")
@@ -49,15 +51,18 @@ remote func receive_login_data(type, email, pwd, username):
 				player_dict[id].player_name = "guest"+str(id)
 				rpc_id(id, "login_succeeded", { "email": "", "displayname": "guest"+str(id) })
 			CONNECT_TYPE.LOGIN:
-				Firebase.Auth.login_with_email_and_password(request_player, email, pwd)
+				Firebase.Auth.login_with_email_and_password(request_player, email, salt_string(pwd))
 			CONNECT_TYPE.REGISTER:
 				request_player.set_request_name(username)
-				Firebase.Auth.signup_with_email_and_password(request_player, email, pwd)
+				Firebase.Auth.signup_with_email_and_password(request_player, email, salt_string(pwd))
 			var unknown:
 				print("UNKNOWN_TYPE: ", unknown)
 	else:
 		print("Player not found?")
 		peer_disconnected(id)
+
+func salt_string(string):
+	return SALT_KEY + string
 
 func _on_FirebaseAuth_login_succeeded(nid, auth):
 	print("LoginUser: ", auth.displayname)
@@ -191,7 +196,6 @@ remote func create_set_ship(session_id):
 remote func receive_ship_layout(session_id, layout):
 	var id = get_tree().get_rpc_sender_id()
 	var curr_session = session_dict[session_id]
-	
 #	print("received layout from: "+str(id)+"\n"+str(layout))
 	
 	for player in curr_session.connected_players:
@@ -206,6 +210,7 @@ remote func receive_ship_layout(session_id, layout):
 			ready_to_start = false
 		
 	if(ready_to_start):
+		curr_session.round_over = false
 		begin_game(session_id)
 		for player in curr_session.connected_players:
 			player.ready = false
@@ -363,9 +368,10 @@ func round_over(curr_player, curr_enemy, curr_session):
 	curr_session.prev_winner = curr_player
 	curr_session.round_num += 1
 	curr_session.turn_num = 1
+	curr_session.round_over = true
 	curr_player.round_score += 1
 #	print("round over")
-	var game_over = curr_player.round_score >= 2 #make it a variable instead?
+	var game_over = curr_player.round_score >= 0 #make it a variable instead?
 	
 	for player in curr_session.connected_players:
 #		rpc_id(player.id, "send_time_used")
@@ -378,6 +384,7 @@ func round_over(curr_player, curr_enemy, curr_session):
 			"round":curr_session.round_num,
 			"round_score": player.round_score, 
 			"enemy_round_score": enemy.round_score,
+			"player_time_used": player.time_used,
 			"enemy_time_used": enemy.time_used
 		}
 		
@@ -399,7 +406,11 @@ func round_over(curr_player, curr_enemy, curr_session):
 remote func end_turn_ready(session_id):
 	var id = get_tree().get_rpc_sender_id()
 	var curr_session = session_dict[session_id]
-	print(str(id) + " is ready") 
+	
+	if curr_session.round_over:
+		return
+	
+	print(str(id) + " is ready")
 	
 	for player in curr_session.connected_players:
 		if player.id == id:
@@ -410,7 +421,7 @@ remote func end_turn_ready(session_id):
 		if !player.ready:
 			ready_to_end = false
 	
-	if(ready_to_end):
+	if(ready_to_end && !curr_session.round_over):
 		for player in curr_session.connected_players:
 			player.ready = false
 		next_turn(session_id)

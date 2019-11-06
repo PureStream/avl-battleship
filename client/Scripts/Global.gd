@@ -63,7 +63,7 @@ class GameMode:
 		MenuButtonEnums.STANDARD:STANDARD
 	}
 
-const SHIPS_DEFAULT_BASIC = ["Ship4", "Ship4", "Ship4", "Ship4"]
+const SHIPS_DEFAULT_BASIC = ["Ship5", "Ship4", "Ship3", "Ship2"]
 
 const SHIPS_DEFAULT_CLASSIC = ["Ship5", "Ship4", "Ship3", "Ship3", "Ship2"]
 

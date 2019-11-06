@@ -18,5 +18,6 @@ margin_right = 1060.0
 margin_bottom = 575.0
 window_title = "Quickplay"
 dialog_text = "Looking for player..."
+[connection signal="cancel" from="." to="." method="_on_ConnnectingPopup_cancel"]
 [connection signal="confirmed" from="CenterContainer/ConfirmationDialog" to="." method="_on_ConfirmationDialog_confirmed"]
 [connection signal="popup_hide" from="CenterContainer/ConfirmationDialog" to="." method="_on_ConfirmationDialog_confirmed"]

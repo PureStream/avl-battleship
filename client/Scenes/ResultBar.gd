@@ -25,7 +25,9 @@ func set_values(num1, num2):
 	progress_front.value = value
 	if typeof(num1) == TYPE_INT:
 		player.text = str(num1)
+	else:
+		player.text = "%.2f" % num1
+	if typeof(num2) == TYPE_INT:	
 		enemy.text = str(num2)
 	else: 
-		player.text = "%.2f" % num1
 		enemy.text = "%.2f" % num2
