@@ -6,6 +6,7 @@ signal login_failed(error_code, error_msg)
 func _ready():
 	pass # Replace with function body.
 
+var ip_address = ""	
 var lobby = null
 var set_ship = null
 var play = null
@@ -52,7 +53,7 @@ func connect_to_server(type, email, pwd, username):
 	connect_username = username
 
 	var network = NetworkedMultiplayerENet.new()
-	network.create_client(Global.IP_ADDRESS, Global.PORT)
+	network.create_client(ip_address if ip_address else Global.IP_ADDRESS, Global.PORT)
 	get_tree().set_network_peer(network)
 	print("connecting to server")
 	network.connect("connection_failed", self, "_on_connection_failed")
@@ -63,6 +64,7 @@ func disconnect_from_server():
 
 func _on_connection_failed():
 	print("Error connecting to server")
+	emit_signal("login_failed", '069', "Error connecting to server")
 	disconnect_from_server()
 
 func _on_connection_success():

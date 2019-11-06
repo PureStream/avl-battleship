@@ -13,6 +13,8 @@ onready var register_username := $MarginContainer2/RegisterPopUpMenu/MarginConta
 onready var register_password := $MarginContainer2/RegisterPopUpMenu/MarginContainer/VBoxContainer/VBoxContainer3/PasswordTypeBox
 onready var blank := $Blank
 
+onready var ip_input := $MarginContainer/HBoxContainer/VBoxContainer/IPTypeBox
+
 var curr_scene = self.name
 var music_value = 0
 
@@ -35,13 +37,20 @@ func _on_Guest_Login_pressed():
 
 func _on_Sign_In_pressed():
 	blank.show()
+	if (ip_input.text && !ip_input.text.is_valid_ip_address()):
+		_on_login_failed('069', 'Invalid IP address')
+	Lobby.ip_address = ip_input.text
 	Lobby.email_pwd_login(login_email.text, login_password.text.md5_text())
 
 func _on_Register_pressed():
 	blank.show()
-	if (register_username.text.length() <= 3):
+	if (ip_input.text && !ip_input.text.is_valid_ip_address()):
+		_on_login_failed('069', 'Invalid IP address')
+	Lobby.ip_address = ip_input.text
+	var error_string = get_error_string(register_username.text, register_password.text)
+	if (error_string):
+		error_text.text = error_string
 		error_popup_dialog.show()
-		error_text.text = "Username must be longer than 3 characters"
 		blank.hide()
 		return
 	Lobby.email_pwd_register(register_email.text, register_password.text.md5_text(), register_username.text)
@@ -70,3 +79,10 @@ func _on_CloseIcon_pressed():
 
 func _on_CloseIcon2_pressed():
 	error_popup_dialog.hide()
+
+func get_error_string(username, password):
+	if (username.length() < 4):
+		return "Username must be longer than 3 characters"
+	if (password.length() < 6):
+		return "Password must be longer than 5 characters"
+	return null

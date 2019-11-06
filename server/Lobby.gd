@@ -51,16 +51,18 @@ remote func receive_login_data(type, email, pwd, username):
 				player_dict[id].player_name = "guest"+str(id)
 				rpc_id(id, "login_succeeded", { "email": "", "displayname": "guest"+str(id) })
 			CONNECT_TYPE.LOGIN:
-				Firebase.Auth.login_with_email_and_password(request_player, email, pwd)
+				Firebase.Auth.login_with_email_and_password(request_player, email, salt_string(pwd))
 			CONNECT_TYPE.REGISTER:
 				request_player.set_request_name(username)
-				var salted_pwd = SALT_KEY + username + pwd
-				Firebase.Auth.signup_with_email_and_password(request_player, email, salted_pwd)
+				Firebase.Auth.signup_with_email_and_password(request_player, email, salt_string(pwd))
 			var unknown:
 				print("UNKNOWN_TYPE: ", unknown)
 	else:
 		print("Player not found?")
 		peer_disconnected(id)
+
+func salt_string(string):
+	return SALT_KEY + string
 
 func _on_FirebaseAuth_login_succeeded(nid, auth):
 	print("LoginUser: ", auth.displayname)
