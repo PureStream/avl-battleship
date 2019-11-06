@@ -1,16 +1,22 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scenes/Screens/Result.gd" type="Script" id=1]
-[ext_resource path="res://Fonts/test_font.tres" type="DynamicFont" id=2]
-[ext_resource path="res://Scenes/ResultBar.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Scenes/Popup.gd" type="Script" id=4]
-[ext_resource path="res://Fonts/Roboto_Small.tres" type="DynamicFont" id=5]
-[ext_resource path="res://Fonts/Roboto_VerySmall.tres" type="DynamicFont" id=6]
+[ext_resource path="res://Images/space.jpg" type="Texture" id=2]
+[ext_resource path="res://Fonts/test_font.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Scenes/ResultBar.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/Popup.gd" type="Script" id=5]
+[ext_resource path="res://Fonts/Roboto_Small.tres" type="DynamicFont" id=6]
+[ext_resource path="res://Fonts/Roboto_VerySmall.tres" type="DynamicFont" id=7]
 
 [node name="Result" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
+
+[node name="space" type="Sprite" parent="."]
+position = Vector2( 954.429, 540.556 )
+scale = Vector2( 1.21583, 1.1873 )
+texture = ExtResource( 2 )
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
@@ -36,7 +42,7 @@ margin_right = 900.0
 margin_bottom = 74.0
 rect_min_size = Vector2( 900, 0 )
 size_flags_horizontal = 0
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 3 )
 text = "Player"
 
 [node name="EnemyName" type="Label" parent="MarginContainer/VBoxContainer/NameContainer"]
@@ -45,7 +51,7 @@ margin_right = 1804.0
 margin_bottom = 74.0
 rect_min_size = Vector2( 900, 0 )
 size_flags_horizontal = 8
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 3 )
 text = "Enemy"
 align = 2
 
@@ -61,20 +67,20 @@ margin_left = 400.0
 margin_right = 1404.0
 margin_bottom = 533.0
 
-[node name="ScoreBar" parent="MarginContainer/VBoxContainer/BarMargin/BarContainer" instance=ExtResource( 3 )]
+[node name="ScoreBar" parent="MarginContainer/VBoxContainer/BarMargin/BarContainer" instance=ExtResource( 4 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 1004.0
 margin_bottom = 175.0
 
-[node name="RoundBar" parent="MarginContainer/VBoxContainer/BarMargin/BarContainer" instance=ExtResource( 3 )]
+[node name="RoundBar" parent="MarginContainer/VBoxContainer/BarMargin/BarContainer" instance=ExtResource( 4 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 179.0
 margin_right = 1004.0
 margin_bottom = 354.0
 
-[node name="TimeBar" parent="MarginContainer/VBoxContainer/BarMargin/BarContainer" instance=ExtResource( 3 )]
+[node name="TimeBar" parent="MarginContainer/VBoxContainer/BarMargin/BarContainer" instance=ExtResource( 4 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 358.0
@@ -94,7 +100,7 @@ margin_right = 625.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 350, 100 )
 size_flags_horizontal = 6
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 3 )
 text = "Rematch"
 
 [node name="Quit" type="Button" parent="MarginContainer/VBoxContainer/Buttons"]
@@ -103,7 +109,7 @@ margin_right = 1529.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 350, 0 )
 size_flags_horizontal = 6
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 3 )
 text = "Quit"
 
 [node name="MarginContainer2" type="MarginContainer" parent="."]
@@ -126,7 +132,7 @@ margin_left = 650.0
 margin_top = 300.0
 margin_right = 1270.0
 margin_bottom = 680.0
-script = ExtResource( 4 )
+script = ExtResource( 5 )
 
 [node name="Panel" type="Panel" parent="MarginContainer2/Popup"]
 anchor_right = 1.0
@@ -144,7 +150,7 @@ margin_right = 486.0
 margin_bottom = 157.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 6 )
 text = "Waiting for other player..."
 align = 1
 
@@ -155,7 +161,7 @@ margin_right = 347.0
 margin_bottom = 333.0
 size_flags_horizontal = 6
 size_flags_vertical = 0
-custom_fonts/font = ExtResource( 6 )
+custom_fonts/font = ExtResource( 7 )
 text = "Cancel"
 
 [node name="Filler" type="Control" parent="MarginContainer2/Popup/Panel/VBoxContainer"]

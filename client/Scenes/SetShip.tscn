@@ -1,11 +1,12 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scenes/SetShip.gd" type="Script" id=1]
 [ext_resource path="res://Images/UI/grid8.png" type="Texture" id=2]
 [ext_resource path="res://Images/UI/grid10.png" type="Texture" id=3]
-[ext_resource path="res://Scenes/ShipSlots.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Fonts/test_font.tres" type="DynamicFont" id=5]
-[ext_resource path="res://Scenes/Screens/Grid.gd" type="Script" id=6]
+[ext_resource path="res://Images/space_explosion.jpg" type="Texture" id=4]
+[ext_resource path="res://Scenes/ShipSlots.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Fonts/test_font.tres" type="DynamicFont" id=6]
+[ext_resource path="res://Scenes/Screens/Grid.gd" type="Script" id=7]
 
 [node name="SetShip" type="Control"]
 anchor_right = 1.0
@@ -13,6 +14,11 @@ anchor_bottom = 1.0
 script = ExtResource( 1 )
 grid8 = ExtResource( 2 )
 grid10 = ExtResource( 3 )
+
+[node name="space_explosion" type="Sprite" parent="."]
+position = Vector2( 960.912, 541.339 )
+scale = Vector2( 2.1199, 1.99304 )
+texture = ExtResource( 4 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_right = 1.0
@@ -33,13 +39,13 @@ margin_right = 600.0
 margin_bottom = 1020.0
 custom_constants/separation = 200
 
-[node name="ShipSlots" parent="HBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource( 4 )]
+[node name="ShipSlots" parent="HBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource( 5 )]
 
 [node name="Button" type="Button" parent="HBoxContainer/MarginContainer/VBoxContainer"]
 margin_top = 880.0
 margin_right = 540.0
 margin_bottom = 960.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 6 )
 text = "Confirm"
 
 [node name="Grid" type="TextureRect" parent="HBoxContainer"]
@@ -51,5 +57,5 @@ size_flags_horizontal = 6
 size_flags_vertical = 6
 texture = ExtResource( 2 )
 stretch_mode = 3
-script = ExtResource( 6 )
+script = ExtResource( 7 )
 [connection signal="pressed" from="HBoxContainer/MarginContainer/VBoxContainer/Button" to="." method="_on_Button_pressed"]

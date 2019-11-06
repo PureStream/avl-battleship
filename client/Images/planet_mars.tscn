@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Images/planet_mars.jpg" type="Texture" id=1]
+
+[node name="planet_mars" type="Sprite"]
+position = Vector2( 957.557, 538.472 )
+scale = Vector2( 2.52184, 2.36579 )
+texture = ExtResource( 1 )
