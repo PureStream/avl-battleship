@@ -36,7 +36,7 @@ func _on_Guest_Login_pressed():
 
 func _on_Sign_In_pressed():
 	blank.show()
-	Lobby.email_pwd_login(login_email.text, login_password.text)
+	Lobby.email_pwd_login(login_email.text, login_password.text.md5_text())
 
 func _on_Register_pressed():
 	blank.show()
@@ -45,7 +45,7 @@ func _on_Register_pressed():
 		error_text.text = "Username must be longer than 3 characters"
 		blank.hide()
 		return
-	Lobby.email_pwd_register(register_email.text, register_password.text, register_username.text)
+	Lobby.email_pwd_register(register_email.text, register_password.text.md5_text(), register_username.text)
 	
 func _on_login_succeeded(auth):
 	get_tree().change_scene("res://Scenes/MainMenu.tscn")
