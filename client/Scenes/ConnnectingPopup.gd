@@ -21,3 +21,6 @@ func connecting():
 	
 func matching():
 	dialog.dialog_text = "Looking for player..."
+
+func _on_ConnnectingPopup_cancel():
+	self.queue_free()

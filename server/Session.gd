@@ -9,6 +9,7 @@ var round_num = 1
 var turn_num = 1
 var prev_winner = null
 var button = null
+var round_over = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
