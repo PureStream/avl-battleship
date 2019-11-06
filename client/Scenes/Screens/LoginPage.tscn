@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Scenes/Screens/LoginPage.gd" type="Script" id=1]
 [ext_resource path="res://Images/planet_venus.jpg" type="Texture" id=2]
@@ -19,6 +19,10 @@
 [sub_resource type="StyleBoxEmpty" id=3]
 
 [sub_resource type="StyleBoxEmpty" id=4]
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+[sub_resource type="StyleBoxEmpty" id=6]
 
 [node name="LoginPage" type="Node"]
 script = ExtResource( 1 )
@@ -47,11 +51,10 @@ custom_constants/separation = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 margin_left = 500.0
-margin_top = 3.0
 margin_right = 1300.0
-margin_bottom = 996.0
+margin_bottom = 1000.0
 size_flags_horizontal = 6
-size_flags_vertical = 4
+size_flags_vertical = 5
 custom_constants/separation = 20
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer"]
@@ -200,11 +203,37 @@ custom_colors/font_color = Color( 0, 0.764706, 1, 1 )
 custom_constants/hseparation = 0
 text = "Login As Guest"
 
-[node name="IPTypeBox" type="LineEdit" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 margin_top = 969.0
 margin_right = 800.0
 margin_bottom = 993.0
-align = 1
+custom_constants/separation = 5
+
+[node name="SpecificIP" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer6"]
+margin_right = 77.0
+margin_bottom = 24.0
+custom_fonts/font = ExtResource( 8 )
+text = "IP Address"
+valign = 2
+
+[node name="IPTypeBox" type="LineEdit" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer6"]
+margin_left = 82.0
+margin_right = 694.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 450, 0 )
+size_flags_horizontal = 3
+custom_styles/focus = SubResource( 5 )
+custom_styles/normal = SubResource( 6 )
+custom_fonts/font = ExtResource( 8 )
+
+[node name="Version" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer6"]
+margin_left = 699.0
+margin_right = 800.0
+margin_bottom = 24.0
+size_flags_horizontal = 8
+custom_fonts/font = ExtResource( 8 )
+text = "Version : 0.0.1"
+valign = 1
 
 [node name="MarginContainer2" type="MarginContainer" parent="."]
 editor/display_folded = true
