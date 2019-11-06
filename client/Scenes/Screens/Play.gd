@@ -24,6 +24,7 @@ export (Texture) var grid10_s
 
 func _ready():
 	Lobby.connect("target_info_received", self, "render_hit")
+	enemy_grid.connect("double_click", self, "send_target_position")
 #	counter = Timer.new()
 #	counter.set_wait_time(1)
 #	counter.connect("timeout", self, "on_timeout_complete")
@@ -85,10 +86,14 @@ func set_board_size():
 		enemy_grid.grid_offset = 0
 
 func _on_Confirm_pressed():
+	self.send_target_position()
+
+func send_target_position():
 	var x = enemy_grid.reticle_pos.x 
 	var y = enemy_grid.reticle_pos.y 
 	Lobby.send_target_position({"x":x,"y":y}, get_time())
 	shoot.disabled = true
+	
 
 func get_time():
 	Lobby.time_used += timer.get_time()

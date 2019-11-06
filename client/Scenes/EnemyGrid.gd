@@ -2,7 +2,7 @@ extends Control
 
 var shoot = null
 var ships = []
-
+signal double_click
 onready var panel = $Panel
 onready var tween = $PanelTween
 
@@ -50,6 +50,10 @@ func _input(event):
 		if Lobby.your_turn && enabled:
 			if get_global_rect().has_point(event.position):
 				select_target(event.position)
+				if event is InputEventMouseButton and event.doubleclick:
+					if(pos_to_grid_coord(event.position).x == reticle_pos.x and pos_to_grid_coord(event.position).y == reticle_pos.y ):
+						emit_signal("double_click")
+					
 
 func select_target(pos):
 #	var cursor_pos = get_global_mouse_position()
