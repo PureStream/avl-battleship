@@ -652,6 +652,7 @@ size_flags_vertical = 0
 [connection signal="pressed" from="MainMarginContainer/MainBoxContainer/PlayerContainer/PlayerThings/ShipOptions/Options" to="." method="_on_Options_pressed"]
 [connection signal="timeout" from="MainMarginContainer/MainBoxContainer/PlayerContainer/PlayerThings/ControlContainer/Timer" to="." method="_on_Timer_timeout"]
 [connection signal="pressed" from="MainMarginContainer/MainBoxContainer/PlayerContainer/PlayerThings/ControlContainer/ShootButton" to="." method="_on_Confirm_pressed"]
+[connection signal="double_click" from="MainMarginContainer/MainBoxContainer/EnemyContainer/EnemyGrid" to="." method="_on_Confirm_pressed"]
 [connection signal="target_selected" from="MainMarginContainer/MainBoxContainer/EnemyContainer/EnemyGrid" to="." method="_on_EnemyGrid_target_selected"]
 [connection signal="pressed" from="MarginContainer/WinLose/VBoxContainer/Button" to="." method="_on_Button_pressed"]
 [connection signal="animation_completed" from="TurnPanel" to="." method="_on_TurnPanel_animation_completed"]

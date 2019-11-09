@@ -378,7 +378,7 @@ func round_over(curr_player, curr_enemy, curr_session):
 		var enemy = player.connected_player
 		player.ready = false
 		player.all_scores.append(player.score)
-		player.score = 0
+		# player.score = 0
 		
 		var round_info = {
 			"round":curr_session.round_num,

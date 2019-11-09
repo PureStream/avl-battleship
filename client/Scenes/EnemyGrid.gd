@@ -53,7 +53,7 @@ func _input(event):
 				if event is InputEventMouseButton and event.doubleclick:
 					if(pos_to_grid_coord(event.position).x == reticle_pos.x and pos_to_grid_coord(event.position).y == reticle_pos.y ):
 						emit_signal("double_click")
-					
+						enabled = false
 
 func select_target(pos):
 #	var cursor_pos = get_global_mouse_position()
