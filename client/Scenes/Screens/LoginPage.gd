@@ -34,6 +34,7 @@ func _ready():
 
 func _on_Guest_Login_pressed():
 	blank.show()
+	Lobby.ip_address = ip_input.text
 	Lobby.guest_login()
 
 func _on_Sign_In_pressed():
